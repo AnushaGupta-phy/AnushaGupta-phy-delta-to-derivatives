@@ -1,0 +1,24 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    color: #222;
+}
+
+canvas {
+    background-color: white;
+    border: 2px solid black;
+    margin-top: 20px;
+}
+
+#controls {
+    margin: auto;
+    width: 400px;
+}
+
+input {
+    width: 250px;
+}
