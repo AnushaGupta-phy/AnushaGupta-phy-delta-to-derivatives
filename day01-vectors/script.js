@@ -15,19 +15,11 @@ const ayValue = document.getElementById("ayValue");
 const bxValue = document.getElementById("bxValue");
 const byValue = document.getElementById("byValue");
 
-// Checkboxes
-const showGrid = document.getElementById("showGrid");
-const showComponents = document.getElementById("showComponents");
-const showLabels = document.getElementById("showLabels");
-
 // Info boxes
 const vectorAData = document.getElementById("vectorAData");
 const vectorBData = document.getElementById("vectorBData");
 const resultData = document.getElementById("resultData");
 const explanation = document.getElementById("explanation");
-
-// Reset button
-const resetButton = document.getElementById("reset");
 
 function magnitude(x, y) {
     return Math.sqrt(x * x + y * y);
@@ -46,7 +38,6 @@ function toCanvas(x, y) {
 
 function drawGrid() {
 
-    if (!showGrid.checked) return;
 
     ctx.strokeStyle = "#1e293b";
     ctx.lineWidth = 1;
@@ -120,8 +111,6 @@ function drawArrow(x1, y1, x2, y2, color) {
 
 function drawComponents(end, color) {
 
-    if (!showComponents.checked) return;
-
     const origin = toCanvas(0, 0);
 
     ctx.setLineDash([8, 5]);
@@ -143,8 +132,6 @@ function drawComponents(end, color) {
 }
 
 function drawLabel(text, point, color) {
-
-    if (!showLabels.checked) return;
 
     ctx.fillStyle = color;
     ctx.font = "18px Arial";
@@ -211,31 +198,27 @@ function update() {
         Magnitude: ${magR}<br>
         Direction: ${angR}°`;
 
-    explanation.innerHTML =
-        `Vector addition is done component by component.<br><br>
-        (${ax}, ${ay}) + (${bx}, ${by}) =
-        (${ax + bx}, ${ay + by})`;
+   explanation.innerHTML = `
+Vector A points <strong>${ax}</strong> units in the x-direction and
+<strong>${ay}</strong> units in the y-direction.<br><br>
+
+Vector B points <strong>${bx}</strong> units in the x-direction and
+<strong>${by}</strong> units in the y-direction.<br><br>
+
+To add vectors, add the x-components and y-components separately:
+
+<br><br>
+
+(${ax} + ${bx}, ${ay} + ${by}) = (<strong>${ax + bx}</strong>, <strong>${ay + by}</strong>)
+
+<br><br>
+
+The green vector represents the sum of the two vectors.
+`;
 
 }
 
 document.querySelectorAll("input").forEach(input => {
     input.addEventListener("input", update);
-});
-
-resetButton.addEventListener("click", () => {
-
-    axSlider.value = 4;
-    aySlider.value = 3;
-
-    bxSlider.value = -2;
-    bySlider.value = 5;
-
-    showGrid.checked = true;
-    showComponents.checked = true;
-    showLabels.checked = true;
-
-    update();
-
-});
 
 update();
