@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delta To Derivatives | Day 2 - Position</title>
+    <title>Delta To Derivatives | Day 1 - Vector Explorer</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -11,11 +11,10 @@
 
 <header>
     <h1>Delta To Derivatives</h1>
-    <h2>Day 2 — Position as a Function of Time</h2>
-
+    <h2>Day 1 — Vector Explorer</h2>
     <p>
-        Position tells us where an object is at a particular instant in time.
-        Use the controls below to move the object along a straight track.
+        Explore vectors by changing their x- and y-components.
+        Watch how vector addition works in real time.
     </p>
 </header>
 
@@ -23,57 +22,55 @@
 
     <section class="journal">
         <h2>📖 Today's Journal</h2>
-
         <p class="coming-soon">
-            Your Day 2 Substack post will go here.
+            Your Day 1 Substack post will go here.
         </p>
     </section>
 
     <section class="canvas-section">
-
-        <canvas id="canvas" width="700" height="250"></canvas>
-
+        <canvas id="canvas" width="700" height="700"></canvas>
     </section>
 
     <section class="controls">
 
+        <h3>Vector A</h3>
+
+        <label>
+            X Component
+            <input type="range" id="ax" min="-10" max="10" value="4" step="1">
+            <span id="axValue">4</span>
+        </label>
+
+        <label>
+            Y Component
+            <input type="range" id="ay" min="-10" max="10" value="3" step="1">
+            <span id="ayValue">3</span>
+        </label>
+
+        <hr>
+
+        <h3>Vector B</h3>
+
+        <label>
+            X Component
+            <input type="range" id="bx" min="-10" max="10" value="-2" step="1">
+            <span id="bxValue">-2</span>
+        </label>
+
+        <label>
+            Y Component
+            <input type="range" id="by" min="-10" max="10" value="5" step="1">
+            <span id="byValue">5</span>
+        </label>
+
+        <hr>
+
         <h3>Controls</h3>
 
-        <label>
-            Time (seconds)
-
-            <input
-                type="range"
-                id="time"
-                min="0"
-                max="10"
-                value="0"
-                step="0.1">
-
-            <span id="timeValue">0.0 s</span>
-        </label>
-
-        <br>
-
-        <button id="playButton">
-            ▶ Play
-        </button>
-
-        <label>
-
-            Animation Speed
-
-            <input
-                type="range"
-                id="speed"
-                min="0.5"
-                max="3"
-                step="0.5"
-                value="1">
-
-            <span id="speedValue">1×</span>
-
-        </label>
+        <p>
+            Use the sliders to change each vector's components.
+            The green vector always represents the sum of Vector A and Vector B.
+        </p>
 
     </section>
 
@@ -82,27 +79,23 @@
         <h3>📊 Live Calculations</h3>
 
         <div class="card">
-
-            <h4>Time</h4>
-
-            <p id="timeData"></p>
-
+            <h4>Vector A</h4>
+            <p id="vectorAData"></p>
         </div>
 
         <div class="card">
+            <h4>Vector B</h4>
+            <p id="vectorBData"></p>
+        </div>
 
-            <h4>Position</h4>
-
-            <p id="positionData"></p>
-
+        <div class="card">
+            <h4>Resultant</h4>
+            <p id="resultData"></p>
         </div>
 
         <div class="card explanation">
-
             <h3>💡 What's Happening?</h3>
-
             <p id="explanation"></p>
-
         </div>
 
     </section>
@@ -110,15 +103,9 @@
 </main>
 
 <footer>
-
-<p>
-
-Built for the
-<strong>Delta To Derivatives</strong>
-summer project.
-
-</p>
-
+    <p>
+        Built for the <strong>Delta To Derivatives</strong> summer project.
+    </p>
 </footer>
 
 <script src="script.js"></script>
