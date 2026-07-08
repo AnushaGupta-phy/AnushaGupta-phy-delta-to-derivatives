@@ -1,29 +1,160 @@
-<h3>Display Options</h3>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delta To Derivatives | Day 1 - Vector Explorer</title>
 
-<label class="checkbox">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>Delta To Derivatives</h1>
+    <h2>Day 1 — Vector Explorer</h2>
+    <p>
+        Explore vectors by changing their x and y components.
+        Watch how vector addition works in real time.
+    </p>
+</header>
+
+<section class="journal">
+
+<h2>📖 Today's Journal</h2>
+
+<p class="coming-soon">
+Your Day 1 Substack post will go here.
+</p>
+
+</section>
+  
+<main>
+
+<section class="canvas-section">
+
+<canvas id="canvas" width="700" height="700"></canvas>
+
+</section>
+
+<section class="controls">
+
+<h3>Vector A</h3>
+
+<label>
+X Component
 <input
-type="checkbox"
-id="showGrid"
-checked>
-Show Grid
+type="range"
+id="ax"
+min="-10"
+max="10"
+value="4"
+step="1">
+<span id="axValue">4</span>
 </label>
 
-<label class="checkbox">
+<label>
+Y Component
 <input
-type="checkbox"
-id="showComponents"
-checked>
-Show Components
+type="range"
+id="ay"
+min="-10"
+max="10"
+value="3"
+step="1">
+<span id="ayValue">3</span>
 </label>
 
-<label class="checkbox">
+<hr>
+
+<h3>Vector B</h3>
+
+<label>
+X Component
 <input
-type="checkbox"
-id="showLabels"
-checked>
-Show Labels
+type="range"
+id="bx"
+min="-10"
+max="10"
+value="-2"
+step="1">
+<span id="bxValue">-2</span>
 </label>
 
-<button id="reset">
-Reset
-</button>
+<label>
+Y Component
+<input
+type="range"
+id="by"
+min="-10"
+max="10"
+value="5"
+step="1">
+<span id="byValue">5</span>
+</label>
+
+<hr>
+
+<h3>Controls</h3>
+
+<p>
+Use the sliders to change the x- and y-components of each vector.
+The green vector updates automatically to show the sum.
+</p>
+
+</section>
+
+<section class="info">
+
+<h3>Live Calculations</h3>
+
+<div class="card">
+
+<h4>Vector A</h4>
+
+<p id="vectorAData"></p>
+
+</div>
+
+<div class="card">
+
+<h4>Vector B</h4>
+
+<p id="vectorBData"></p>
+
+</div>
+
+<div class="card">
+
+<h4>Resultant</h4>
+
+<p id="resultData"></p>
+
+</div>
+
+<div class="card explanation">
+
+<h3>What's Happening?</h3>
+
+<p id="explanation"></p>
+
+</div>
+
+</section>
+
+</main>
+
+<footer>
+
+<p>
+Built for the
+<strong>Delta To Derivatives</strong>
+summer project.
+</p>
+
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>
