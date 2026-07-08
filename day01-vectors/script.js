@@ -15,7 +15,7 @@ const ayValue = document.getElementById("ayValue");
 const bxValue = document.getElementById("bxValue");
 const byValue = document.getElementById("byValue");
 
-// Info boxes
+// Info
 const vectorAData = document.getElementById("vectorAData");
 const vectorBData = document.getElementById("vectorBData");
 const resultData = document.getElementById("resultData");
@@ -25,7 +25,7 @@ function magnitude(x, y) {
     return Math.sqrt(x * x + y * y);
 }
 
-function angle(x, y) {
+function direction(x, y) {
     return Math.atan2(y, x) * 180 / Math.PI;
 }
 
@@ -37,7 +37,6 @@ function toCanvas(x, y) {
 }
 
 function drawGrid() {
-
 
     ctx.strokeStyle = "#1e293b";
     ctx.lineWidth = 1;
@@ -55,7 +54,6 @@ function drawGrid() {
         ctx.lineTo(canvas.width, y);
         ctx.stroke();
     }
-
 }
 
 function drawAxes() {
@@ -72,7 +70,6 @@ function drawAxes() {
     ctx.moveTo(0, canvas.height / 2);
     ctx.lineTo(canvas.width, canvas.height / 2);
     ctx.stroke();
-
 }
 
 function drawArrow(x1, y1, x2, y2, color) {
@@ -86,49 +83,45 @@ function drawArrow(x1, y1, x2, y2, color) {
     ctx.lineTo(x2, y2);
     ctx.stroke();
 
-    const angle = Math.atan2(y2 - y1, x2 - x1);
-
+    const ang = Math.atan2(y2 - y1, x2 - x1);
     const head = 12;
 
     ctx.beginPath();
-
     ctx.moveTo(x2, y2);
 
     ctx.lineTo(
-        x2 - head * Math.cos(angle - Math.PI / 6),
-        y2 - head * Math.sin(angle - Math.PI / 6)
+        x2 - head * Math.cos(ang - Math.PI / 6),
+        y2 - head * Math.sin(ang - Math.PI / 6)
     );
 
     ctx.lineTo(
-        x2 - head * Math.cos(angle + Math.PI / 6),
-        y2 - head * Math.sin(angle + Math.PI / 6)
+        x2 - head * Math.cos(ang + Math.PI / 6),
+        y2 - head * Math.sin(ang + Math.PI / 6)
     );
 
     ctx.closePath();
     ctx.fill();
-
 }
 
-function drawComponents(end, color) {
+function drawComponents(point, color) {
 
     const origin = toCanvas(0, 0);
 
-    ctx.setLineDash([8, 5]);
+    ctx.setLineDash([6, 6]);
     ctx.strokeStyle = color;
     ctx.lineWidth = 2;
 
     ctx.beginPath();
-    ctx.moveTo(origin.x, end.y);
-    ctx.lineTo(end.x, end.y);
+    ctx.moveTo(origin.x, point.y);
+    ctx.lineTo(point.x, point.y);
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.moveTo(end.x, origin.y);
-    ctx.lineTo(end.x, end.y);
+    ctx.moveTo(point.x, origin.y);
+    ctx.lineTo(point.x, point.y);
     ctx.stroke();
 
     ctx.setLineDash([]);
-
 }
 
 function drawLabel(text, point, color) {
@@ -136,14 +129,12 @@ function drawLabel(text, point, color) {
     ctx.fillStyle = color;
     ctx.font = "18px Arial";
     ctx.fillText(text, point.x + 10, point.y - 10);
-
 }
 
 function update() {
 
     const ax = Number(axSlider.value);
     const ay = Number(aySlider.value);
-
     const bx = Number(bxSlider.value);
     const by = Number(bySlider.value);
 
@@ -173,52 +164,54 @@ function update() {
 
     drawLabel("A", A, "#ef4444");
     drawLabel("B", B, "#3b82f6");
-    drawLabel("A+B", R, "#22c55e");
+    drawLabel("A + B", R, "#22c55e");
 
     const magA = magnitude(ax, ay).toFixed(2);
     const magB = magnitude(bx, by).toFixed(2);
     const magR = magnitude(ax + bx, ay + by).toFixed(2);
 
-    const angA = angle(ax, ay).toFixed(1);
-    const angB = angle(bx, by).toFixed(1);
-    const angR = angle(ax + bx, ay + by).toFixed(1);
+    const dirA = direction(ax, ay).toFixed(1);
+    const dirB = direction(bx, by).toFixed(1);
+    const dirR = direction(ax + bx, ay + by).toFixed(1);
 
-    vectorAData.innerHTML =
-        `Components: (${ax}, ${ay})<br>
+    vectorAData.innerHTML = `
+        Components: (${ax}, ${ay})<br>
         Magnitude: ${magA}<br>
-        Direction: ${angA}°`;
+        Direction: ${dirA}°
+    `;
 
-    vectorBData.innerHTML =
-        `Components: (${bx}, ${by})<br>
+    vectorBData.innerHTML = `
+        Components: (${bx}, ${by})<br>
         Magnitude: ${magB}<br>
-        Direction: ${angB}°`;
+        Direction: ${dirB}°
+    `;
 
-    resultData.innerHTML =
-        `Components: (${ax + bx}, ${ay + by})<br>
+    resultData.innerHTML = `
+        Components: (${ax + bx}, ${ay + by})<br>
         Magnitude: ${magR}<br>
-        Direction: ${angR}°`;
+        Direction: ${dirR}°
+    `;
 
-   explanation.innerHTML = `
-Vector A points <strong>${ax}</strong> units in the x-direction and
-<strong>${ay}</strong> units in the y-direction.<br><br>
+    explanation.innerHTML = `
+        <strong>Vector A</strong> points ${ax} units horizontally and ${ay} units vertically.<br><br>
 
-Vector B points <strong>${bx}</strong> units in the x-direction and
-<strong>${by}</strong> units in the y-direction.<br><br>
+        <strong>Vector B</strong> points ${bx} units horizontally and ${by} units vertically.<br><br>
 
-To add vectors, add the x-components and y-components separately:
+        Add the x-components and y-components separately:
 
-<br><br>
+        <br><br>
 
-(${ax} + ${bx}, ${ay} + ${by}) = (<strong>${ax + bx}</strong>, <strong>${ay + by}</strong>)
+        (${ax}, ${ay}) + (${bx}, ${by}) =
+        <strong>(${ax + bx}, ${ay + by})</strong>
 
-<br><br>
+        <br><br>
 
-The green vector represents the sum of the two vectors.
-`;
-
+        The green vector is the resultant, representing the combined effect of Vectors A and B.
+    `;
 }
 
 document.querySelectorAll("input").forEach(input => {
     input.addEventListener("input", update);
+});
 
 update();
