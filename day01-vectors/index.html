@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html>
 
 <head>
-
-<meta charset="UTF-8">
 
 <title>Vector Explorer</title>
 
@@ -14,19 +13,87 @@
 
 <body>
 
+
 <h1>Vector Explorer</h1>
 
-<p>
-My first Delta to Derivatives simulation!
+<p class="subtitle">
+Understanding vectors before mechanics begins.
 </p>
 
+
+
+<div class="container">
+
+
+<div class="panel">
+
+
+<h2>Controls</h2>
+
+
+<h3 class="red">Vector A</h3>
+
+<label>
+Ax
+<input id="ax" type="range" min="-200" max="200" value="120">
+</label>
+
+
+<label>
+Ay
+<input id="ay" type="range" min="-200" max="200" value="80">
+</label>
+
+
+
+<h3 class="blue">Vector B</h3>
+
+
+<label>
+Bx
+<input id="bx" type="range" min="-200" max="200" value="60">
+</label>
+
+
+<label>
+By
+<input id="by" type="range" min="-200" max="200" value="-120">
+</label>
+
+
+<div class="legend">
+
+<p class="red">● Vector A</p>
+
+<p class="blue">● Vector B</p>
+
+<p class="green">● Resultant</p>
+
+</div>
+
+
+</div>
+
+
+
+<div>
 
 <canvas id="canvas" width="700" height="700"></canvas>
 
 
+<div class="info" id="info"></div>
+
+
+</div>
+
+
+
+</div>
+
+
 <script src="script.js"></script>
 
-</body>
 
+</body>
 
 </html>
