@@ -14,19 +14,28 @@ const explanation = document.getElementById("explanation");
 let playing = false;
 let animation;
 
+// =======================
 // Physics Functions
+// =======================
 
+// Velocity (curved)
 function velocity(t) {
-    return 0.2 * t;
+    return 0.03 * t * t;
 }
 
-function acceleration() {
-    return 0.2;
+// Acceleration (derivative of velocity)
+function acceleration(t) {
+    return 0.06 * t;
 }
 
+// Position (integral of velocity)
 function position(t) {
-    return 0.1 * t * t;
+    return 0.01 * t * t * t;
 }
+
+// =======================
+// Draw Scene
+// =======================
 
 function drawScene(t) {
 
@@ -35,9 +44,9 @@ function drawScene(t) {
     ctx.fillStyle = "#0f172a";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // =====================
+    // --------------------
     // Track
-    // =====================
+    // --------------------
 
     const trackY = 70;
 
@@ -54,9 +63,9 @@ function drawScene(t) {
     ctx.fillStyle = "#3b82f6";
     ctx.fillRect(carX - 12, trackY - 18, 24, 14);
 
-    // =====================
+    // --------------------
     // Graph
-    // =====================
+    // --------------------
 
     const gx = 70;
     const gy = 450;
@@ -84,7 +93,9 @@ function drawScene(t) {
     ctx.fillText("Velocity (m/s)", 5, 180);
     ctx.fillText("Time (s)", 585, 475);
 
-    // Velocity Graph
+    // --------------------
+    // Velocity Curve
+    // --------------------
 
     ctx.strokeStyle = "#60a5fa";
     ctx.lineWidth = 3;
@@ -96,7 +107,7 @@ function drawScene(t) {
         const tt = i / 10;
 
         const px = gx + (tt / 10) * graphWidth;
-        const py = gy - (velocity(tt) / 2) * graphHeight;
+        const py = gy - velocity(tt) * 25;
 
         if (i === 0)
             ctx.moveTo(px, py);
@@ -110,22 +121,23 @@ function drawScene(t) {
     // Current Point
 
     const pointX = gx + (t / 10) * graphWidth;
-    const pointY = gy - (velocity(t) / 2) * graphHeight;
+    const pointY = gy - velocity(t) * 25;
 
     ctx.beginPath();
     ctx.arc(pointX, pointY, 6, 0, Math.PI * 2);
     ctx.fillStyle = "#22c55e";
     ctx.fill();
 
+    // --------------------
     // Tangent Line
+    // --------------------
 
-    const slope = acceleration();
+    const slope = acceleration(t);
 
     const pixelsPerSecond = graphWidth / 10;
-    const pixelsPerVelocity = graphHeight / 2;
 
     const dx = 80;
-    const dy = slope * (dx / pixelsPerSecond) * pixelsPerVelocity;
+    const dy = slope * (dx / pixelsPerSecond) * 25;
 
     ctx.strokeStyle = "#ef4444";
     ctx.lineWidth = 2;
@@ -136,13 +148,16 @@ function drawScene(t) {
     ctx.stroke();
 
 }
+// =======================
+// Update Information
+// =======================
 
 function update() {
 
     const t = Number(timeSlider.value);
 
     const v = velocity(t);
-    const a = acceleration();
+    const a = acceleration(t);
 
     drawScene(t);
 
@@ -152,37 +167,63 @@ function update() {
         `<strong>${t.toFixed(1)} s</strong>`;
 
     velocityData.innerHTML =
-        `<strong>${v.toFixed(2)} m/s</strong>`;
+        `
+        Function: <strong>v(t) = 0.03t²</strong>
+        <br><br>
+        Current Velocity:
+        <strong>${v.toFixed(2)} m/s</strong>
+        `;
 
     accelerationData.innerHTML =
-        `<strong>${a.toFixed(2)} m/s²</strong>`;
+        `
+        Function: <strong>a(t) = 0.06t</strong>
+        <br><br>
+        Current Acceleration:
+        <strong>${a.toFixed(2)} m/s²</strong>
+        `;
 
     derivativeData.innerHTML =
-        `<strong>dv/dt = ${a.toFixed(2)}</strong>`;
+        `
+        <strong>dv/dt = 0.06t</strong>
+
+        <br><br>
+
+        Current derivative:
+        <strong>${a.toFixed(2)}</strong>
+        `;
 
     explanation.innerHTML = `
-        The blue graph shows the object's velocity.
+        The blue curve represents the object's velocity.
 
         <br><br>
 
-        The red tangent line shows the slope of the graph.
+        The green point marks the current time.
 
         <br><br>
 
-        The slope of a velocity-time graph is called the acceleration.
+        The red tangent line touches the curve at one point.
 
         <br><br>
 
-        Since the graph is a straight line, the slope stays constant.
+        The slope of that tangent is the acceleration.
 
         <br><br>
 
-        <strong>a = dv/dt = 0.2 m/s²</strong>
+        As time increases, the tangent becomes steeper,
+        so the acceleration increases.
     `;
 
 }
 
+// =======================
+// Slider
+// =======================
+
 timeSlider.addEventListener("input", update);
+
+// =======================
+// Play / Pause
+// =======================
 
 playButton.addEventListener("click", () => {
 
@@ -197,8 +238,9 @@ playButton.addEventListener("click", () => {
 
             t += 0.05;
 
-            if (t >= 10)
+            if (t >= 10) {
                 t = 0;
+            }
 
             timeSlider.value = t.toFixed(1);
 
@@ -216,5 +258,9 @@ playButton.addEventListener("click", () => {
     }
 
 });
+
+// =======================
+// Start
+// =======================
 
 update();
