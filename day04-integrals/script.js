@@ -2,7 +2,6 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
 const timeSlider = document.getElementById("time");
-const playButton = document.getElementById("playButton");
 
 const timeValue = document.getElementById("timeValue");
 const timeData = document.getElementById("timeData");
@@ -10,9 +9,6 @@ const velocityData = document.getElementById("velocityData");
 const positionData = document.getElementById("positionData");
 const integralData = document.getElementById("integralData");
 const explanation = document.getElementById("explanation");
-
-let playing = false;
-let animation;
 
 // --------------------
 // Physics Functions
@@ -291,38 +287,5 @@ function update() {
 // --------------------
 
 timeSlider.addEventListener("input", update);
-
-playButton.addEventListener("click", () => {
-
-    if (!playing) {
-
-        playing = true;
-        playButton.textContent = "⏸ Pause";
-
-        animation = setInterval(() => {
-
-            let t = parseFloat(timeSlider.value);
-
-            t += 0.05;
-
-            if (t > 10)
-                t = 0;
-
-            timeSlider.value = t.toFixed(1);
-
-            update();
-
-        }, 30);
-
-    } else {
-
-        playing = false;
-        playButton.textContent = "▶ Play";
-
-        clearInterval(animation);
-
-    }
-
-});
 
 update();
