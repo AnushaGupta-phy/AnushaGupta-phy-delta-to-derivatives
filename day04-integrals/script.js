@@ -14,219 +14,310 @@ const explanation = document.getElementById("explanation");
 let playing = false;
 let animation;
 
-// Physics
+// --------------------
+// Physics Functions
+// --------------------
 
-function velocity(t){
+function velocity(t) {
     return 0.2 * t;
 }
 
-function position(t){
+function position(t) {
     return 0.1 * t * t;
 }
 
-function draw(){
+// --------------------
+// Draw Everything
+// --------------------
+
+function draw() {
 
     const t = Number(timeSlider.value);
 
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Background
 
-    ctx.fillStyle="#0f172a";
-    ctx.fillRect(0,0,700,500);
+    ctx.fillStyle = "#0f172a";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // =====================
+    // =====================================================
     // Car
-    // =====================
+    // =====================================================
 
-    ctx.strokeStyle="white";
-    ctx.lineWidth=2;
+    ctx.strokeStyle = "white";
+    ctx.lineWidth = 2;
 
     ctx.beginPath();
-    ctx.moveTo(50,50);
-    ctx.lineTo(650,50);
+    ctx.moveTo(50, 45);
+    ctx.lineTo(650, 45);
     ctx.stroke();
 
-    const carX=50+(position(t)/10)*600;
+    const carX = 50 + (position(t) / 10) * 600;
 
-    ctx.fillStyle="#3b82f6";
-    ctx.fillRect(carX-12,35,24,15);
+    ctx.fillStyle = "#3b82f6";
+    ctx.fillRect(carX - 12, 30, 24, 15);
 
-    // =====================
+    // =====================================================
     // Velocity Graph
-    // =====================
+    // =====================================================
 
-    const gx=60;
-    const gy=220;
+    const gx = 60;
+    const gy = 230;
 
-    ctx.strokeStyle="white";
+    ctx.fillStyle = "white";
+    ctx.font = "18px Arial";
+    ctx.fillText("Velocity vs Time", 250, 70);
+
+    ctx.font = "14px Arial";
+    ctx.fillText("Velocity (m/s)", 5, 130);
+    ctx.fillText("Time (s)", 610, 225);
+
+    ctx.fillStyle = "#60a5fa";
+    ctx.font = "16px Arial";
+    ctx.fillText("v(t) = 0.2t", 470, 90);
+
+    // Axes
+
+    ctx.strokeStyle = "white";
+    ctx.lineWidth = 2;
 
     ctx.beginPath();
-    ctx.moveTo(gx,gy);
-    ctx.lineTo(gx,80);
+    ctx.moveTo(gx, gy);
+    ctx.lineTo(gx, 80);
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.moveTo(gx,gy);
-    ctx.lineTo(640,gy);
+    ctx.moveTo(gx, gy);
+    ctx.lineTo(640, gy);
     ctx.stroke();
 
-    // Shade Area
-
-    ctx.fillStyle="rgba(34,197,94,0.3)";
+    // Area under curve
 
     ctx.beginPath();
-    ctx.moveTo(gx,gy);
+    ctx.moveTo(gx, gy);
 
-    for(let i=0;i<=t*10;i++){
+    for (let i = 0; i <= t * 10; i++) {
 
-        let tt=i/10;
+        const tt = i / 10;
 
-        let x=gx+(tt/10)*560;
-        let y=gy-velocity(tt)*60;
+        const x = gx + (tt / 10) * 560;
+        const y = gy - velocity(tt) * 60;
 
-        ctx.lineTo(x,y);
+        ctx.lineTo(x, y);
 
     }
 
-    ctx.lineTo(gx+(t/10)*560,gy);
+    ctx.lineTo(gx + (t / 10) * 560, gy);
     ctx.closePath();
+
+    ctx.fillStyle = "rgba(34,197,94,0.35)";
     ctx.fill();
 
-    // Velocity Line
+    // Velocity line
 
-    ctx.strokeStyle="#60a5fa";
-    ctx.lineWidth=3;
+    ctx.strokeStyle = "#60a5fa";
+    ctx.lineWidth = 3;
 
     ctx.beginPath();
 
-    for(let i=0;i<=100;i++){
+    for (let i = 0; i <= 100; i++) {
 
-        let tt=i/10;
+        const tt = i / 10;
 
-        let x=gx+(tt/10)*560;
-        let y=gy-velocity(tt)*60;
+        const x = gx + (tt / 10) * 560;
+        const y = gy - velocity(tt) * 60;
 
-        if(i===0)
-            ctx.moveTo(x,y);
+        if (i === 0)
+            ctx.moveTo(x, y);
         else
-            ctx.lineTo(x,y);
+            ctx.lineTo(x, y);
 
     }
 
     ctx.stroke();
 
-    // =====================
-    // Position Graph
-    // =====================
-
-    const py=470;
-
-    ctx.strokeStyle="white";
-    ctx.lineWidth=2;
-
-    ctx.beginPath();
-    ctx.moveTo(gx,py);
-    ctx.lineTo(gx,300);
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.moveTo(gx,py);
-    ctx.lineTo(640,py);
-    ctx.stroke();
-
-    ctx.strokeStyle="#f59e0b";
-    ctx.lineWidth=3;
-
-    ctx.beginPath();
-
-    for(let i=0;i<=100;i++){
-
-        let tt=i/10;
-
-        let x=gx+(tt/10)*560;
-        let y=py-position(tt)*14;
-
-        if(i===0)
-            ctx.moveTo(x,y);
-        else
-            ctx.lineTo(x,y);
-
-    }
-
-    ctx.stroke();
-
-    // Moving Point
+    // Current point
 
     ctx.beginPath();
     ctx.arc(
-        gx+(t/10)*560,
-        py-position(t)*14,
+        gx + (t / 10) * 560,
+        gy - velocity(t) * 60,
         5,
         0,
-        Math.PI*2
+        Math.PI * 2
     );
 
-    ctx.fillStyle="#ef4444";
+    ctx.fillStyle = "#22c55e";
+    ctx.fill();
+
+    // =====================================================
+    // Position Graph
+    // =====================================================
+
+    const py = 470;
+
+    ctx.fillStyle = "white";
+    ctx.font = "18px Arial";
+    ctx.fillText("Position vs Time", 250, 285);
+
+    ctx.font = "14px Arial";
+    ctx.fillText("Position (m)", 5, 340);
+    ctx.fillText("Time (s)", 610, 475);
+
+    ctx.fillStyle = "#f59e0b";
+    ctx.font = "16px Arial";
+    ctx.fillText("x(t) = 0.1t²", 455, 305);
+
+    // Axes
+
+    ctx.strokeStyle = "white";
+    ctx.lineWidth = 2;
+
+    ctx.beginPath();
+    ctx.moveTo(gx, py);
+    ctx.lineTo(gx, 300);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(gx, py);
+    ctx.lineTo(640, py);
+    ctx.stroke();
+
+    // Position curve
+
+    ctx.strokeStyle = "#f59e0b";
+    ctx.lineWidth = 3;
+
+    ctx.beginPath();
+
+    for (let i = 0; i <= 100; i++) {
+
+        const tt = i / 10;
+
+        const x = gx + (tt / 10) * 560;
+        const y = py - position(tt) * 14;
+
+        if (i === 0)
+            ctx.moveTo(x, y);
+        else
+            ctx.lineTo(x, y);
+
+    }
+
+    ctx.stroke();
+
+    // Moving point
+
+    ctx.beginPath();
+
+    ctx.arc(
+        gx + (t / 10) * 560,
+        py - position(t) * 14,
+        5,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fillStyle = "#ef4444";
     ctx.fill();
 
 }
 
-function update(){
+// --------------------
+// Update
+// --------------------
 
-    const t=Number(timeSlider.value);
+function update() {
+
+    const t = Number(timeSlider.value);
 
     draw();
 
-    timeValue.textContent=t.toFixed(1)+" s";
+    timeValue.textContent = t.toFixed(1) + " s";
 
-    timeData.innerHTML=t.toFixed(1)+" s";
+    timeData.innerHTML =
+        `<strong>${t.toFixed(1)} s</strong>`;
 
-    velocityData.innerHTML=
-    "v(t)=0.2t<br><strong>"+velocity(t).toFixed(2)+" m/s</strong>";
+    velocityData.innerHTML =
+        `
+        Function: <strong>v(t)=0.2t</strong>
+        <br><br>
+        Current Velocity:
+        <strong>${velocity(t).toFixed(2)} m/s</strong>
+        `;
 
-    positionData.innerHTML=
-    "<strong>"+position(t).toFixed(2)+" m</strong>";
+    positionData.innerHTML =
+        `
+        Function: <strong>x(t)=0.1t²</strong>
+        <br><br>
+        Current Position:
+        <strong>${position(t).toFixed(2)} m</strong>
+        `;
 
-    integralData.innerHTML=
-    "∫v(t)dt = <strong>"+position(t).toFixed(2)+" m</strong>";
+    integralData.innerHTML =
+        `
+        <strong>∫v(t)dt = ${position(t).toFixed(2)} m</strong>
+        `;
 
-    explanation.innerHTML=
-    "The blue graph shows velocity.<br><br>"+
-    "The green shaded area under the graph represents displacement.<br><br>"+
-    "The orange graph below shows the object's position.<br><br>"+
-    "<strong>Area under velocity = Change in position.</strong>";
+    explanation.innerHTML =
+        `
+        The top graph shows velocity as a function of time.
 
+        <br><br>
+
+        The green shaded area under the velocity graph represents the object's displacement.
+
+        <br><br>
+
+        The bottom graph shows the resulting position.
+
+        <br><br>
+
+        In calculus,
+
+        <br><br>
+
+        <strong>Displacement = ∫v(t)dt</strong>
+
+        <br><br>
+
+        Notice how the shaded area grows while the point moves along the position curve.
+        `;
 }
 
-timeSlider.addEventListener("input",update);
+// --------------------
+// Controls
+// --------------------
 
-playButton.addEventListener("click",()=>{
+timeSlider.addEventListener("input", update);
 
-    if(!playing){
+playButton.addEventListener("click", () => {
 
-        playing=true;
-        playButton.textContent="⏸ Pause";
+    if (!playing) {
 
-        animation=setInterval(()=>{
+        playing = true;
+        playButton.textContent = "⏸ Pause";
 
-            let t=parseFloat(timeSlider.value);
+        animation = setInterval(() => {
 
-            t+=0.05;
+            let t = parseFloat(timeSlider.value);
 
-            if(t>10)
-                t=0;
+            t += 0.05;
 
-            timeSlider.value=t.toFixed(1);
+            if (t > 10)
+                t = 0;
+
+            timeSlider.value = t.toFixed(1);
 
             update();
 
-        },30);
+        }, 30);
 
-    }else{
+    } else {
 
-        playing=false;
-        playButton.textContent="▶ Play";
+        playing = false;
+        playButton.textContent = "▶ Play";
 
         clearInterval(animation);
 
