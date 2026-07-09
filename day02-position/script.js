@@ -2,16 +2,12 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
 const timeSlider = document.getElementById("time");
-const playButton = document.getElementById("playButton");
 
 const timeValue = document.getElementById("timeValue");
 const timeData = document.getElementById("timeData");
 const functionData = document.getElementById("functionData");
 const positionData = document.getElementById("positionData");
 const explanation = document.getElementById("explanation");
-
-let playing = false;
-let animation;
 
 // Position function
 function position(t) {
@@ -163,39 +159,5 @@ function update() {
 
 // Time slider
 timeSlider.addEventListener("input", update);
-
-// Play / Pause
-playButton.addEventListener("click", () => {
-
-    if (!playing) {
-
-        playing = true;
-        playButton.textContent = "⏸ Pause";
-
-        animation = setInterval(() => {
-
-            let t = Number(timeSlider.value);
-
-            t += 0.05;
-
-            if (t > 10) {
-                t = 0;
-            }
-
-            timeSlider.value = t;
-            update();
-
-        }, 30);
-
-    } else {
-
-        playing = false;
-        playButton.textContent = "▶ Play";
-
-        clearInterval(animation);
-
-    }
-
-});
 
 update();
