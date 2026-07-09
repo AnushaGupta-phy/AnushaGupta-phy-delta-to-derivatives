@@ -1,1 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delta To Derivatives | Day 7 - Projectile Motion</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+
+    <h1>Delta To Derivatives</h1>
+
+    <h2>Day 7 — Projectile Motion</h2>
+
+    <p>
+        Apply vectors, derivatives, and motion to one of the most important
+        topics in AP Physics: projectile motion.
+    </p>
+
+</header>
+
+<section class="journal">
+
+    <h2>Today's Journal</h2>
+
+    <p class="coming-soon">
+        Your Day 7 Substack post will go here.
+    </p>
+
+</section>
+
+<main>
+
+<section class="canvas-section">
+
+    <canvas
+        id="canvas"
+        width="700"
+        height="500">
+    </canvas>
+
+</section>
+
+<section class="controls">
+
+    <h3>Controls</h3>
+
+    <label>
+
+        Initial Speed (m/s)
+
+        <input
+            type="range"
+            id="speed"
+            min="10"
+            max="40"
+            value="20"
+            step="1">
+
+        <span id="speedValue">20 m/s</span>
+
+    </label>
+
+    <label>
+
+        Launch Angle (°)
+
+        <input
+            type="range"
+            id="angle"
+            min="10"
+            max="80"
+            value="45"
+            step="1">
+
+        <span id="angleValue">45°</span>
+
+    </label>
+
+    <button id="playButton">
+        ▶ Launch
+    </button>
+
+</section>
+
+<section class="info">
+
+    <h3>Live Calculations</h3>
+
+    <div class="card">
+
+        <h4>Horizontal Velocity</h4>
+
+        <p id="vxData"></p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Vertical Velocity</h4>
+
+        <p id="vyData"></p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Maximum Height</h4>
+
+        <p id="heightData"></p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Range</h4>
+
+        <p id="rangeData"></p>
+
+    </div>
+
+    <div class="card explanation">
+
+        <h3>What's Happening?</h3>
+
+        <p id="explanation"></p>
+
+    </div>
+
+</section>
+
+</main>
+
+<footer>
+
+<p>
+
+Built for the
+<strong>Delta To Derivatives</strong>
+summer project.
+
+</p>
+
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
