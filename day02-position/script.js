@@ -2,25 +2,23 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
 const timeSlider = document.getElementById("time");
-const speedSlider = document.getElementById("speed");
 const playButton = document.getElementById("playButton");
 
 const timeValue = document.getElementById("timeValue");
-const speedValue = document.getElementById("speedValue");
-
 const timeData = document.getElementById("timeData");
 const functionData = document.getElementById("functionData");
 const positionData = document.getElementById("positionData");
 const explanation = document.getElementById("explanation");
 
 let playing = false;
-let timer;
+let animation;
 
 // Position function
 function position(t) {
     return 0.1 * t * t;
 }
 
+// Draw everything
 function drawScene(t) {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -29,39 +27,37 @@ function drawScene(t) {
     ctx.fillStyle = "#0f172a";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // ===========================
+    // ==========================
     // Track
-    // ===========================
+    // ==========================
 
-    const startX = 60;
-    const endX = 640;
-    const trackY = 90;
+    const trackY = 70;
 
     ctx.strokeStyle = "#9ca3af";
-    ctx.lineWidth = 4;
+    ctx.lineWidth = 3;
 
     ctx.beginPath();
-    ctx.moveTo(startX, trackY);
-    ctx.lineTo(endX, trackY);
+    ctx.moveTo(50, trackY);
+    ctx.lineTo(650, trackY);
     ctx.stroke();
 
-    // Car
+    // Car (rectangle)
 
-    const pos = position(t);
+    const x = position(t);
 
-    const carX = startX + (endX - startX) * (pos / 10);
+    const carX = 50 + (x / 10) * 600;
 
-    ctx.font = "34px Arial";
-    ctx.fillText("🚗", carX - 15, trackY - 18);
+    ctx.fillStyle = "#3b82f6";
+    ctx.fillRect(carX - 12, trackY - 18, 24, 14);
 
-    // ===========================
+    // ==========================
     // Graph
-    // ===========================
+    // ==========================
 
     const gx = 70;
     const gy = 450;
-    const gw = 560;
-    const gh = 280;
+    const width = 560;
+    const height = 260;
 
     // Axes
 
@@ -70,21 +66,24 @@ function drawScene(t) {
 
     ctx.beginPath();
     ctx.moveTo(gx, gy);
-    ctx.lineTo(gx, gy - gh);
+    ctx.lineTo(gx, gy - height);
     ctx.stroke();
 
     ctx.beginPath();
     ctx.moveTo(gx, gy);
-    ctx.lineTo(gx + gw, gy);
+    ctx.lineTo(gx + width, gy);
     ctx.stroke();
+
+    // Labels
 
     ctx.fillStyle = "white";
     ctx.font = "16px Arial";
 
-    ctx.fillText("Position", 5, 180);
-    ctx.fillText("Time", 610, 475);
+    ctx.fillText("Position (m)", 5, 180);
+    ctx.fillText("Time (s)", 590, 475);
+    ctx.fillText("x(t) = 0.1t²", 470, 210);
 
-    // Draw curve
+    // Curve
 
     ctx.strokeStyle = "#60a5fa";
     ctx.lineWidth = 3;
@@ -96,8 +95,8 @@ function drawScene(t) {
         const tt = i / 10;
         const yy = position(tt);
 
-        const px = gx + (tt / 10) * gw;
-        const py = gy - (yy / 10) * gh;
+        const px = gx + (tt / 10) * width;
+        const py = gy - (yy / 10) * height;
 
         if (i === 0) {
             ctx.moveTo(px, py);
@@ -109,63 +108,63 @@ function drawScene(t) {
 
     ctx.stroke();
 
-    // Current point
+    // Moving point
 
-    const pointX = gx + (t / 10) * gw;
-    const pointY = gy - (pos / 10) * gh;
+    const pointX = gx + (t / 10) * width;
+    const pointY = gy - (x / 10) * height;
 
     ctx.beginPath();
     ctx.fillStyle = "#22c55e";
-    ctx.arc(pointX, pointY, 7, 0, Math.PI * 2);
+    ctx.arc(pointX, pointY, 6, 0, Math.PI * 2);
     ctx.fill();
 
 }
 
+// Update screen
 function update() {
 
     const t = Number(timeSlider.value);
-
-    const pos = position(t);
-
-    timeValue.textContent = t.toFixed(1) + " s";
-    speedValue.textContent = speedSlider.value + "×";
+    const x = position(t);
 
     drawScene(t);
 
-    timeData.innerHTML = t.toFixed(1) + " s";
+    timeValue.textContent = t.toFixed(1) + " s";
+
+    timeData.innerHTML =
+        `<strong>${t.toFixed(1)} s</strong>`;
 
     functionData.innerHTML =
-        "<strong>x(t) = 0.1t²</strong>";
+        `<strong>x(t) = 0.1t²</strong>`;
 
     positionData.innerHTML =
-        pos.toFixed(2) + " m";
+        `<strong>${x.toFixed(2)} m</strong>`;
 
     explanation.innerHTML = `
-    The object's position is described by the function
+        Motion can be described using a mathematical function.
 
-    <br><br>
+        <br><br>
 
-    <strong>x(t)=0.1t²</strong>
+        Here the object's position is
 
-    <br><br>
+        <br><br>
 
-    As time increases, the object's position changes according to this equation.
+        <strong>x(t)=0.1t²</strong>
 
-    <br><br>
+        <br><br>
 
-    The blue curve is the graph of the position function.
+        As time increases, the object's position follows the blue curve.
 
-    <br><br>
+        <br><br>
 
-    The green dot shows the object's current position on the graph.
-
-    <br><br>
-
-    Tomorrow we'll use calculus to find the slope of this graph and discover velocity.
+        Tomorrow we'll find the slope of this curve and discover velocity.
     `;
 
 }
 
+// Time slider
+timeSlider.addEventListener("input", update);
+
+// Play / Pause
 playButton.addEventListener("click", () => {
 
     if (!playing) {
@@ -173,11 +172,11 @@ playButton.addEventListener("click", () => {
         playing = true;
         playButton.textContent = "⏸ Pause";
 
-        timer = setInterval(() => {
+        animation = setInterval(() => {
 
             let t = Number(timeSlider.value);
 
-            t += 0.05 * Number(speedSlider.value);
+            t += 0.05;
 
             if (t > 10) {
                 t = 0;
@@ -193,13 +192,10 @@ playButton.addEventListener("click", () => {
         playing = false;
         playButton.textContent = "▶ Play";
 
-        clearInterval(timer);
+        clearInterval(animation);
 
     }
 
 });
-
-timeSlider.addEventListener("input", update);
-speedSlider.addEventListener("input", update);
 
 update();
