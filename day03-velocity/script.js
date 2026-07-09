@@ -2,19 +2,17 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
 const timeSlider = document.getElementById("time");
-const speedSlider = document.getElementById("speed");
 const playButton = document.getElementById("playButton");
 
 const timeValue = document.getElementById("timeValue");
-const speedValue = document.getElementById("speedValue");
-
 const timeData = document.getElementById("timeData");
 const positionData = document.getElementById("positionData");
 const velocityData = document.getElementById("velocityData");
+const derivativeData = document.getElementById("derivativeData");
 const explanation = document.getElementById("explanation");
 
 let playing = false;
-let timer;
+let animation;
 
 // Position function
 function position(t) {
@@ -28,145 +26,143 @@ function velocity(t) {
 
 function drawScene(t) {
 
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Background
-    ctx.fillStyle="#0f172a";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = "#0f172a";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    //----------------------------------
+    // ==========================
     // Track
-    //----------------------------------
+    // ==========================
 
-    const startX=60;
-    const endX=640;
-    const trackY=110;
+    const trackY = 70;
 
-    ctx.strokeStyle="#9ca3af";
-    ctx.lineWidth=4;
+    ctx.strokeStyle = "#9ca3af";
+    ctx.lineWidth = 3;
 
     ctx.beginPath();
-    ctx.moveTo(startX,trackY);
-    ctx.lineTo(endX,trackY);
+    ctx.moveTo(50, trackY);
+    ctx.lineTo(650, trackY);
     ctx.stroke();
 
-    // Tick marks
+    const x = position(t);
+    const carX = 50 + (x / 10) * 600;
 
-    ctx.fillStyle="white";
-    ctx.font="14px Arial";
+    ctx.fillStyle = "#3b82f6";
+    ctx.fillRect(carX - 12, trackY - 18, 24, 14);
 
-    for(let i=0;i<=10;i++){
-
-        const x=startX+(endX-startX)*(i/10);
-
-        ctx.beginPath();
-        ctx.moveTo(x,trackY-8);
-        ctx.lineTo(x,trackY+8);
-        ctx.stroke();
-
-        ctx.fillText(i,x-3,trackY+28);
-
-    }
-
-    //----------------------------------
-    // Car
-    //----------------------------------
-
-    const pos=position(t);
-
-    const carX=startX+(endX-startX)*(pos/10);
-
-    ctx.font="34px Arial";
-    ctx.fillText("🚗",carX-15,trackY-18);
-
-    //----------------------------------
+    // ==========================
     // Graph
-    //----------------------------------
+    // ==========================
 
-    const graphX=70;
-    const graphY=430;
-    const graphW=560;
-    const graphH=220;
+    const gx = 70;
+    const gy = 450;
+    const graphWidth = 560;
+    const graphHeight = 260;
 
     // Axes
 
-    ctx.strokeStyle="white";
-    ctx.lineWidth=2;
+    ctx.strokeStyle = "white";
+    ctx.lineWidth = 2;
 
     ctx.beginPath();
-    ctx.moveTo(graphX,graphY);
-    ctx.lineTo(graphX,graphY-graphH);
+    ctx.moveTo(gx, gy);
+    ctx.lineTo(gx, gy - graphHeight);
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.moveTo(graphX,graphY);
-    ctx.lineTo(graphX+graphW,graphY);
+    ctx.moveTo(gx, gy);
+    ctx.lineTo(gx + graphWidth, gy);
     ctx.stroke();
 
-    ctx.fillStyle="white";
-    ctx.fillText("Position",10,220);
-    ctx.fillText("Time",620,450);
+    ctx.fillStyle = "white";
+    ctx.font = "16px Arial";
 
-    // Curve
+    ctx.fillText("Position (m)", 5, 180);
+    ctx.fillText("Time (s)", 585, 475);
 
-    ctx.strokeStyle="#60a5fa";
-    ctx.lineWidth=3;
+    // Position Curve
+
+    ctx.strokeStyle = "#60a5fa";
+    ctx.lineWidth = 3;
 
     ctx.beginPath();
 
-    for(let x=0;x<=100;x++){
+    for (let i = 0; i <= 100; i++) {
 
-        const tt=x/10;
-        const yy=position(tt);
+        let tt = i / 10;
+        let yy = position(tt);
 
-        const px=graphX+tt/10*graphW;
-        const py=graphY-yy/10*graphH;
+        let px = gx + (tt / 10) * graphWidth;
+        let py = gy - (yy / 10) * graphHeight;
 
-        if(x===0){
-            ctx.moveTo(px,py);
-        }else{
-            ctx.lineTo(px,py);
+        if (i === 0) {
+            ctx.moveTo(px, py);
+        } else {
+            ctx.lineTo(px, py);
         }
 
     }
 
     ctx.stroke();
 
-    // Current point
+    // Current Point
 
-    const px=graphX+t/10*graphW;
-    const py=graphY-position(t)/10*graphH;
+    const pointX = gx + (t / 10) * graphWidth;
+    const pointY = gy - (x / 10) * graphHeight;
 
     ctx.beginPath();
-    ctx.fillStyle="#22c55e";
-    ctx.arc(px,py,6,0,Math.PI*2);
+    ctx.fillStyle = "#22c55e";
+    ctx.arc(pointX, pointY, 6, 0, Math.PI * 2);
     ctx.fill();
+
+    // ==========================
+    // Tangent Line
+    // ==========================
+
+    const slope = velocity(t);
+
+    const pixelsPerSecond = graphWidth / 10;
+    const pixelsPerMeter = graphHeight / 10;
+
+    const dx = 80;
+    const dy = slope * (dx / pixelsPerSecond) * pixelsPerMeter;
+
+    ctx.strokeStyle = "#ef4444";
+    ctx.lineWidth = 2;
+
+    ctx.beginPath();
+    ctx.moveTo(pointX - dx, pointY + dy);
+    ctx.lineTo(pointX + dx, pointY - dy);
+    ctx.stroke();
 
 }
 
-function update(){
+function update() {
 
-    const t=Number(timeSlider.value);
+    const t = Number(timeSlider.value);
 
-    timeValue.textContent=t.toFixed(1)+" s";
-    speedValue.textContent=speedSlider.value+"×";
+    const x = position(t);
+    const v = velocity(t);
 
     drawScene(t);
 
-    const pos=position(t);
-    const vel=velocity(t);
+    timeValue.textContent = t.toFixed(1) + " s";
 
-    timeData.innerHTML=t.toFixed(1)+" s";
+    timeData.innerHTML =
+        `<strong>${t.toFixed(1)} s</strong>`;
 
-    positionData.innerHTML=
-    pos.toFixed(2)+" m";
+    positionData.innerHTML =
+        `<strong>${x.toFixed(2)} m</strong>`;
 
-    velocityData.innerHTML=
-    vel.toFixed(2)+" m/s";
+    velocityData.innerHTML =
+        `<strong>${v.toFixed(2)} m/s</strong>`;
 
-    explanation.innerHTML=
-    `
-    The object's position follows the function
+    derivativeData.innerHTML =
+        `<strong>dx/dt = ${v.toFixed(2)}</strong>`;
+
+    explanation.innerHTML = `
+    The blue curve represents the position function:
 
     <br><br>
 
@@ -174,54 +170,61 @@ function update(){
 
     <br><br>
 
-    As time increases, the graph becomes steeper.
+    The green point shows the object's current position.
 
     <br><br>
 
-    The slope of the position graph is the velocity.
+    The red line is the tangent line.
 
     <br><br>
 
-    At <strong>${t.toFixed(1)} s</strong>,
-    the velocity is
-    <strong>${vel.toFixed(2)} m/s</strong>.
+    Its slope is the derivative of the position function.
+
+    <br><br>
+
+    In physics, this derivative is called the <strong>velocity</strong>.
+
+    <br><br>
+
+    <strong>v = dx/dt = 0.2t</strong>
     `;
 
 }
 
-playButton.addEventListener("click",()=>{
+timeSlider.addEventListener("input", update);
 
-    if(!playing){
+playButton.addEventListener("click", () => {
 
-        playing=true;
-        playButton.textContent="⏸ Pause";
+    if (!playing) {
 
-        timer=setInterval(()=>{
+        playing = true;
+        playButton.textContent = "⏸ Pause";
 
-            let t=Number(timeSlider.value);
+        animation = setInterval(() => {
 
-            t+=0.05*Number(speedSlider.value);
+            let t = parseFloat(timeSlider.value);
 
-            if(t>10)t=0;
+            t += 0.05;
 
-            timeSlider.value=t;
+            if (t >= 10) {
+                t = 0;
+            }
+
+            timeSlider.value = t.toFixed(1);
 
             update();
 
-        },30);
+        }, 30);
 
-    }else{
+    } else {
 
-        playing=false;
-        playButton.textContent="▶ Play";
+        playing = false;
+        playButton.textContent = "▶ Play";
 
-        clearInterval(timer);
+        clearInterval(animation);
 
     }
 
 });
-
-timeSlider.addEventListener("input",update);
-speedSlider.addEventListener("input",update);
 
 update();
