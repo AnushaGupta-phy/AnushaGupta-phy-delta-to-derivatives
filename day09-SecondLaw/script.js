@@ -8,45 +8,41 @@ const playButton = document.getElementById("playButton");
 const forceValue = document.getElementById("forceValue");
 const massValue = document.getElementById("massValue");
 
+const forceData = document.getElementById("forceData");
 const accelerationData = document.getElementById("acceleration");
 const velocityData = document.getElementById("velocity");
 const positionData = document.getElementById("position");
-const netForceData = document.getElementById("netForce");
+const calculusView = document.getElementById("calculusView");
 const explanation = document.getElementById("explanation");
 
 let playing = false;
 let animation;
 
-let t = 0;
 let x = 0;
 let v = 0;
+let t = 0;
 
-//---------------------------------------------
-
-function acceleration() {
-    return Number(forceSlider.value) / Number(massSlider.value);
-}
-
-//---------------------------------------------
+//--------------------------------------------------------
 
 function resetSimulation() {
 
-    t = 0;
     x = 0;
     v = 0;
+    t = 0;
 
 }
 
-//---------------------------------------------
+//--------------------------------------------------------
 
 function drawScene() {
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, 700, 500);
 
     ctx.fillStyle = "#0f172a";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, 700, 500);
 
     // Ground
+
     ctx.strokeStyle = "white";
     ctx.lineWidth = 2;
 
@@ -55,38 +51,47 @@ function drawScene() {
     ctx.lineTo(660, 360);
     ctx.stroke();
 
+    // Title
+
+    ctx.fillStyle = "white";
+    ctx.font = "18px Arial";
+    ctx.fillText("Newton's Second Law", 230, 40);
+
     // Block
-    const blockX = 60 + x * 5;
+
+    const drawX = 60 + x * 4;
 
     ctx.fillStyle = "#3b82f6";
-    ctx.fillRect(blockX, 320, 50, 40);
+    ctx.fillRect(drawX, 320, 50, 40);
 
     // Force Arrow
+
     const F = Number(forceSlider.value);
-
-    ctx.strokeStyle = "#ef4444";
-    ctx.lineWidth = 4;
-
-    ctx.beginPath();
-    ctx.moveTo(blockX + 25, 300);
-    ctx.lineTo(blockX + 25 + F * 8, 300);
-    ctx.stroke();
 
     if (F !== 0) {
 
+        ctx.strokeStyle = "#ef4444";
+        ctx.lineWidth = 4;
+
         ctx.beginPath();
+
+        ctx.moveTo(drawX + 25, 300);
+        ctx.lineTo(drawX + 25 + F * 5, 300);
+
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(drawX + 25 + F * 5, 300);
 
         if (F > 0) {
 
-            ctx.moveTo(blockX + 25 + F * 8, 300);
-            ctx.lineTo(blockX + 18 + F * 8, 295);
-            ctx.lineTo(blockX + 18 + F * 8, 305);
+            ctx.lineTo(drawX + 18 + F * 5, 295);
+            ctx.lineTo(drawX + 18 + F * 5, 305);
 
         } else {
 
-            ctx.moveTo(blockX + 25 + F * 8, 300);
-            ctx.lineTo(blockX + 32 + F * 8, 295);
-            ctx.lineTo(blockX + 32 + F * 8, 305);
+            ctx.lineTo(drawX + 32 + F * 5, 295);
+            ctx.lineTo(drawX + 32 + F * 5, 305);
 
         }
 
@@ -96,62 +101,25 @@ function drawScene() {
 
     }
 
-    // Velocity Arrow
-
-    ctx.strokeStyle = "#22c55e";
-
-    ctx.beginPath();
-    ctx.moveTo(blockX + 25, 280);
-    ctx.lineTo(blockX + 25 + v * 5, 280);
-    ctx.stroke();
-
-    if (Math.abs(v) > 0.1) {
-
-        ctx.beginPath();
-
-        if (v > 0) {
-
-            ctx.moveTo(blockX + 25 + v * 5, 280);
-            ctx.lineTo(blockX + 18 + v * 5, 275);
-            ctx.lineTo(blockX + 18 + v * 5, 285);
-
-        } else {
-
-            ctx.moveTo(blockX + 25 + v * 5, 280);
-            ctx.lineTo(blockX + 32 + v * 5, 275);
-            ctx.lineTo(blockX + 32 + v * 5, 285);
-
-        }
-
-        ctx.closePath();
-        ctx.fillStyle = "#22c55e";
-        ctx.fill();
-
-    }
-
-    // Labels
-
-    ctx.fillStyle = "white";
-    ctx.font = "18px Arial";
-
-    ctx.fillText("Force", 50, 250);
-    ctx.fillText("Velocity", 50, 430);
-
 }
 
-//---------------------------------------------
+//--------------------------------------------------------
 
-function update() {
+function updateInfo() {
 
     const F = Number(forceSlider.value);
     const m = Number(massSlider.value);
-    const a = acceleration();
 
-    forceValue.textContent = F.toFixed(0) + " N";
-    massValue.textContent = m.toFixed(1) + " kg";
+    const a = F / m;
+
+    forceValue.textContent = `${F.toFixed(0)} N`;
+    massValue.textContent = `${m.toFixed(1)} kg`;
+
+    forceData.innerHTML =
+        `<strong>${F.toFixed(2)} N</strong>`;
 
     accelerationData.innerHTML =
-        `<strong>${a.toFixed(2)} m/s²</strong>`;
+        `<strong>${a.toFixed(2)} m/s²</strong><br><em>dv/dt</em>`;
 
     velocityData.innerHTML =
         `<strong>${v.toFixed(2)} m/s</strong>`;
@@ -159,11 +127,44 @@ function update() {
     positionData.innerHTML =
         `<strong>${x.toFixed(2)} m</strong>`;
 
-    netForceData.innerHTML =
-        `<strong>${F.toFixed(2)} N</strong>`;
+    calculusView.innerHTML = `
+        <strong>F = ${F.toFixed(2)} N</strong>
+
+        <br><br>
+
+        ↓
+
+        <br><br>
+
+        <strong>a = ${a.toFixed(2)} m/s²</strong>
+
+        <br>
+
+        <em>dv/dt</em>
+
+        <br><br>
+
+        ↓
+
+        <br><br>
+
+        <strong>v = ${v.toFixed(2)} m/s</strong>
+
+        <br>
+
+        <em>dx/dt</em>
+
+        <br><br>
+
+        ↓
+
+        <br><br>
+
+        <strong>x = ${x.toFixed(2)} m</strong>
+    `;
 
     explanation.innerHTML = `
-        Newton's Second Law states that
+        Newton's Second Law tells us that a net force produces an acceleration.
 
         <br><br>
 
@@ -171,25 +172,37 @@ function update() {
 
         <br><br>
 
-        Increasing the force increases the acceleration.
-
-        Increasing the mass decreases the acceleration.
+        Using calculus, acceleration is the derivative of velocity,
 
         <br><br>
 
-        As the object accelerates, its velocity and position change over time.
+        <strong>a = dv/dt</strong>
+
+        <br><br>
+
+        so Newton's Second Law can be written as
+
+        <br><br>
+
+        <strong>F = m(dv/dt)</strong>
+
+        <br><br>
+
+        Notice that the applied force does not directly change the object's
+        position—it first changes the acceleration, which changes the velocity,
+        which then changes the position.
     `;
 
     drawScene();
 
 }
 
-//---------------------------------------------
+//--------------------------------------------------------
 
-forceSlider.addEventListener("input", update);
-massSlider.addEventListener("input", update);
+forceSlider.addEventListener("input", updateInfo);
+massSlider.addEventListener("input", updateInfo);
 
-//---------------------------------------------
+//--------------------------------------------------------
 
 playButton.addEventListener("click", () => {
 
@@ -202,21 +215,32 @@ playButton.addEventListener("click", () => {
 
         animation = setInterval(() => {
 
-            const a = acceleration();
+            const F = Number(forceSlider.value);
+            const m = Number(massSlider.value);
+
+            const a = F / m;
 
             v += a * 0.05;
             x += v * 0.05;
 
-            if (x > 120) x = 120;
-            if (x < 0) x = 0;
-
             t += 0.05;
 
-            update();
+            updateInfo();
+
+            if (x > 150 || x < -5) {
+
+                clearInterval(animation);
+
+                playing = false;
+                playButton.textContent = "▶ Play";
+
+            }
 
         }, 30);
 
-    } else {
+    }
+
+    else {
 
         playing = false;
         playButton.textContent = "▶ Play";
@@ -228,4 +252,4 @@ playButton.addEventListener("click", () => {
 });
 
 resetSimulation();
-update();
+updateInfo();
