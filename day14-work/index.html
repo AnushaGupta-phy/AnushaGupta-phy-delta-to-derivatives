@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Delta To Derivatives | Day 14 - Work</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>Delta To Derivatives</h1>
+
+    <h2>Day 14 — Work</h2>
+
+    <p>
+        Explore how a force transfers energy to an object as it moves.
+        Adjust the applied force and the distance traveled to investigate
+        the relationship between work, force, displacement, and energy.
+    </p>
+
+</header>
+
+<section class="journal">
+
+    <h2>Today's Journal</h2>
+
+    <p class="coming-soon">
+        Your Day 14 Substack post will go here.
+    </p>
+
+</section>
+
+<main>
+
+<section class="canvas-section">
+
+    <canvas
+        id="canvas"
+        width="700"
+        height="500">
+    </canvas>
+
+</section>
+
+<section class="controls">
+
+    <h3>Controls</h3>
+
+    <label>
+
+        Applied Force (N)
+
+        <input
+            type="range"
+            id="force"
+            min="0"
+            max="30"
+            value="10"
+            step="1">
+
+        <span id="forceValue">10 N</span>
+
+    </label>
+
+    <label>
+
+        Mass (kg)
+
+        <input
+            type="range"
+            id="mass"
+            min="1"
+            max="10"
+            value="2"
+            step="0.5">
+
+        <span id="massValue">2.0 kg</span>
+
+    </label>
+
+    <button id="playButton">
+
+        ▶ Play
+
+    </button>
+
+</section>
+
+<section class="info">
+
+    <h3>Live Calculations</h3>
+
+    <div class="card">
+
+        <h4>Displacement</h4>
+
+        <p id="distance"></p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Velocity</h4>
+
+        <p id="velocity"></p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Acceleration</h4>
+
+        <p id="acceleration"></p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Work Done</h4>
+
+        <p id="work"></p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Kinetic Energy</h4>
+
+        <p id="energy"></p>
+
+    </div>
+
+    <div class="card explanation">
+
+        <h3>What's Happening?</h3>
+
+        <p id="explanation"></p>
+
+    </div>
+
+</section>
+
+</main>
+
+<footer>
+
+<p>
+
+Built for the
+<strong>Delta To Derivatives</strong>
+summer project.
+
+</p>
+
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
