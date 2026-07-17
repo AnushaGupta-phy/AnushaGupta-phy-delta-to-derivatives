@@ -1,1 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Delta To Derivatives | Day 10 - Newton's Third Law</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>Delta To Derivatives</h1>
+
+    <h2>Day 10 — Newton's Third Law</h2>
+
+    <p>
+        Explore action and reaction forces by watching two skaters push off
+        from one another. Adjust the masses of each skater and see how both
+        accelerate in opposite directions while experiencing equal and opposite
+        forces.
+    </p>
+
+</header>
+
+<section class="journal">
+
+    <h2>Today's Journal</h2>
+
+    <p class="coming-soon">
+        Your Day 10 Substack post will go here.
+    </p>
+
+</section>
+
+<main>
+
+<section class="canvas-section">
+
+    <canvas
+        id="canvas"
+        width="700"
+        height="500">
+    </canvas>
+
+</section>
+
+<section class="controls">
+
+    <h3>Controls</h3>
+
+    <label>
+
+        Skater A Mass (kg)
+
+        <input
+            type="range"
+            id="massA"
+            min="1"
+            max="10"
+            value="3"
+            step="0.5">
+
+        <span id="massAValue">3.0 kg</span>
+
+    </label>
+
+    <label>
+
+        Skater B Mass (kg)
+
+        <input
+            type="range"
+            id="massB"
+            min="1"
+            max="10"
+            value="6"
+            step="0.5">
+
+        <span id="massBValue">6.0 kg</span>
+
+    </label>
+
+    <label>
+
+        Push Force (N)
+
+        <input
+            type="range"
+            id="force"
+            min="5"
+            max="30"
+            value="15"
+            step="1">
+
+        <span id="forceValue">15 N</span>
+
+    </label>
+
+    <button id="playButton">
+
+        ▶ Push Off
+
+    </button>
+
+</section>
+
+<section class="info">
+
+    <h3>Live Calculations</h3>
+
+    <div class="card">
+
+        <h4>Skater A Acceleration</h4>
+
+        <p id="accelerationA"></p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Skater B Acceleration</h4>
+
+        <p id="accelerationB"></p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Skater A Velocity</h4>
+
+        <p id="velocityA"></p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Skater B Velocity</h4>
+
+        <p id="velocityB"></p>
+
+    </div>
+
+    <div class="card explanation">
+
+        <h3>What's Happening?</h3>
+
+        <p id="explanation"></p>
+
+    </div>
+
+</section>
+
+</main>
+
+<footer>
+
+<p>
+
+Built for the
+<strong>Delta To Derivatives</strong>
+summer project.
+
+</p>
+
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
