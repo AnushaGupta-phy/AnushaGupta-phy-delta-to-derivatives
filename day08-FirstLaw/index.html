@@ -2,11 +2,14 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Delta To Derivatives | Day 8 - Newton's First Law</title>
 
     <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
@@ -18,9 +21,10 @@
     <h2>Day 8 — Newton's First Law</h2>
 
     <p>
-        Explore inertia by changing an object's initial velocity and the amount
-        of friction acting on it. Observe how zero net force leads to constant
-        velocity and how friction changes the object's motion.
+        Newton's First Law states that an object maintains a constant velocity
+        unless acted upon by a net external force. Explore how friction changes
+        the net force, and connect Newton's First Law to calculus by seeing how
+        zero force leads to zero acceleration and a constant velocity.
     </p>
 
 </header>
@@ -69,7 +73,7 @@
 
     <label>
 
-        Friction
+        Friction Coefficient
 
         <input
             type="range"
@@ -84,7 +88,9 @@
     </label>
 
     <button id="playButton">
+
         ▶ Play
+
     </button>
 
 </section>
@@ -103,14 +109,6 @@
 
     <div class="card">
 
-        <h4>Acceleration</h4>
-
-        <p id="acceleration"></p>
-
-    </div>
-
-    <div class="card">
-
         <h4>Net Force</h4>
 
         <p id="netForce"></p>
@@ -119,9 +117,25 @@
 
     <div class="card">
 
-        <h4>Distance Traveled</h4>
+        <h4>Acceleration (dv/dt)</h4>
+
+        <p id="acceleration"></p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Position</h4>
 
         <p id="distance"></p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Calculus View</h4>
+
+        <p id="calculusView"></p>
 
     </div>
 
