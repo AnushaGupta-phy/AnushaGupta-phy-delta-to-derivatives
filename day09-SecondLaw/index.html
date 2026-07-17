@@ -21,9 +21,11 @@
     <h2>Day 9 — Newton's Second Law</h2>
 
     <p>
-        Explore how force changes an object's acceleration. Adjust the applied
-        force and the object's mass to see how acceleration affects velocity,
-        position, and motion in real time.
+        Newton's Second Law explains how forces change an object's motion.
+        Adjust the applied force and mass to see how acceleration changes.
+        More importantly, connect Newton's Second Law to calculus by seeing
+        that force determines the <em>rate of change of velocity</em>, not
+        the velocity itself.
     </p>
 
 </header>
@@ -100,7 +102,15 @@
 
     <div class="card">
 
-        <h4>Acceleration</h4>
+        <h4>Applied Force</h4>
+
+        <p id="forceData"></p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Acceleration (dv/dt)</h4>
 
         <p id="acceleration"></p>
 
@@ -108,7 +118,7 @@
 
     <div class="card">
 
-        <h4>Velocity</h4>
+        <h4>Current Velocity</h4>
 
         <p id="velocity"></p>
 
@@ -124,9 +134,9 @@
 
     <div class="card">
 
-        <h4>Net Force</h4>
+        <h4>Calculus View</h4>
 
-        <p id="netForce"></p>
+        <p id="calculusView"></p>
 
     </div>
 
