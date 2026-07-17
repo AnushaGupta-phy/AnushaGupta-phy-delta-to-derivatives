@@ -18,14 +18,14 @@
 
     <h1>Delta To Derivatives</h1>
 
-    <h2>Day 14 — Work and the Area Under a Curve</h2>
+    <h2>Day 14 — Work: Why We Need Integration</h2>
 
     <p>
-        When the applied force changes with position, we can no longer compute
-        work using <strong>W = Fd</strong>. Instead, we add together many tiny
-        pieces of work. Explore how the area under a force-position graph grows
-        as an object moves and discover why this idea naturally leads to
-        integration.
+        When a force changes as an object moves, the familiar equation
+        <strong>W = Fd</strong> no longer works. In this simulation, the force
+        increases with distance, producing a curved graph. Explore how the
+        shaded area beneath the curve represents the total work done and see
+        why calculus introduces the integral.
     </p>
 
 </header>
@@ -72,6 +72,12 @@
 
     </label>
 
+    <button id="playButton">
+
+        ▶ Play
+
+    </button>
+
 </section>
 
 <section class="info">
@@ -96,17 +102,17 @@
 
     <div class="card">
 
-        <h4>Average Force</h4>
+        <h4>Estimated Work</h4>
 
-        <p id="averageForce"></p>
+        <p id="workData"></p>
 
     </div>
 
     <div class="card">
 
-        <h4>Estimated Work</h4>
+        <h4>Average Force</h4>
 
-        <p id="workData"></p>
+        <p id="averageForce"></p>
 
     </div>
 
