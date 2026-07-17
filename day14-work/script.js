@@ -187,7 +187,7 @@ function update(){
 
         <br><br>
 
-        <strong>F(x)=2+0.5x</strong>
+        <strong>F(x)=2+0.5x*x</strong>
 
         <br><br>
 
