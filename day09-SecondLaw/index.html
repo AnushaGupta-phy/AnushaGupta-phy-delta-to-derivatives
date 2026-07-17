@@ -1,1 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Delta To Derivatives | Day 9 - Newton's Second Law</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>Delta To Derivatives</h1>
+
+    <h2>Day 9 — Newton's Second Law</h2>
+
+    <p>
+        Explore how force changes an object's acceleration. Adjust the applied
+        force and the object's mass to see how acceleration affects velocity,
+        position, and motion in real time.
+    </p>
+
+</header>
+
+<section class="journal">
+
+    <h2>Today's Journal</h2>
+
+    <p class="coming-soon">
+        Your Day 9 Substack post will go here.
+    </p>
+
+</section>
+
+<main>
+
+<section class="canvas-section">
+
+    <canvas
+        id="canvas"
+        width="700"
+        height="500">
+    </canvas>
+
+</section>
+
+<section class="controls">
+
+    <h3>Controls</h3>
+
+    <label>
+
+        Applied Force (N)
+
+        <input
+            type="range"
+            id="force"
+            min="-20"
+            max="20"
+            value="10"
+            step="1">
+
+        <span id="forceValue">10 N</span>
+
+    </label>
+
+    <label>
+
+        Mass (kg)
+
+        <input
+            type="range"
+            id="mass"
+            min="1"
+            max="10"
+            value="2"
+            step="0.5">
+
+        <span id="massValue">2.0 kg</span>
+
+    </label>
+
+    <button id="playButton">
+
+        ▶ Play
+
+    </button>
+
+</section>
+
+<section class="info">
+
+    <h3>Live Calculations</h3>
+
+    <div class="card">
+
+        <h4>Acceleration</h4>
+
+        <p id="acceleration"></p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Velocity</h4>
+
+        <p id="velocity"></p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Position</h4>
+
+        <p id="position"></p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Net Force</h4>
+
+        <p id="netForce"></p>
+
+    </div>
+
+    <div class="card explanation">
+
+        <h3>What's Happening?</h3>
+
+        <p id="explanation"></p>
+
+    </div>
+
+</section>
+
+</main>
+
+<footer>
+
+<p>
+
+Built for the
+<strong>Delta To Derivatives</strong>
+summer project.
+
+</p>
+
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
