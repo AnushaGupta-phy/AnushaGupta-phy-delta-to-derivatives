@@ -1,43 +1,48 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-const forceSlider = document.getElementById("force");
-const muSlider = document.getElementById("mu");
-const massSlider = document.getElementById("mass");
+const velocitySlider = document.getElementById("velocity");
+const frictionSlider = document.getElementById("friction");
 const playButton = document.getElementById("playButton");
 
-const forceValue = document.getElementById("forceValue");
-const muValue = document.getElementById("muValue");
-const massValue = document.getElementById("massValue");
+const velocityValue = document.getElementById("velocityValue");
+const frictionValue = document.getElementById("frictionValue");
 
+const currentVelocity = document.getElementById("currentVelocity");
 const frictionForceData = document.getElementById("frictionForce");
-const netForceData = document.getElementById("netForce");
 const accelerationData = document.getElementById("acceleration");
-const velocityData = document.getElementById("velocity");
-const positionData = document.getElementById("position");
+const distanceData = document.getElementById("distance");
+const calculusView = document.getElementById("calculusView");
 const explanation = document.getElementById("explanation");
+
+const g = 9.8;
+const mass = 1;
 
 let playing = false;
 let animation;
 
 let x = 0;
-let v = 0;
+let v = 12;
+let t = 0;
 
-//--------------------------------------------
+//----------------------------------------------------
 
-function resetSimulation() {
+function resetSimulation(){
+
     x = 0;
-    v = 0;
+    t = 0;
+    v = Number(velocitySlider.value);
+
 }
 
-//--------------------------------------------
+//----------------------------------------------------
 
-function drawScene() {
+function drawScene(){
 
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.clearRect(0,0,700,500);
 
     ctx.fillStyle="#0f172a";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillRect(0,0,700,500);
 
     // Ground
 
@@ -49,145 +54,200 @@ function drawScene() {
     ctx.lineTo(660,360);
     ctx.stroke();
 
+    // Title
+
+    ctx.fillStyle="white";
+    ctx.font="18px Arial";
+    ctx.fillText("Friction",305,40);
+
     // Block
 
-    const blockX = 60 + x * 5;
+    const drawX = 60 + x * 8;
 
     ctx.fillStyle="#3b82f6";
-    ctx.fillRect(blockX,320,50,40);
+    ctx.fillRect(drawX,320,50,40);
 
-    // Applied Force
-
-    const F = Number(forceSlider.value);
+    // Velocity Arrow
 
     ctx.strokeStyle="#22c55e";
     ctx.lineWidth=4;
 
     ctx.beginPath();
-    ctx.moveTo(blockX+25,290);
-    ctx.lineTo(blockX+25+F*5,290);
+    ctx.moveTo(drawX+25,300);
+    ctx.lineTo(drawX+25+v*5,300);
     ctx.stroke();
 
+    ctx.beginPath();
+    ctx.moveTo(drawX+25+v*5,300);
+    ctx.lineTo(drawX+18+v*5,295);
+    ctx.lineTo(drawX+18+v*5,305);
+    ctx.closePath();
+
     ctx.fillStyle="#22c55e";
-    ctx.fillText("Applied",20,290);
+    ctx.fill();
 
-    // Friction
-
-    const friction = Number(muSlider.value) * Number(massSlider.value) * 9.8;
+    // Friction Arrow
 
     ctx.strokeStyle="#ef4444";
 
     ctx.beginPath();
-    ctx.moveTo(blockX+25,315);
-    ctx.lineTo(blockX+25-friction*2,315);
+    ctx.moveTo(drawX+25,385);
+    ctx.lineTo(drawX-25,385);
     ctx.stroke();
 
-    ctx.fillStyle="#ef4444";
-    ctx.fillText("Friction",20,315);
+    ctx.beginPath();
+    ctx.moveTo(drawX-25,385);
+    ctx.lineTo(drawX-18,380);
+    ctx.lineTo(drawX-18,390);
+    ctx.closePath();
 
-    ctx.fillStyle="white";
-    ctx.font="18px Arial";
-    ctx.fillText("Sliding Box",280,40);
+    ctx.fillStyle="#ef4444";
+    ctx.fill();
 
 }
 
-//--------------------------------------------
+//----------------------------------------------------
 
-function update() {
+function updateInfo(){
 
-    const F = Number(forceSlider.value);
-    const mu = Number(muSlider.value);
-    const m = Number(massSlider.value);
+    const mu = Number(frictionSlider.value);
 
-    const friction = mu * m * 9.8;
-    const netForce = F - friction;
-    const a = netForce / m;
+    const frictionForce = -mu * mass * g;
+    const acceleration = frictionForce / mass;
 
-    forceValue.textContent = `${F.toFixed(0)} N`;
-    muValue.textContent = mu.toFixed(2);
-    massValue.textContent = `${m.toFixed(1)} kg`;
+    velocityValue.textContent =
+        Number(velocitySlider.value).toFixed(1) + " m/s";
 
-    frictionForceData.innerHTML =
-        `<strong>${friction.toFixed(2)} N</strong>`;
+    frictionValue.textContent =
+        mu.toFixed(2);
 
-    netForceData.innerHTML =
-        `<strong>${netForce.toFixed(2)} N</strong>`;
-
-    accelerationData.innerHTML =
-        `<strong>${a.toFixed(2)} m/s²</strong>`;
-
-    velocityData.innerHTML =
+    currentVelocity.innerHTML =
         `<strong>${v.toFixed(2)} m/s</strong>`;
 
-    positionData.innerHTML =
+    frictionForceData.innerHTML =
+        `<strong>${frictionForce.toFixed(2)} N</strong>`;
+
+    accelerationData.innerHTML =
+        `<strong>${acceleration.toFixed(2)} m/s²</strong><br><em>dv/dt</em>`;
+
+    distanceData.innerHTML =
         `<strong>${x.toFixed(2)} m</strong>`;
+
+    calculusView.innerHTML = `
+        <strong>F<sub>friction</sub> = ${frictionForce.toFixed(2)} N</strong>
+
+        <br><br>
+
+        ↓
+
+        <br><br>
+
+        <strong>a = ${acceleration.toFixed(2)} m/s²</strong>
+
+        <br>
+
+        <em>dv/dt</em>
+
+        <br><br>
+
+        ↓
+
+        <br><br>
+
+        <strong>v = ${v.toFixed(2)} m/s</strong>
+
+        <br>
+
+        <em>Negative slope</em>
+
+        <br><br>
+
+        ↓
+
+        <br><br>
+
+        <strong>x = ${x.toFixed(2)} m</strong>
+    `;
 
     explanation.innerHTML = `
         Friction always acts opposite the direction of motion.
 
         <br><br>
 
-        The friction force is
+        The friction force creates a constant negative acceleration.
 
         <br><br>
 
-        <strong>F<sub>f</sub> = μmg</strong>
+        Since
+
+        <strong>a = dv/dt</strong>,
+
+        the slope of the velocity function is negative.
 
         <br><br>
 
-        The net force is
+        A steeper negative slope means the object loses speed more quickly.
 
         <br><br>
 
-        <strong>F<sub>net</sub> = F - F<sub>f</sub></strong>
-
-        <br><br>
-
-        Newton's Second Law then gives the acceleration:
-
-        <br><br>
-
-        <strong>a = F<sub>net</sub>/m</strong>
+        Increasing the coefficient of friction increases the magnitude of the
+        friction force, making the velocity decrease even faster.
     `;
 
     drawScene();
 
 }
 
-//--------------------------------------------
+//----------------------------------------------------
 
-forceSlider.addEventListener("input",update);
-muSlider.addEventListener("input",update);
-massSlider.addEventListener("input",update);
+velocitySlider.addEventListener("input",()=>{
 
-//--------------------------------------------
+    resetSimulation();
+    updateInfo();
+
+});
+
+frictionSlider.addEventListener("input",updateInfo);
+
+//----------------------------------------------------
 
 playButton.addEventListener("click",()=>{
 
     if(!playing){
 
-        playing=true;
-        playButton.textContent="⏸ Pause";
+        playing = true;
+        playButton.textContent = "⏸ Pause";
 
         resetSimulation();
 
-        animation=setInterval(()=>{
+        animation = setInterval(()=>{
 
-            const F = Number(forceSlider.value);
-            const mu = Number(muSlider.value);
-            const m = Number(massSlider.value);
+            const mu = Number(frictionSlider.value);
 
-            const friction = mu * m * 9.8;
-            const netForce = F - friction;
-            const a = netForce / m;
+            const frictionForce = -mu * mass * g;
+            const acceleration = frictionForce / mass;
 
-            v += a * 0.05;
+            v += acceleration * 0.05;
 
-            if(v < 0) v = 0;
+            if(v < 0){
+
+                v = 0;
+
+            }
 
             x += v * 0.05;
+            t += 0.05;
 
-            update();
+            updateInfo();
+
+            if(v === 0){
+
+                clearInterval(animation);
+
+                playing = false;
+                playButton.textContent = "▶ Play";
+
+            }
 
         },30);
 
@@ -195,8 +255,8 @@ playButton.addEventListener("click",()=>{
 
     else{
 
-        playing=false;
-        playButton.textContent="▶ Play";
+        playing = false;
+        playButton.textContent = "▶ Play";
 
         clearInterval(animation);
 
@@ -204,7 +264,5 @@ playButton.addEventListener("click",()=>{
 
 });
 
-//--------------------------------------------
-
 resetSimulation();
-update();
+updateInfo();
