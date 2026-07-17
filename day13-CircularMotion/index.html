@@ -21,10 +21,11 @@
     <h2>Day 13 — Circular Motion</h2>
 
     <p>
-        Explore uniform circular motion by changing the radius and speed of a
-        rotating object. Observe how the centripetal acceleration depends on
-        both variables and why a continuous inward force is required to keep an
-        object moving in a circle.
+        An object moving in a circle can travel at a constant speed while still
+        accelerating. Explore how changing the radius and speed affects the
+        centripetal acceleration, and discover why acceleration is caused by a
+        changing <em>direction</em> of the velocity vector rather than a change
+        in speed.
     </p>
 
 </header>
@@ -79,27 +80,11 @@
             type="range"
             id="radius"
             min="1"
-            max="10"
-            value="5"
+            max="8"
+            value="4"
             step="0.5">
 
-        <span id="radiusValue">5.0 m</span>
-
-    </label>
-
-    <label>
-
-        Mass (kg)
-
-        <input
-            type="range"
-            id="mass"
-            min="1"
-            max="10"
-            value="2"
-            step="0.5">
-
-        <span id="massValue">2.0 kg</span>
+        <span id="radiusValue">4.0 m</span>
 
     </label>
 
@@ -117,6 +102,14 @@
 
     <div class="card">
 
+        <h4>Speed</h4>
+
+        <p id="speedData"></p>
+
+    </div>
+
+    <div class="card">
+
         <h4>Centripetal Acceleration</h4>
 
         <p id="acceleration"></p>
@@ -125,25 +118,25 @@
 
     <div class="card">
 
-        <h4>Centripetal Force</h4>
+        <h4>Angular Velocity</h4>
 
-        <p id="force"></p>
-
-    </div>
-
-    <div class="card">
-
-        <h4>Angular Speed</h4>
-
-        <p id="omega"></p>
+        <p id="angularVelocity"></p>
 
     </div>
 
     <div class="card">
 
-        <h4>Period</h4>
+        <h4>Direction of Velocity</h4>
 
-        <p id="period"></p>
+        <p id="direction"></p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Calculus View</h4>
+
+        <p id="calculusView"></p>
 
     </div>
 
