@@ -1,182 +1,205 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-const massASlider = document.getElementById("massA");
-const massBSlider = document.getElementById("massB");
 const forceSlider = document.getElementById("force");
+const mass1Slider = document.getElementById("mass1");
+const mass2Slider = document.getElementById("mass2");
+
+const forceValue = document.getElementById("forceValue");
+const mass1Value = document.getElementById("mass1Value");
+const mass2Value = document.getElementById("mass2Value");
+
 const playButton = document.getElementById("playButton");
 
-const massAValue = document.getElementById("massAValue");
-const massBValue = document.getElementById("massBValue");
-const forceValue = document.getElementById("forceValue");
-
-const accelerationA = document.getElementById("accelerationA");
-const accelerationB = document.getElementById("accelerationB");
-const velocityA = document.getElementById("velocityA");
-const velocityB = document.getElementById("velocityB");
+const leftAcceleration = document.getElementById("leftAcceleration");
+const rightAcceleration = document.getElementById("rightAcceleration");
+const leftVelocity = document.getElementById("leftVelocity");
+const rightVelocity = document.getElementById("rightVelocity");
+const calculusView = document.getElementById("calculusView");
 const explanation = document.getElementById("explanation");
 
 let playing = false;
 let animation;
 
-let xA, xB;
-let vA, vB;
+let x1 = 260;
+let x2 = 390;
 
-//-------------------------------------
+let v1 = 0;
+let v2 = 0;
 
-function resetSimulation() {
+//---------------------------------------------------------
 
-    xA = 250;
-    xB = 400;
+function resetSimulation(){
 
-    vA = 0;
-    vB = 0;
+    x1 = 260;
+    x2 = 390;
 
-}
-
-//-------------------------------------
-
-function drawScene() {
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = "#0f172a";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // Ice
-
-    ctx.strokeStyle = "white";
-    ctx.lineWidth = 2;
-
-    ctx.beginPath();
-    ctx.moveTo(40, 380);
-    ctx.lineTo(660, 380);
-    ctx.stroke();
-
-    // Skater A
-
-    ctx.fillStyle = "#3b82f6";
-    ctx.fillRect(xA, 320, 40, 60);
-
-    // Skater B
-
-    ctx.fillStyle = "#ef4444";
-    ctx.fillRect(xB, 320, 40, 60);
-
-    // Force arrows
-
-    const F = Number(forceSlider.value);
-
-    ctx.strokeStyle = "#22c55e";
-    ctx.lineWidth = 4;
-
-    // A
-
-    ctx.beginPath();
-    ctx.moveTo(xA + 20, 300);
-    ctx.lineTo(xA + 20 - F * 3, 300);
-    ctx.stroke();
-
-    // B
-
-    ctx.beginPath();
-    ctx.moveTo(xB + 20, 300);
-    ctx.lineTo(xB + 20 + F * 3, 300);
-    ctx.stroke();
-
-    ctx.fillStyle = "white";
-    ctx.font = "18px Arial";
-
-    ctx.fillText("Equal & Opposite Forces", 220, 40);
+    v1 = 0;
+    v2 = 0;
 
 }
 
-//-------------------------------------
+//---------------------------------------------------------
 
-function update() {
+function drawScene(){
 
-    const mA = Number(massASlider.value);
-    const mB = Number(massBSlider.value);
+    ctx.clearRect(0,0,700,500);
+
+    ctx.fillStyle="#0f172a";
+    ctx.fillRect(0,0,700,500);
+
+    ctx.strokeStyle="white";
+    ctx.lineWidth=2;
+
+    ctx.beginPath();
+    ctx.moveTo(40,360);
+    ctx.lineTo(660,360);
+    ctx.stroke();
+
+    ctx.fillStyle="#3b82f6";
+    ctx.fillRect(x1,320,50,40);
+
+    ctx.fillStyle="#ef4444";
+    ctx.fillRect(x2,320,50,40);
+
+    ctx.fillStyle="white";
+    ctx.font="18px Arial";
+    ctx.fillText("Newton's Third Law",225,40);
+
+}
+
+//---------------------------------------------------------
+
+function updateInfo(){
+
     const F = Number(forceSlider.value);
 
-    const aA = -F / mA;
-    const aB = F / mB;
+    const m1 = Number(mass1Slider.value);
+    const m2 = Number(mass2Slider.value);
 
-    massAValue.textContent = mA.toFixed(1) + " kg";
-    massBValue.textContent = mB.toFixed(1) + " kg";
-    forceValue.textContent = F.toFixed(0) + " N";
+    const a1 = F/m1;
+    const a2 = -F/m2;
 
-    accelerationA.innerHTML =
-        `<strong>${aA.toFixed(2)} m/s²</strong>`;
+    forceValue.textContent = `${F} N`;
+    mass1Value.textContent = `${m1.toFixed(1)} kg`;
+    mass2Value.textContent = `${m2.toFixed(1)} kg`;
 
-    accelerationB.innerHTML =
-        `<strong>${aB.toFixed(2)} m/s²</strong>`;
+    leftAcceleration.innerHTML =
+        `<strong>${a1.toFixed(2)} m/s²</strong><br><em>dv₁/dt</em>`;
 
-    velocityA.innerHTML =
-        `<strong>${vA.toFixed(2)} m/s</strong>`;
+    rightAcceleration.innerHTML =
+        `<strong>${a2.toFixed(2)} m/s²</strong><br><em>dv₂/dt</em>`;
 
-    velocityB.innerHTML =
-        `<strong>${vB.toFixed(2)} m/s</strong>`;
+    leftVelocity.innerHTML =
+        `<strong>${v1.toFixed(2)} m/s</strong>`;
 
-    explanation.innerHTML = `
-        Newton's Third Law states that every action has an equal and opposite reaction.
+    rightVelocity.innerHTML =
+        `<strong>${v2.toFixed(2)} m/s</strong>`;
 
-        <br><br>
+    calculusView.innerHTML = `
+    Left Object
 
-        Both skaters experience the same force, but because they have different masses,
-        they accelerate differently.
+    <br><br>
 
-        <br><br>
+    <strong>F = ${F.toFixed(1)} N</strong>
 
-        Since
+    <br>
 
-        <strong>F = ma</strong>,
+    ↓
 
-        the lighter skater experiences the larger acceleration.
+    <br>
+
+    <strong>dv₁/dt = ${(a1).toFixed(2)}</strong>
+
+    <br><br>
+
+    Right Object
+
+    <br><br>
+
+    <strong>F = ${(-F).toFixed(1)} N</strong>
+
+    <br>
+
+    ↓
+
+    <br>
+
+    <strong>dv₂/dt = ${(a2).toFixed(2)}</strong>
+    `;
+
+    explanation.innerHTML=`
+    Newton's Third Law says every force has an equal and opposite partner.
+
+    <br><br>
+
+    The two forces are equal in magnitude, but they act on different objects.
+
+    <br><br>
+
+    Since
+
+    <strong>F = ma</strong>
+
+    and
+
+    <strong>a = dv/dt</strong>,
+
+    each object has its own rate of change of velocity.
+
+    <br><br>
+
+    The lighter skater experiences a larger acceleration because the same force
+    is divided by a smaller mass.
     `;
 
     drawScene();
 
 }
 
-//-------------------------------------
+//---------------------------------------------------------
 
-massASlider.addEventListener("input", update);
-massBSlider.addEventListener("input", update);
-forceSlider.addEventListener("input", update);
+forceSlider.addEventListener("input",updateInfo);
+mass1Slider.addEventListener("input",updateInfo);
+mass2Slider.addEventListener("input",updateInfo);
 
-//-------------------------------------
+//---------------------------------------------------------
 
-playButton.addEventListener("click", () => {
+playButton.addEventListener("click",()=>{
 
-    if (!playing) {
+    if(!playing){
 
-        playing = true;
-        playButton.textContent = "⏸ Pause";
+        playing=true;
+        playButton.textContent="⏸ Pause";
 
         resetSimulation();
 
-        animation = setInterval(() => {
+        animation=setInterval(()=>{
 
-            const F = Number(forceSlider.value);
+            const F=Number(forceSlider.value);
 
-            const aA = -F / Number(massASlider.value);
-            const aB = F / Number(massBSlider.value);
+            const m1=Number(mass1Slider.value);
+            const m2=Number(mass2Slider.value);
 
-            vA += aA * 0.05;
-            vB += aB * 0.05;
+            const a1=F/m1;
+            const a2=-F/m2;
 
-            xA += vA * 2;
-            xB += vB * 2;
+            v1-=a1*0.05;
+            v2-=a2*0.05;
 
-            update();
+            x1+=v1*0.05*15;
+            x2+=v2*0.05*15;
 
-        }, 30);
+            updateInfo();
 
-    } else {
+        },30);
 
-        playing = false;
-        playButton.textContent = "▶ Push Off";
+    }
+
+    else{
+
+        playing=false;
+        playButton.textContent="▶ Push Apart";
 
         clearInterval(animation);
 
@@ -185,4 +208,4 @@ playButton.addEventListener("click", () => {
 });
 
 resetSimulation();
-update();
+updateInfo();
