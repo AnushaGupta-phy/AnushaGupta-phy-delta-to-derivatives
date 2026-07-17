@@ -17,7 +17,7 @@ const explanation = document.getElementById("explanation");
 
 function force(x){
 
-    return 2 + 0.5 * x;
+    return 2 + 0.15 * x * x;
 
 }
 
