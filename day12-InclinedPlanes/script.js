@@ -2,30 +2,26 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
 const angleSlider = document.getElementById("angle");
-const massSlider = document.getElementById("mass");
-const muSlider = document.getElementById("mu");
 const playButton = document.getElementById("playButton");
 
 const angleValue = document.getElementById("angleValue");
-const massValue = document.getElementById("massValue");
-const muValue = document.getElementById("muValue");
 
-const parallelForceData = document.getElementById("parallelForce");
-const normalForceData = document.getElementById("normalForce");
-const netForceData = document.getElementById("netForce");
+const angleData = document.getElementById("angleData");
 const accelerationData = document.getElementById("acceleration");
 const velocityData = document.getElementById("velocity");
+const distanceData = document.getElementById("distance");
+const calculusView = document.getElementById("calculusView");
 const explanation = document.getElementById("explanation");
 
 let playing = false;
 let animation;
 
+const g = 9.8;
+
 let s = 0;
 let v = 0;
 
-const g = 9.8;
-
-//-----------------------------------------
+//----------------------------------------------------
 
 function resetSimulation() {
 
@@ -34,7 +30,7 @@ function resetSimulation() {
 
 }
 
-//-----------------------------------------
+//----------------------------------------------------
 
 function drawScene() {
 
@@ -43,14 +39,14 @@ function drawScene() {
     ctx.fillStyle = "#0f172a";
     ctx.fillRect(0, 0, 700, 500);
 
-    const angle = Number(angleSlider.value) * Math.PI / 180;
+    const theta = Number(angleSlider.value) * Math.PI / 180;
 
     const startX = 140;
     const startY = 120;
     const length = 350;
 
-    const endX = startX + length * Math.cos(angle);
-    const endY = startY + length * Math.sin(angle);
+    const endX = startX + length * Math.cos(theta);
+    const endY = startY + length * Math.sin(theta);
 
     // Ramp
 
@@ -64,98 +60,165 @@ function drawScene() {
 
     // Block
 
-    const x = startX + s * Math.cos(angle);
-    const y = startY + s * Math.sin(angle);
+    const blockX = startX + s * Math.cos(theta);
+    const blockY = startY + s * Math.sin(theta);
 
     ctx.save();
 
-    ctx.translate(x, y);
-    ctx.rotate(angle);
+    ctx.translate(blockX, blockY);
+    ctx.rotate(theta);
 
     ctx.fillStyle = "#3b82f6";
     ctx.fillRect(-15, -15, 30, 30);
 
     ctx.restore();
 
+    // Gravity Arrow
+
+    ctx.strokeStyle = "#ef4444";
+    ctx.lineWidth = 3;
+
+    ctx.beginPath();
+    ctx.moveTo(blockX, blockY);
+    ctx.lineTo(blockX, blockY + 55);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(blockX, blockY + 55);
+    ctx.lineTo(blockX - 5, blockY + 45);
+    ctx.lineTo(blockX + 5, blockY + 45);
+    ctx.closePath();
+
+    ctx.fillStyle = "#ef4444";
+    ctx.fill();
+
     // Labels
 
     ctx.fillStyle = "white";
     ctx.font = "18px Arial";
 
-    ctx.fillText("Inclined Plane", 250, 40);
+    ctx.fillText("Inclined Plane", 270, 40);
 
 }
 
-//-----------------------------------------
+//----------------------------------------------------
 
 function update() {
 
-    const theta = Number(angleSlider.value) * Math.PI / 180;
-    const m = Number(massSlider.value);
-    const mu = Number(muSlider.value);
+    const thetaDegrees = Number(angleSlider.value);
+    const theta = thetaDegrees * Math.PI / 180;
 
-    const Fparallel = m * g * Math.sin(theta);
-    const Fnormal = m * g * Math.cos(theta);
-    const Ffriction = mu * Fnormal;
+    const acceleration = g * Math.sin(theta);
 
-    const Fnet = Fparallel - Ffriction;
+    angleValue.textContent = thetaDegrees + "°";
 
-    const a = Fnet / m;
-
-    angleValue.textContent = angleSlider.value + "°";
-    massValue.textContent = m.toFixed(1) + " kg";
-    muValue.textContent = mu.toFixed(2);
-
-    parallelForceData.innerHTML =
-        `<strong>${Fparallel.toFixed(2)} N</strong>`;
-
-    normalForceData.innerHTML =
-        `<strong>${Fnormal.toFixed(2)} N</strong>`;
-
-    netForceData.innerHTML =
-        `<strong>${Fnet.toFixed(2)} N</strong>`;
+    angleData.innerHTML =
+        `<strong>${thetaDegrees}°</strong>`;
 
     accelerationData.innerHTML =
-        `<strong>${a.toFixed(2)} m/s²</strong>`;
+        `<strong>${acceleration.toFixed(2)} m/s²</strong><br><em>dv/dt</em>`;
 
     velocityData.innerHTML =
         `<strong>${v.toFixed(2)} m/s</strong>`;
 
+    distanceData.innerHTML =
+        `<strong>${(s / 32).toFixed(2)} m</strong>`;
+
+    calculusView.innerHTML = `
+        <strong>a = g sin(θ)</strong>
+
+        <br><br>
+
+        = ${acceleration.toFixed(2)} m/s²
+
+        <br><br>
+
+        ↓
+
+        <br><br>
+
+        <strong>dv/dt</strong>
+
+        <br><br>
+
+        ↓
+
+        <br><br>
+
+        <strong>Velocity = ${v.toFixed(2)} m/s</strong>
+
+        <br><br>
+
+        ↓
+
+        <br><br>
+
+        <strong>dx/dt</strong>
+
+        <br><br>
+
+        ↓
+
+        <br><br>
+
+        <strong>Distance = ${(s / 32).toFixed(2)} m</strong>
+    `;
+
     explanation.innerHTML = `
-        Gravity can be separated into two components.
+        Gravity always points downward, but only part of it pulls the block
+        along the ramp.
 
         <br><br>
 
-        <strong>mg sin(θ)</strong> pulls the object down the ramp.
+        The acceleration down the incline is
 
         <br><br>
 
-        <strong>mg cos(θ)</strong> pushes the object into the ramp.
+        <strong>a = g sin(θ)</strong>
 
         <br><br>
 
-        Friction opposes the motion, so the net force is
+        A steeper ramp produces a larger acceleration.
 
         <br><br>
 
-        <strong>F<sub>net</sub> = mg sin(θ) − μmg cos(θ)</strong>
+        Since acceleration is the derivative of velocity,
 
         <br><br>
 
-        Newton's Second Law gives the acceleration.
+        <strong>a = dv/dt</strong>,
+
+        <br><br>
+
+        increasing the angle increases the rate at which the velocity changes.
+
+        <br><br>
+
+        Because velocity is the derivative of position,
+
+        <br><br>
+
+        <strong>v = dx/dt</strong>,
+
+        <br><br>
+
+        the block also travels farther down the ramp in the same amount of time.
     `;
 
     drawScene();
 
 }
 
-//-----------------------------------------
+//----------------------------------------------------
 
-angleSlider.addEventListener("input", update);
-massSlider.addEventListener("input", update);
-muSlider.addEventListener("input", update);
+angleSlider.addEventListener("input", () => {
 
-//-----------------------------------------
+    resetSimulation();
+    update();
+
+});
+
+//----------------------------------------------------
 
 playButton.addEventListener("click", () => {
 
@@ -169,27 +232,22 @@ playButton.addEventListener("click", () => {
         animation = setInterval(() => {
 
             const theta = Number(angleSlider.value) * Math.PI / 180;
-            const m = Number(massSlider.value);
-            const mu = Number(muSlider.value);
 
-            const Fparallel = m * g * Math.sin(theta);
-            const Fnormal = m * g * Math.cos(theta);
-            const Ffriction = mu * Fnormal;
+            const acceleration = g * Math.sin(theta);
 
-            const Fnet = Fparallel - Ffriction;
+            v += acceleration * 0.05;
 
-            const a = Fnet / m;
-
-            v += a * 0.05;
             s += v * 2;
 
             if (s > 320) {
 
                 s = 320;
+
                 clearInterval(animation);
 
                 playing = false;
-                playButton.textContent = "▶ Play";
+
+                playButton.textContent = "▶ Release Block";
 
             }
 
@@ -197,10 +255,13 @@ playButton.addEventListener("click", () => {
 
         }, 30);
 
-    } else {
+    }
+
+    else {
 
         playing = false;
-        playButton.textContent = "▶ Play";
+
+        playButton.textContent = "▶ Release Block";
 
         clearInterval(animation);
 
