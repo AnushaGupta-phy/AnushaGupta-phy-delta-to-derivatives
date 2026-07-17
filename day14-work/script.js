@@ -1,162 +1,250 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-const forceSlider = document.getElementById("force");
-const massSlider = document.getElementById("mass");
+const distanceSlider = document.getElementById("distance");
 const playButton = document.getElementById("playButton");
 
-const forceValue = document.getElementById("forceValue");
-const massValue = document.getElementById("massValue");
+const distanceValue = document.getElementById("distanceValue");
 
-const distanceData = document.getElementById("distance");
-const velocityData = document.getElementById("velocity");
-const accelerationData = document.getElementById("acceleration");
-const workData = document.getElementById("work");
-const energyData = document.getElementById("energy");
+const distanceData = document.getElementById("distanceData");
+const forceData = document.getElementById("forceData");
+const averageForceData = document.getElementById("averageForce");
+const workData = document.getElementById("workData");
 const explanation = document.getElementById("explanation");
 
 let playing = false;
 let animation;
 
-let x = 0;
-let v = 0;
+//----------------------------------------------------
+// Force Function
+//----------------------------------------------------
 
-function resetSimulation() {
+function force(x){
 
-    x = 0;
-    v = 0;
+    return 2 + 0.5 * x;
 
 }
 
-function drawScene() {
+//----------------------------------------------------
+// Numerical Integration (Trapezoidal Rule)
+//----------------------------------------------------
+
+function work(distance){
+
+    let area = 0;
+    const dx = 0.05;
+
+    for(let x=0;x<distance;x+=dx){
+
+        area += (force(x)+force(x+dx))/2 * dx;
+
+    }
+
+    return area;
+
+}
+
+//----------------------------------------------------
+// Draw Scene
+//----------------------------------------------------
+
+function drawScene(d){
 
     ctx.clearRect(0,0,700,500);
 
     ctx.fillStyle="#0f172a";
     ctx.fillRect(0,0,700,500);
 
-    // Ground
+    const gx = 80;
+    const gy = 430;
+    const width = 560;
+    const height = 300;
+
+    //----------------------------------------
+    // Axes
+    //----------------------------------------
 
     ctx.strokeStyle="white";
     ctx.lineWidth=2;
 
     ctx.beginPath();
-    ctx.moveTo(40,360);
-    ctx.lineTo(660,360);
+    ctx.moveTo(gx,gy);
+    ctx.lineTo(gx,gy-height);
     ctx.stroke();
-
-    // Block
-
-    const drawX = 60 + x * 5;
-
-    ctx.fillStyle="#3b82f6";
-    ctx.fillRect(drawX,320,50,40);
-
-    // Force Arrow
-
-    const F = Number(forceSlider.value);
-
-    ctx.strokeStyle="#ef4444";
-    ctx.lineWidth=4;
 
     ctx.beginPath();
-    ctx.moveTo(drawX+25,300);
-    ctx.lineTo(drawX+25+F*5,300);
+    ctx.moveTo(gx,gy);
+    ctx.lineTo(gx+width,gy);
     ctx.stroke();
 
+    //----------------------------------------
+    // Labels
+    //----------------------------------------
+
     ctx.fillStyle="white";
-    ctx.font="18px Arial";
-    ctx.fillText("Work = Force × Distance",210,40);
+    ctx.font="16px Arial";
+
+    ctx.fillText("Force (N)",10,170);
+    ctx.fillText("Distance (m)",560,460);
+    ctx.fillText("F(x) = 2 + 0.5x",470,80);
+
+    //----------------------------------------
+    // Shade Area
+    //----------------------------------------
+
+    ctx.fillStyle="rgba(34,197,94,0.35)";
+
+    ctx.beginPath();
+
+    ctx.moveTo(gx,gy);
+
+    for(let x=0;x<=d;x+=0.05){
+
+        const px = gx + x/10*width;
+        const py = gy - force(x)/8*height;
+
+        ctx.lineTo(px,py);
+
+    }
+
+    ctx.lineTo(gx+d/10*width,gy);
+    ctx.closePath();
+    ctx.fill();
+
+    //----------------------------------------
+    // Graph
+    //----------------------------------------
+
+    ctx.strokeStyle="#60a5fa";
+    ctx.lineWidth=3;
+
+    ctx.beginPath();
+
+    for(let x=0;x<=10;x+=0.05){
+
+        const px = gx + x/10*width;
+        const py = gy - force(x)/8*height;
+
+        if(x===0){
+
+            ctx.moveTo(px,py);
+
+        }
+
+        else{
+
+            ctx.lineTo(px,py);
+
+        }
+
+    }
+
+    ctx.stroke();
+
+    //----------------------------------------
+    // Moving Point
+    //----------------------------------------
+
+    const pointX = gx + d/10*width;
+    const pointY = gy - force(d)/8*height;
+
+    ctx.beginPath();
+    ctx.fillStyle="#22c55e";
+    ctx.arc(pointX,pointY,6,0,Math.PI*2);
+    ctx.fill();
 
 }
 
-function update() {
+//----------------------------------------------------
+// Update
+//----------------------------------------------------
 
-    const F = Number(forceSlider.value);
-    const m = Number(massSlider.value);
+function update(){
 
-    const a = F / m;
-    const work = F * x;
-    const KE = 0.5 * m * v * v;
+    const d = Number(distanceSlider.value);
 
-    forceValue.textContent = `${F.toFixed(0)} N`;
-    massValue.textContent = `${m.toFixed(1)} kg`;
+    const F = force(d);
+    const W = work(d);
+    const avg = d===0 ? 0 : W/d;
+
+    distanceValue.textContent = d.toFixed(1)+" m";
 
     distanceData.innerHTML =
-        `<strong>${x.toFixed(2)} m</strong>`;
+        `<strong>${d.toFixed(2)} m</strong>`;
 
-    velocityData.innerHTML =
-        `<strong>${v.toFixed(2)} m/s</strong>`;
+    forceData.innerHTML =
+        `<strong>${F.toFixed(2)} N</strong>`;
 
-    accelerationData.innerHTML =
-        `<strong>${a.toFixed(2)} m/s²</strong>`;
+    averageForceData.innerHTML =
+        `<strong>${avg.toFixed(2)} N</strong>`;
 
     workData.innerHTML =
-        `<strong>${work.toFixed(2)} J</strong>`;
+        `<strong>${W.toFixed(2)} J</strong>`;
 
-    energyData.innerHTML =
-        `<strong>${KE.toFixed(2)} J</strong>`;
+    explanation.innerHTML=`
 
-    explanation.innerHTML = `
-        A force transfers energy when it moves an object.
+        The force is no longer constant.
 
         <br><br>
 
-        <strong>W = Fd</strong>
+        Instead it changes with position:
 
         <br><br>
 
-        As the block moves farther, more work is done.
+        <strong>F(x)=2+0.5x</strong>
 
         <br><br>
 
-        That work becomes kinetic energy:
+        Every tiny movement contributes a tiny amount of work
 
         <br><br>
 
-        <strong>KE = ½mv²</strong>
+        <strong>dW = F(x)dx</strong>
 
         <br><br>
 
-        Notice how the work done and the kinetic energy increase together.
+        Adding all of those tiny pieces gives
+
+        <br><br>
+
+        <strong>W = ∫F(x)dx</strong>
+
+        <br><br>
+
+        The shaded region under the graph is the total work done on the object.
+
     `;
 
-    drawScene();
+    drawScene(d);
 
 }
 
-forceSlider.addEventListener("input", update);
-massSlider.addEventListener("input", update);
+//----------------------------------------------------
+// Controls
+//----------------------------------------------------
 
-playButton.addEventListener("click", () => {
+distanceSlider.addEventListener("input",update);
 
-    if (!playing) {
+playButton.addEventListener("click",()=>{
 
-        playing = true;
-        playButton.textContent = "⏸ Pause";
+    if(!playing){
 
-        resetSimulation();
+        playing=true;
+        playButton.textContent="⏸ Pause";
 
-        animation = setInterval(() => {
+        animation=setInterval(()=>{
 
-            const F = Number(forceSlider.value);
-            const m = Number(massSlider.value);
+            let d=Number(distanceSlider.value);
 
-            const a = F / m;
+            d+=0.05;
 
-            v += a * 0.05;
-            x += v * 0.05;
+            if(d>10){
 
-            if (x > 120) {
-
-                x = 120;
-
-                clearInterval(animation);
-
-                playing = false;
-                playButton.textContent = "▶ Play";
+                d=0;
 
             }
+
+            distanceSlider.value=d;
 
             update();
 
@@ -164,10 +252,10 @@ playButton.addEventListener("click", () => {
 
     }
 
-    else {
+    else{
 
-        playing = false;
-        playButton.textContent = "▶ Play";
+        playing=false;
+        playButton.textContent="▶ Play";
 
         clearInterval(animation);
 
@@ -175,5 +263,4 @@ playButton.addEventListener("click", () => {
 
 });
 
-resetSimulation();
 update();
