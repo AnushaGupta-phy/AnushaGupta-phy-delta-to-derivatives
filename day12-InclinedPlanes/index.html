@@ -21,9 +21,11 @@
     <h2>Day 12 — Inclined Planes</h2>
 
     <p>
-        Explore how gravity acts on an object placed on a ramp. Adjust the
-        angle of the incline and the coefficient of friction to see how the
-        forces along the ramp change the object's acceleration and motion.
+        An inclined plane changes how gravity accelerates an object. Adjust the
+        angle of the ramp and see how the component of gravity along the slope
+        changes the object's acceleration. Connect this motion to calculus by
+        observing how acceleration determines the rate at which velocity
+        changes.
     </p>
 
 </header>
@@ -61,7 +63,7 @@
         <input
             type="range"
             id="angle"
-            min="0"
+            min="5"
             max="60"
             value="25"
             step="1">
@@ -70,41 +72,9 @@
 
     </label>
 
-    <label>
-
-        Mass (kg)
-
-        <input
-            type="range"
-            id="mass"
-            min="1"
-            max="10"
-            value="5"
-            step="0.5">
-
-        <span id="massValue">5.0 kg</span>
-
-    </label>
-
-    <label>
-
-        Coefficient of Friction (μ)
-
-        <input
-            type="range"
-            id="mu"
-            min="0"
-            max="1"
-            value="0.20"
-            step="0.05">
-
-        <span id="muValue">0.20</span>
-
-    </label>
-
     <button id="playButton">
 
-        ▶ Play
+        ▶ Release Block
 
     </button>
 
@@ -116,31 +86,15 @@
 
     <div class="card">
 
-        <h4>Gravity Along Ramp</h4>
+        <h4>Ramp Angle</h4>
 
-        <p id="parallelForce"></p>
-
-    </div>
-
-    <div class="card">
-
-        <h4>Normal Force</h4>
-
-        <p id="normalForce"></p>
+        <p id="angleData"></p>
 
     </div>
 
     <div class="card">
 
-        <h4>Net Force</h4>
-
-        <p id="netForce"></p>
-
-    </div>
-
-    <div class="card">
-
-        <h4>Acceleration</h4>
+        <h4>Acceleration (dv/dt)</h4>
 
         <p id="acceleration"></p>
 
@@ -148,9 +102,25 @@
 
     <div class="card">
 
-        <h4>Velocity</h4>
+        <h4>Current Velocity</h4>
 
         <p id="velocity"></p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Distance Along Ramp</h4>
+
+        <p id="distance"></p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Calculus View</h4>
+
+        <p id="calculusView"></p>
 
     </div>
 
