@@ -21,10 +21,11 @@
     <h2>Day 10 — Newton's Third Law</h2>
 
     <p>
-        Explore action and reaction forces by watching two skaters push off
-        from one another. Adjust the masses of each skater and see how both
-        accelerate in opposite directions while experiencing equal and opposite
-        forces.
+        Newton's Third Law states that every interaction produces equal and
+        opposite forces. Watch two skaters push apart and see why the forces
+        never cancel—they act on different objects. Connect this idea to
+        calculus by observing how each force produces its own rate of change
+        of velocity.
     </p>
 
 </header>
@@ -57,55 +58,55 @@
 
     <label>
 
-        Skater A Mass (kg)
-
-        <input
-            type="range"
-            id="massA"
-            min="1"
-            max="10"
-            value="3"
-            step="0.5">
-
-        <span id="massAValue">3.0 kg</span>
-
-    </label>
-
-    <label>
-
-        Skater B Mass (kg)
-
-        <input
-            type="range"
-            id="massB"
-            min="1"
-            max="10"
-            value="6"
-            step="0.5">
-
-        <span id="massBValue">6.0 kg</span>
-
-    </label>
-
-    <label>
-
         Push Force (N)
 
         <input
             type="range"
             id="force"
-            min="5"
-            max="30"
-            value="15"
+            min="2"
+            max="20"
+            value="10"
             step="1">
 
-        <span id="forceValue">15 N</span>
+        <span id="forceValue">10 N</span>
+
+    </label>
+
+    <label>
+
+        Left Mass (kg)
+
+        <input
+            type="range"
+            id="mass1"
+            min="1"
+            max="10"
+            value="2"
+            step="0.5">
+
+        <span id="mass1Value">2.0 kg</span>
+
+    </label>
+
+    <label>
+
+        Right Mass (kg)
+
+        <input
+            type="range"
+            id="mass2"
+            min="1"
+            max="10"
+            value="4"
+            step="0.5">
+
+        <span id="mass2Value">4.0 kg</span>
 
     </label>
 
     <button id="playButton">
 
-        ▶ Push Off
+        ▶ Push Apart
 
     </button>
 
@@ -117,33 +118,41 @@
 
     <div class="card">
 
-        <h4>Skater A Acceleration</h4>
+        <h4>Left Acceleration</h4>
 
-        <p id="accelerationA"></p>
-
-    </div>
-
-    <div class="card">
-
-        <h4>Skater B Acceleration</h4>
-
-        <p id="accelerationB"></p>
+        <p id="leftAcceleration"></p>
 
     </div>
 
     <div class="card">
 
-        <h4>Skater A Velocity</h4>
+        <h4>Right Acceleration</h4>
 
-        <p id="velocityA"></p>
+        <p id="rightAcceleration"></p>
 
     </div>
 
     <div class="card">
 
-        <h4>Skater B Velocity</h4>
+        <h4>Left Velocity</h4>
 
-        <p id="velocityB"></p>
+        <p id="leftVelocity"></p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Right Velocity</h4>
+
+        <p id="rightVelocity"></p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Calculus View</h4>
+
+        <p id="calculusView"></p>
 
     </div>
 
