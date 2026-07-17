@@ -2,7 +2,6 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
 const distanceSlider = document.getElementById("distance");
-const playButton = document.getElementById("playButton");
 
 const distanceValue = document.getElementById("distanceValue");
 
@@ -11,9 +10,6 @@ const forceData = document.getElementById("forceData");
 const averageForceData = document.getElementById("averageForce");
 const workData = document.getElementById("workData");
 const explanation = document.getElementById("explanation");
-
-let playing = false;
-let animation;
 
 //----------------------------------------------------
 // Force Function
@@ -224,43 +220,5 @@ function update(){
 //----------------------------------------------------
 
 distanceSlider.addEventListener("input",update);
-
-playButton.addEventListener("click",()=>{
-
-    if(!playing){
-
-        playing=true;
-        playButton.textContent="⏸ Pause";
-
-        animation=setInterval(()=>{
-
-            let d=Number(distanceSlider.value);
-
-            d+=0.05;
-
-            if(d>10){
-
-                d=0;
-
-            }
-
-            distanceSlider.value=d;
-
-            update();
-
-        },30);
-
-    }
-
-    else{
-
-        playing=false;
-        playButton.textContent="▶ Play";
-
-        clearInterval(animation);
-
-    }
-
-});
 
 update();
