@@ -1,1 +1,144 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
+body{
+
+    font-family:Arial,Helvetica,sans-serif;
+    background:#0f172a;
+    color:white;
+
+}
+
+header{
+
+    text-align:center;
+    padding:70px 20px;
+
+}
+
+header h1{
+
+    font-size:4rem;
+    color:#60a5fa;
+
+}
+
+.subtitle{
+
+    font-size:1.4rem;
+    margin-top:10px;
+    color:#cbd5e1;
+
+}
+
+.description{
+
+    max-width:850px;
+    margin:30px auto;
+    line-height:1.7;
+    color:#d1d5db;
+
+}
+
+.github-button{
+
+    display:inline-block;
+    margin-top:10px;
+    padding:14px 30px;
+    background:#2563eb;
+    color:white;
+    text-decoration:none;
+    border-radius:10px;
+    transition:.2s;
+
+}
+
+.github-button:hover{
+
+    background:#1d4ed8;
+    transform:translateY(-2px);
+
+}
+
+main{
+
+    width:min(1300px,95%);
+    margin:auto;
+    padding-bottom:80px;
+
+}
+
+main h2{
+
+    text-align:center;
+    margin-bottom:40px;
+    color:#60a5fa;
+
+}
+
+.grid{
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:25px;
+
+}
+
+.card{
+
+    text-decoration:none;
+    color:white;
+    background:#1e293b;
+    padding:30px;
+    border-radius:16px;
+    transition:.25s;
+    border:2px solid transparent;
+
+}
+
+.card:hover{
+
+    transform:translateY(-6px);
+    border-color:#60a5fa;
+
+}
+
+.card h3{
+
+    color:#60a5fa;
+    margin-bottom:10px;
+
+}
+
+.card p{
+
+    color:#d1d5db;
+
+}
+
+footer{
+
+    text-align:center;
+    padding:35px;
+    color:#94a3b8;
+
+}
+
+@media(max-width:700px){
+
+header h1{
+
+    font-size:2.8rem;
+
+}
+
+.subtitle{
+
+    font-size:1.1rem;
+
+}
+
+}
