@@ -3,12 +3,12 @@
 
 <head>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Delta To Derivatives | Day 13 - Circular Motion</title>
+<title>Delta To Derivatives | Day 13 - Circular Motion</title>
 
-    <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
 
 </head>
 
@@ -16,17 +16,16 @@
 
 <header>
 
-    <h1>Delta To Derivatives</h1>
+<h1>Delta To Derivatives</h1>
 
-    <h2>Day 13 — Circular Motion</h2>
+<h2>Day 13 — Circular Motion</h2>
 
-    <p>
-        An object moving in a circle can travel at a constant speed while still
-        accelerating. Explore how changing the radius and speed affects the
-        centripetal acceleration, and discover why acceleration is caused by a
-        changing <em>direction</em> of the velocity vector rather than a change
-        in speed.
-    </p>
+<p>
+An object moving in a circle can travel at a constant speed while still
+accelerating. Explore how changing the speed and radius affects the
+centripetal acceleration, and discover why acceleration comes from a
+changing <em>direction</em> of the velocity vector.
+</p>
 
 </header>
 
@@ -34,109 +33,103 @@
 
 <section class="canvas-section">
 
-    <canvas
-        id="canvas"
-        width="700"
-        height="500">
-    </canvas>
+<canvas
+id="canvas"
+width="700"
+height="500">
+</canvas>
 
 </section>
 
 <section class="controls">
 
-    <h3>Controls</h3>
+<h3>Controls</h3>
 
-    <label>
+<label>
 
-        Speed (m/s)
+Speed (m/s)
 
-        <input
-            type="range"
-            id="speed"
-            min="1"
-            max="20"
-            value="8"
-            step="0.5">
+<input
+type="range"
+id="speed"
+min="1"
+max="20"
+value="8"
+step="0.5">
 
-        <span id="speedValue">8.0 m/s</span>
+<span id="speedValue">8.0 m/s</span>
 
-    </label>
+</label>
 
-    <label>
+<label>
 
-        Radius (m)
+Radius (m)
 
-        <input
-            type="range"
-            id="radius"
-            min="1"
-            max="8"
-            value="4"
-            step="0.5">
+<input
+type="range"
+id="radius"
+min="1"
+max="8"
+value="4"
+step="0.5">
 
-        <span id="radiusValue">4.0 m</span>
+<span id="radiusValue">4.0 m</span>
 
-    </label>
-
-    <button id="playButton">
-
-        ▶ Play
-
-    </button>
+</label>
 
 </section>
 
 <section class="info">
 
-    <h3>Live Calculations</h3>
+<h3>Live Calculations</h3>
 
-    <div class="card">
+<div class="card">
 
-        <h4>Speed</h4>
+<h4>Speed</h4>
 
-        <p id="speedData"></p>
+<p id="speedData"></p>
 
-    </div>
+</div>
 
-    <div class="card">
+<div class="card">
 
-        <h4>Centripetal Acceleration</h4>
+<h4>Centripetal Acceleration</h4>
 
-        <p id="acceleration"></p>
+<p id="acceleration"></p>
 
-    </div>
+</div>
 
-    <div class="card">
+<div class="card">
 
-        <h4>Angular Velocity</h4>
+<h4>Angular Velocity</h4>
 
-        <p id="angularVelocity"></p>
+<p id="angularVelocity"></p>
 
-    </div>
+</div>
 
-    <div class="card">
+<div class="card">
 
-        <h4>Direction of Velocity</h4>
+<h4>Velocity Direction</h4>
 
-        <p id="direction"></p>
+<p id="direction"></p>
 
-    </div>
+</div>
 
-    <div class="card">
+<div class="card">
 
-        <h4>Calculus View</h4>
+<h4>Calculus View</h4>
 
-        <p id="calculusView"></p>
+<p id="calculusView"></p>
 
-    </div>
+</div>
 
-    <div class="card explanation">
+<div class="card explanation">
 
-        <h3>What's Happening?</h3>
+<h3>What's Happening?</h3>
 
-        <p id="explanation"></p>
+<p id="explanation"></p>
 
-    </div>
+</div>
 
 </section>
 
