@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Delta To Derivatives | Day 15 - Kinetic Energy</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>Delta To Derivatives</h1>
+
+    <h2>Day 15 — Kinetic Energy</h2>
+
+    <p>
+        Explore how kinetic energy changes with speed. Because kinetic energy
+        depends on the square of velocity, each additional increase in speed
+        produces a larger increase in energy. The graph reveals how the slope
+        becomes steeper, connecting motion to derivatives.
+    </p>
+
+</header>
+
+<section class="journal">
+
+    <h2>Today's Journal</h2>
+
+    <p class="coming-soon">
+        Your Day 15 Substack post will go here.
+    </p>
+
+</section>
+
+<main>
+
+<section class="canvas-section">
+
+    <canvas
+        id="canvas"
+        width="700"
+        height="500">
+    </canvas>
+
+</section>
+
+<section class="controls">
+
+    <h3>Controls</h3>
+
+    <label>
+
+        Mass (kg)
+
+        <input
+            type="range"
+            id="mass"
+            min="1"
+            max="10"
+            value="2"
+            step="0.5">
+
+        <span id="massValue">2.0 kg</span>
+
+    </label>
+
+    <label>
+
+        Velocity (m/s)
+
+        <input
+            type="range"
+            id="velocity"
+            min="0"
+            max="20"
+            value="10"
+            step="0.5">
+
+        <span id="velocityValue">10.0 m/s</span>
+
+    </label>
+
+</section>
+
+<section class="info">
+
+    <h3>Live Calculations</h3>
+
+    <div class="card">
+
+        <h4>Kinetic Energy</h4>
+
+        <p id="kineticEnergy"></p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Instantaneous Slope</h4>
+
+        <p id="slope"></p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Velocity</h4>
+
+        <p id="velocityData"></p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Mass</h4>
+
+        <p id="massData"></p>
+
+    </div>
+
+    <div class="card explanation">
+
+        <h3>Calculus Connection</h3>
+
+        <p id="explanation"></p>
+
+    </div>
+
+</section>
+
+</main>
+
+<footer>
+
+<p>
+
+Built for the
+<strong>Delta To Derivatives</strong>
+summer project.
+
+</p>
+
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
