@@ -1,1 +1,207 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
+body{
+
+    font-family:Arial,Helvetica,sans-serif;
+    background:#0f172a;
+    color:white;
+
+}
+
+header{
+
+    text-align:center;
+    padding:50px 20px;
+
+}
+
+header h1{
+
+    color:#60a5fa;
+    font-size:3rem;
+    margin-bottom:10px;
+
+}
+
+header h2{
+
+    margin-bottom:20px;
+    color:white;
+
+}
+
+header p{
+
+    max-width:850px;
+    margin:auto;
+    line-height:1.7;
+    color:#d1d5db;
+
+}
+
+.journal{
+
+    width:min(1000px,92%);
+    margin:30px auto;
+    background:#1e293b;
+    padding:25px;
+    border-radius:16px;
+
+}
+
+.journal h2{
+
+    color:#60a5fa;
+    margin-bottom:15px;
+
+}
+
+.coming-soon{
+
+    color:#cbd5e1;
+
+}
+
+main{
+
+    width:min(1300px,95%);
+    margin:auto;
+
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:30px;
+
+    padding-bottom:60px;
+
+}
+
+.canvas-section{
+
+    background:#1e293b;
+    padding:25px;
+    border-radius:16px;
+
+}
+
+canvas{
+
+    width:100%;
+    border-radius:12px;
+    background:#0f172a;
+
+}
+
+.controls{
+
+    background:#1e293b;
+    padding:25px;
+    border-radius:16px;
+
+    margin-bottom:25px;
+
+}
+
+.controls h3{
+
+    color:#60a5fa;
+    margin-bottom:20px;
+
+}
+
+.controls label{
+
+    display:block;
+    margin-bottom:25px;
+    line-height:1.8;
+
+}
+
+.controls input{
+
+    width:100%;
+    margin:10px 0;
+
+}
+
+.controls span{
+
+    display:block;
+    color:#cbd5e1;
+
+}
+
+.info{
+
+    display:grid;
+    gap:20px;
+
+}
+
+.card{
+
+    background:#1e293b;
+    padding:20px;
+    border-radius:14px;
+
+}
+
+.card h4{
+
+    color:#60a5fa;
+    margin-bottom:10px;
+
+}
+
+.card p{
+
+    color:white;
+    line-height:1.6;
+
+}
+
+.explanation{
+
+    grid-column:1/-1;
+
+}
+
+.explanation h3{
+
+    color:#60a5fa;
+    margin-bottom:15px;
+
+}
+
+footer{
+
+    text-align:center;
+    padding:35px;
+    color:#94a3b8;
+
+}
+
+@media(max-width:900px){
+
+main{
+
+    grid-template-columns:1fr;
+
+}
+
+header h1{
+
+    font-size:2.4rem;
+
+}
+
+canvas{
+
+    height:auto;
+
+}
+
+}
