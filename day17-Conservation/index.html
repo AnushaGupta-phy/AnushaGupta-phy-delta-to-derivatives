@@ -1,1 +1,158 @@
 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Delta To Derivatives | Day 17 - Conservation of Energy</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>Delta To Derivatives</h1>
+
+    <h2>Day 17 — Conservation of Energy</h2>
+
+    <p>
+        Watch gravitational potential energy transform into kinetic energy as an
+        object moves down a hill. Although each form of energy changes
+        continuously, their sum remains constant. Explore how calculus helps us
+        understand conservation laws.
+    </p>
+
+</header>
+
+<main>
+
+<section class="canvas-section">
+
+    <canvas
+        id="canvas"
+        width="900"
+        height="520">
+    </canvas>
+
+</section>
+
+<section class="controls">
+
+    <h3>Controls</h3>
+
+    <label>
+
+        Starting Height (m)
+
+        <input
+            type="range"
+            id="height"
+            min="2"
+            max="10"
+            value="8"
+            step="0.5">
+
+        <span id="heightValue">8.0 m</span>
+
+    </label>
+
+    <label>
+
+        Mass (kg)
+
+        <input
+            type="range"
+            id="mass"
+            min="1"
+            max="20"
+            value="5"
+            step="0.5">
+
+        <span id="massValue">5.0 kg</span>
+
+    </label>
+
+</section>
+
+<section class="info">
+
+    <h3>Live Calculations</h3>
+
+    <div class="card">
+
+        <h4>Current Height</h4>
+
+        <p id="currentHeight"></p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Potential Energy</h4>
+
+        <p id="potentialEnergy"></p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Kinetic Energy</h4>
+
+        <p id="kineticEnergy"></p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Total Energy</h4>
+
+        <p id="totalEnergy"></p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Speed</h4>
+
+        <p id="speed"></p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Calculus Connection</h4>
+
+        <p id="calculus"></p>
+
+    </div>
+
+    <div class="card explanation">
+
+        <h3>What's Happening?</h3>
+
+        <p id="explanation"></p>
+
+    </div>
+
+</section>
+
+</main>
+
+<footer>
+
+<p>
+</p>
+
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
