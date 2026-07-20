@@ -7,7 +7,6 @@ const massSlider = document.getElementById("mass");
 const heightValue = document.getElementById("heightValue");
 const massValue = document.getElementById("massValue");
 
-const heightData = document.getElementById("heightData");
 const potentialEnergyData = document.getElementById("potentialEnergy");
 const slopeData = document.getElementById("slope");
 const forceData = document.getElementById("force");
@@ -16,210 +15,199 @@ const explanation = document.getElementById("explanation");
 
 const g = 9.8;
 
-//--------------------------------------------------
+//------------------------------------------------------------
 
 function drawScene() {
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0,0,700,500);
 
-    ctx.fillStyle = "#0f172a";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // Ground
-    ctx.strokeStyle = "white";
-    ctx.lineWidth = 3;
-
-    ctx.beginPath();
-    ctx.moveTo(100, 430);
-    ctx.lineTo(620, 430);
-    ctx.stroke();
-
-    // Hill
-    ctx.strokeStyle = "#60a5fa";
-    ctx.lineWidth = 4;
-
-    ctx.beginPath();
-    ctx.moveTo(120, 430);
-    ctx.lineTo(320, 230);
-    ctx.stroke();
+    ctx.fillStyle="#0f172a";
+    ctx.fillRect(0,0,700,500);
 
     const h = Number(heightSlider.value);
+    const m = Number(massSlider.value);
 
-    // Object position
-    const t = h / 10;
+    //--------------------------------------------------------
+    // Elevator
+    //--------------------------------------------------------
 
-    const x = 120 + t * 200;
-    const y = 430 - t * 200;
+    const baseX = 130;
+    const baseY = 420;
+    const shaftHeight = 320;
+
+    ctx.strokeStyle="white";
+    ctx.lineWidth=4;
 
     ctx.beginPath();
-    ctx.fillStyle = "#22c55e";
-    ctx.arc(x, y, 14, 0, Math.PI * 2);
+    ctx.moveTo(baseX,baseY);
+    ctx.lineTo(baseX,baseY-shaftHeight);
+    ctx.stroke();
+
+    const y = baseY-(h/10)*shaftHeight;
+
+    ctx.beginPath();
+    ctx.fillStyle="#22c55e";
+    ctx.arc(baseX,y,14,0,Math.PI*2);
     ctx.fill();
 
-    // Height line
-    ctx.strokeStyle = "#facc15";
-    ctx.setLineDash([6, 6]);
+    ctx.setLineDash([6,6]);
+
+    ctx.strokeStyle="#facc15";
 
     ctx.beginPath();
-    ctx.moveTo(x, y);
-    ctx.lineTo(x, 430);
+    ctx.moveTo(baseX,y);
+    ctx.lineTo(70,y);
     ctx.stroke();
 
     ctx.setLineDash([]);
 
+    ctx.fillStyle="white";
+    ctx.font="16px Arial";
+
+    ctx.fillText("Height",35,90);
+    ctx.fillText(h.toFixed(1)+" m",25,y-10);
+
+    //--------------------------------------------------------
     // Graph
+    //--------------------------------------------------------
 
-    const graphX = 420;
-    const graphY = 390;
-    const graphW = 220;
-    const graphH = 180;
+    const graphX=350;
+    const graphY=420;
 
-    // Axes
+    const graphWidth=280;
+    const graphHeight=300;
 
-    ctx.strokeStyle = "white";
-    ctx.lineWidth = 2;
+    ctx.strokeStyle="white";
 
     ctx.beginPath();
-    ctx.moveTo(graphX, graphY);
-    ctx.lineTo(graphX, graphY - graphH);
-    ctx.lineTo(graphX + graphW, graphY - graphH);
+    ctx.moveTo(graphX,graphY);
+    ctx.lineTo(graphX,graphY-graphHeight);
+    ctx.lineTo(graphX+graphWidth,graphY-graphHeight);
     ctx.stroke();
 
-    // U = mgh graph
-
-    const m = Number(massSlider.value);
-
-    ctx.strokeStyle = "#3b82f6";
-    ctx.lineWidth = 3;
+    ctx.strokeStyle="#3b82f6";
+    ctx.lineWidth=3;
 
     ctx.beginPath();
 
-    for (let i = 0; i <= 100; i++) {
+    for(let i=0;i<=100;i++){
 
-        const height = i / 10;
+        const height=i/10;
+        const U=m*g*height;
 
-        const U = m * g * height;
+        const x=graphX+height*(graphWidth/10);
 
-        const gx = graphX + height * 20;
-        const gy = graphY - (U / (20 * 9.8 * 10)) * graphH;
+        const maxU=20*g*10;
 
-        if (i === 0)
-            ctx.moveTo(gx, gy);
+        const yPoint=graphY-(U/maxU)*graphHeight;
+
+        if(i===0)
+            ctx.moveTo(x,yPoint);
         else
-            ctx.lineTo(gx, gy);
+            ctx.lineTo(x,yPoint);
 
     }
 
     ctx.stroke();
 
-    // Current point
+    const U=m*g*h;
 
-    const U = m * g * h;
-
-    const px = graphX + h * 20;
-    const py = graphY - (U / (20 * 9.8 * 10)) * graphH;
+    const px=graphX+h*(graphWidth/10);
+    const py=graphY-(U/(20*g*10))*graphHeight;
 
     ctx.beginPath();
-    ctx.fillStyle = "#ef4444";
-    ctx.arc(px, py, 6, 0, Math.PI * 2);
+    ctx.fillStyle="#ef4444";
+    ctx.arc(px,py,7,0,Math.PI*2);
     ctx.fill();
 
-    // Labels
+    ctx.fillStyle="white";
+    ctx.font="20px Arial";
 
-    ctx.fillStyle = "white";
-    ctx.font = "18px Arial";
+    ctx.fillText("Potential Energy",390,45);
 
-    ctx.fillText("Potential Energy Graph", 405, 40);
+    ctx.font="15px Arial";
 
-    ctx.font = "14px Arial";
-    ctx.fillText("Height", graphX + 150, graphY + 25);
-    ctx.fillText("U", graphX - 20, graphY - graphH + 10);
+    ctx.fillText("U",330,120);
+    ctx.fillText("Height",535,450);
 
 }
 
-//--------------------------------------------------
+//------------------------------------------------------------
 
-function update() {
+function update(){
 
-    const h = Number(heightSlider.value);
-    const m = Number(massSlider.value);
+    const h=Number(heightSlider.value);
+    const m=Number(massSlider.value);
 
-    const U = m * g * h;
+    const U=m*g*h;
 
-    const slope = m * g;
+    const slope=m*g;
 
-    const force = -slope;
+    const force=-slope;
 
-    heightValue.textContent = h.toFixed(1) + " m";
-    massValue.textContent = m.toFixed(1) + " kg";
+    heightValue.textContent=h.toFixed(1)+" m";
+    massValue.textContent=m.toFixed(1)+" kg";
 
-    heightData.innerHTML =
-        `<strong>${h.toFixed(2)} m</strong>`;
+    potentialEnergyData.innerHTML=
+    `<strong>${U.toFixed(2)} J</strong>`;
 
-    potentialEnergyData.innerHTML =
-        `<strong>${U.toFixed(2)} J</strong>`;
+    slopeData.innerHTML=
+    `<strong>${slope.toFixed(2)} J/m</strong>`;
 
-    slopeData.innerHTML =
-        `<strong>${slope.toFixed(2)} J/m</strong>`;
+    forceData.innerHTML=
+    `<strong>${force.toFixed(2)} N</strong>`;
 
-    forceData.innerHTML =
-        `<strong>${force.toFixed(2)} N</strong>`;
+    calculusData.innerHTML=
+    `
+    U(h)=mgh
 
-    calculusData.innerHTML =
-        `
-        U(h) = mgh
+    <br><br>
 
-        <br><br>
+    dU/dh = ${slope.toFixed(2)}
 
-        dU/dh = ${slope.toFixed(2)}
+    <br><br>
 
-        <br><br>
+    F=-dU/dh
 
-        F = -dU/dh = ${force.toFixed(2)} N
-        `;
+    <br><br>
 
-    explanation.innerHTML =
-        `
-        Potential energy depends entirely on an object's position.
+    = ${force.toFixed(2)} N
+    `;
 
-        <br><br>
+    explanation.innerHTML=
+    `
+    Potential energy increases linearly with height.
 
-        As the object moves higher, its gravitational potential energy
-        increases linearly:
+    <br><br>
 
-        <br><br>
+    The graph of
+    <strong>U=mgh</strong>
+    is a straight line.
 
-        <strong>U = mgh</strong>
+    <br><br>
 
-        <br><br>
+    Its slope is
 
-        Calculus tells us that the slope of this graph is
+    <br><br>
 
-        <br><br>
+    <strong>dU/dh=mg</strong>
 
-        <strong>dU/dh = mg</strong>
+    <br><br>
 
-        <br><br>
+    Gravity acts in the direction of decreasing potential energy.
 
-        Since gravity always acts downward,
+    <br><br>
 
-        <br><br>
+    Therefore,
 
-        <strong>F = -dU/dh</strong>
-
-        <br><br>
-
-        The negative sign means the force points toward decreasing
-        potential energy.
-        `;
+    <strong>F=-dU/dh</strong>.
+    `;
 
     drawScene();
 
 }
 
-//--------------------------------------------------
-
-heightSlider.addEventListener("input", update);
-massSlider.addEventListener("input", update);
+heightSlider.addEventListener("input",update);
+massSlider.addEventListener("input",update);
 
 update();
