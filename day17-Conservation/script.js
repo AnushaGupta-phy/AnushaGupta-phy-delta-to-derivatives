@@ -17,11 +17,11 @@ const explanation = document.getElementById("explanation");
 
 const g = 9.8;
 
-let t = 0;
+let progress = 0;
 
 //------------------------------------------------------------
 
-function drawScene(currentHeight, KE, PE, totalEnergy){
+function drawScene(currentHeight, PE, KE, totalEnergy){
 
     ctx.clearRect(0,0,canvas.width,canvas.height);
 
@@ -32,51 +32,50 @@ function drawScene(currentHeight, KE, PE, totalEnergy){
     // Ramp
     //--------------------------------------------------------
 
-    const startX = 80;
-    const startY = 380;
+    const topX = 100;
+    const topY = 120;
 
-    const endX = 350;
-    const endY = 150;
+    const bottomX = 360;
+    const bottomY = 380;
 
     ctx.strokeStyle="white";
     ctx.lineWidth=4;
 
     ctx.beginPath();
-    ctx.moveTo(startX,startY);
-    ctx.lineTo(endX,endY);
+    ctx.moveTo(topX,topY);
+    ctx.lineTo(bottomX,bottomY);
     ctx.stroke();
 
     //--------------------------------------------------------
     // Block
     //--------------------------------------------------------
 
-    const startHeight = Number(heightSlider.value);
+    const blockX =
+        topX + (bottomX-topX)*progress;
 
-    const progress = t;
-
-    const blockX = startX + (endX-startX)*progress;
-    const blockY = startY + (endY-startY)*progress;
+    const blockY =
+        topY + (bottomY-topY)*progress;
 
     ctx.save();
 
     ctx.translate(blockX,blockY);
 
-    ctx.rotate(-Math.PI/4);
+    ctx.rotate(Math.PI/4);
 
     ctx.fillStyle="#3b82f6";
-    ctx.fillRect(-15,-15,30,30);
+    ctx.fillRect(-16,-16,32,32);
 
     ctx.restore();
 
     //--------------------------------------------------------
-    // Graph axes
+    // Energy Graph
     //--------------------------------------------------------
 
-    const gx = 470;
-    const gy = 420;
+    const gx=470;
+    const gy=420;
 
-    const gw = 350;
-    const gh = 260;
+    const gw=350;
+    const gh=250;
 
     ctx.strokeStyle="white";
     ctx.lineWidth=2;
@@ -93,37 +92,35 @@ function drawScene(currentHeight, KE, PE, totalEnergy){
     ctx.fillStyle="white";
     ctx.font="16px Arial";
 
-    ctx.fillText("Energy",gx-30,gy-gh-10);
+    ctx.fillText("Energy",gx-25,gy-gh-10);
     ctx.fillText("Position",gx+250,gy+30);
 
-    //--------------------------------------------------------
-    // Energy curves
-    //--------------------------------------------------------
+    const maxEnergy=2000;
 
-    const maxEnergy =
-        Number(massSlider.value)*g*10;
-
-    // Potential
+    //--------------------------------------------------------
+    // Potential Energy Curve
+    //--------------------------------------------------------
 
     ctx.strokeStyle="#22c55e";
     ctx.lineWidth=3;
 
     ctx.beginPath();
 
-    for(let i=0;i<=100;i++){
+    for(let p=0;p<=1;p+=0.01){
 
-        const p=i/100;
-
-        const h=startHeight*(1-p);
+        const h=
+        Number(heightSlider.value)*(1-p);
 
         const pe=
-            Number(massSlider.value)*g*h;
+        Number(massSlider.value)*g*h;
 
-        const x=gx+p*gw;
+        const x=
+        gx+p*gw;
 
-        const y=gy-(pe/maxEnergy)*gh;
+        const y=
+        gy-(pe/maxEnergy)*gh;
 
-        if(i===0)
+        if(p===0)
             ctx.moveTo(x,y);
         else
             ctx.lineTo(x,y);
@@ -132,28 +129,37 @@ function drawScene(currentHeight, KE, PE, totalEnergy){
 
     ctx.stroke();
 
-    // Kinetic
+    //--------------------------------------------------------
+    // Kinetic Curve
+    //--------------------------------------------------------
 
     ctx.strokeStyle="#3b82f6";
 
     ctx.beginPath();
 
-    for(let i=0;i<=100;i++){
+    const total=
+    Number(massSlider.value)*
+    g*
+    Number(heightSlider.value);
 
-        const p=i/100;
+    for(let p=0;p<=1;p+=0.01){
 
-        const h=startHeight*(1-p);
+        const h=
+        Number(heightSlider.value)*(1-p);
 
         const pe=
-            Number(massSlider.value)*g*h;
+        Number(massSlider.value)*g*h;
 
-        const ke=maxEnergy*(startHeight/10)-pe;
+        const ke=
+        total-pe;
 
-        const x=gx+p*gw;
+        const x=
+        gx+p*gw;
 
-        const y=gy-(ke/maxEnergy)*gh;
+        const y=
+        gy-(ke/maxEnergy)*gh;
 
-        if(i===0)
+        if(p===0)
             ctx.moveTo(x,y);
         else
             ctx.lineTo(x,y);
@@ -162,78 +168,63 @@ function drawScene(currentHeight, KE, PE, totalEnergy){
 
     ctx.stroke();
 
-    // Total
+    //--------------------------------------------------------
+    // Total Energy
+    //--------------------------------------------------------
 
     ctx.strokeStyle="#facc15";
 
-    ctx.beginPath();
-
     const totalY=
-        gy-(totalEnergy/maxEnergy)*gh;
+    gy-(total/maxEnergy)*gh;
 
+    ctx.beginPath();
     ctx.moveTo(gx,totalY);
     ctx.lineTo(gx+gw,totalY);
-
     ctx.stroke();
-        //--------------------------------------------------------
-    // Moving points on graph
+
+    //--------------------------------------------------------
+    // Moving Dots
     //--------------------------------------------------------
 
-    const progressX = gx + progress * gw;
+    const dotX=
+    gx+progress*gw;
 
-    // Potential Energy point
     ctx.beginPath();
-    ctx.fillStyle = "#22c55e";
+    ctx.fillStyle="#22c55e";
     ctx.arc(
-        progressX,
-        gy - (PE / maxEnergy) * gh,
+        dotX,
+        gy-(PE/maxEnergy)*gh,
         6,
         0,
-        Math.PI * 2
+        Math.PI*2
     );
     ctx.fill();
 
-    // Kinetic Energy point
     ctx.beginPath();
-    ctx.fillStyle = "#3b82f6";
+    ctx.fillStyle="#3b82f6";
     ctx.arc(
-        progressX,
-        gy - (KE / maxEnergy) * gh,
+        dotX,
+        gy-(KE/maxEnergy)*gh,
         6,
         0,
-        Math.PI * 2
+        Math.PI*2
     );
     ctx.fill();
 
-    // Total Energy point
     ctx.beginPath();
-    ctx.fillStyle = "#facc15";
+    ctx.fillStyle="#facc15";
     ctx.arc(
-        progressX,
+        dotX,
         totalY,
         6,
         0,
-        Math.PI * 2
+        Math.PI*2
     );
     ctx.fill();
 
-    //--------------------------------------------------------
-    // Legend
-    //--------------------------------------------------------
-
-    ctx.font = "14px Arial";
-
-    ctx.fillStyle = "#22c55e";
-    ctx.fillText("Potential Energy", 520, 40);
-
-    ctx.fillStyle = "#3b82f6";
-    ctx.fillText("Kinetic Energy", 520, 65);
-
-    ctx.fillStyle = "#facc15";
-    ctx.fillText("Total Energy", 520, 90);
-
 }
-
+//------------------------------------------------------------
+// Update Physics + UI
 //------------------------------------------------------------
 
 function update(){
@@ -244,15 +235,22 @@ function update(){
     heightValue.textContent = startHeight.toFixed(1) + " m";
     massValue.textContent = mass.toFixed(1) + " kg";
 
-    const currentHeight = startHeight * (1 - t);
+    // Height decreases as the block slides down
+    const currentHeight = startHeight * (1 - progress);
 
-    const PE = mass * g * currentHeight;
-
+    // Total Mechanical Energy
     const totalEnergy = mass * g * startHeight;
 
+    // Potential Energy
+    const PE = mass * g * currentHeight;
+
+    // Kinetic Energy
     const KE = totalEnergy - PE;
 
-    const speed = Math.sqrt((2 * KE) / mass);
+    // Speed from KE = 1/2 mv²
+    const speed = Math.sqrt(Math.max(0, (2 * KE) / mass));
+
+    //--------------------------------------------------------
 
     currentHeightData.innerHTML =
         `<strong>${currentHeight.toFixed(2)} m</strong>`;
@@ -270,45 +268,11 @@ function update(){
         `<strong>${speed.toFixed(2)} m/s</strong>`;
 
     calculusData.innerHTML = `
-        E = KE + PE
+        <strong>E = KE + PE</strong>
 
         <br><br>
 
-        dE/dt = 0
-
-        <br><br>
-
-        Energy changes form,
-
-        <br>
-
-        but the total stays constant.
-    `;
-
-    explanation.innerHTML = `
-        As the block slides downward,
-        its height decreases.
-
-        <br><br>
-
-        This causes its
-        <strong>Potential Energy</strong>
-        to decrease.
-
-        <br><br>
-
-        That lost potential energy is converted into
-        <strong>Kinetic Energy</strong>.
-
-        <br><br>
-
-        The yellow line shows that the
-        <strong>Total Mechanical Energy</strong>
-        remains constant throughout the motion.
-
-        <br><br>
-
-        In calculus,
+        Since no energy is lost,
 
         <br><br>
 
@@ -316,21 +280,57 @@ function update(){
 
         <br><br>
 
-        meaning the total energy does not change with time.
+        Total mechanical energy
+        stays constant.
     `;
 
-    drawScene(currentHeight, KE, PE, totalEnergy);
+    explanation.innerHTML = `
+        As the block slides down the ramp,
+        its height decreases.
+
+        <br><br>
+
+        The loss in
+        <strong>Potential Energy</strong>
+        becomes
+        <strong>Kinetic Energy</strong>.
+
+        <br><br>
+
+        Notice that the yellow line
+        (Total Energy)
+        never changes.
+
+        <br><br>
+
+        This is the
+        <strong>Conservation of Energy</strong>.
+
+        <br><br>
+
+        Calculus describes this by saying
+
+        <br><br>
+
+        <strong>dE/dt = 0</strong>.
+    `;
+
+    drawScene(currentHeight, PE, KE, totalEnergy);
 
 }
 
 //------------------------------------------------------------
+// Animation
+//------------------------------------------------------------
 
 function animate(){
 
-    t += 0.004;
+    progress += 0.0025;
 
-    if(t > 1){
-        t = 0;
+    if(progress >= 1){
+
+        progress = 0;
+
     }
 
     update();
@@ -340,19 +340,24 @@ function animate(){
 }
 
 //------------------------------------------------------------
+// Sliders
+//------------------------------------------------------------
 
 heightSlider.addEventListener("input", () => {
 
-    t = 0;
+    progress = 0;
     update();
 
 });
 
 massSlider.addEventListener("input", () => {
 
+    progress = 0;
     update();
 
 });
+
+//------------------------------------------------------------
 
 update();
 animate();
