@@ -68,67 +68,80 @@ function drawScene() {
     ctx.fillText(h.toFixed(1)+" m",25,y-10);
 
     //--------------------------------------------------------
-    // Graph
-    //--------------------------------------------------------
+// Graph
+//--------------------------------------------------------
 
-    const graphX=350;
-    const graphY=420;
+const graphX = 350;
+const graphY = 420;
 
-    const graphWidth=280;
-    const graphHeight=300;
+const graphWidth = 280;
+const graphHeight = 300;
 
-    ctx.strokeStyle="white";
+// Axes
 
-    ctx.beginPath();
-    ctx.moveTo(graphX,graphY);
-    ctx.lineTo(graphX,graphY-graphHeight);
-    ctx.lineTo(graphX+graphWidth,graphY-graphHeight);
-    ctx.stroke();
+ctx.strokeStyle = "white";
+ctx.lineWidth = 2;
 
-    ctx.strokeStyle="#3b82f6";
-    ctx.lineWidth=3;
+ctx.beginPath();
 
-    ctx.beginPath();
+// Y-axis
+ctx.moveTo(graphX, graphY);
+ctx.lineTo(graphX, graphY - graphHeight);
 
-    for(let i=0;i<=100;i++){
+// X-axis
+ctx.moveTo(graphX, graphY);
+ctx.lineTo(graphX + graphWidth, graphY);
 
-        const height=i/10;
-        const U=m*g*height;
+ctx.stroke();
 
-        const x=graphX+height*(graphWidth/10);
+// Labels
 
-        const maxU=20*g*10;
+ctx.fillStyle = "white";
+ctx.font = "16px Arial";
 
-        const yPoint=graphY-(U/maxU)*graphHeight;
+ctx.fillText("U (J)", graphX - 35, graphY - graphHeight + 20);
+ctx.fillText("Height (m)", graphX + 170, graphY + 30);
 
-        if(i===0)
-            ctx.moveTo(x,yPoint);
-        else
-            ctx.lineTo(x,yPoint);
+// Graph line
 
-    }
+const maxU = 500;
 
-    ctx.stroke();
+ctx.strokeStyle = "#3b82f6";
+ctx.lineWidth = 3;
 
-    const U=m*g*h;
+ctx.beginPath();
 
-    const px=graphX+h*(graphWidth/10);
-    const py=graphY-(U/(20*g*10))*graphHeight;
+for (let height = 0; height <= 10; height += 0.1) {
 
-    ctx.beginPath();
-    ctx.fillStyle="#ef4444";
-    ctx.arc(px,py,7,0,Math.PI*2);
-    ctx.fill();
+    const U = m * g * height;
 
-    ctx.fillStyle="white";
-    ctx.font="20px Arial";
+    const gx = graphX + (height / 10) * graphWidth;
+    const gy = graphY - (U / maxU) * graphHeight;
 
-    ctx.fillText("Potential Energy",390,45);
+    if (height === 0)
+        ctx.moveTo(gx, gy);
+    else
+        ctx.lineTo(gx, gy);
 
-    ctx.font="15px Arial";
+}
 
-    ctx.fillText("U",330,120);
-    ctx.fillText("Height",535,450);
+ctx.stroke();
+
+// Current point
+
+const U = m * g * h;
+
+const px = graphX + (h / 10) * graphWidth;
+const py = graphY - (U / maxU) * graphHeight;
+
+ctx.beginPath();
+ctx.fillStyle = "#ef4444";
+ctx.arc(px, py, 7, 0, Math.PI * 2);
+ctx.fill();
+
+ctx.fillStyle = "white";
+ctx.font = "20px Arial";
+ctx.fillText("Potential Energy", 410, 40);
 
 }
 
