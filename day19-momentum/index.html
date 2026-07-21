@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Delta To Derivatives | Day 19 - Momentum</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header>
+
+<h1>Delta To Derivatives</h1>
+
+<h2>Day 19 — Momentum</h2>
+
+<p>
+
+Momentum describes motion in a different way than velocity. Explore how mass
+and velocity combine to determine an object's momentum, then compare elastic,
+perfectly inelastic, and explosion collisions to discover what quantities are
+conserved.
+
+</p>
+
+</header>
+
+<div class="back-container">
+
+<a
+class="back-button"
+href="https://anushagupta-phy.github.io/AnushaGupta-phy-delta-to-derivatives/">
+
+← Back to Simulation Gallery
+
+</a>
+
+</div>
+
+<main>
+
+<section class="canvas-section">
+
+<canvas
+id="canvas"
+width="900"
+height="500">
+</canvas>
+
+</section>
+
+<section class="controls">
+
+<h3>Controls</h3>
+
+<label>
+
+Mass A (kg)
+
+<input
+type="range"
+id="massA"
+min="1"
+max="10"
+step="0.5"
+value="3">
+
+<span id="massAValue">3.0 kg</span>
+
+</label>
+
+<label>
+
+Velocity A (m/s)
+
+<input
+type="range"
+id="velocityA"
+min="-10"
+max="10"
+step="0.5"
+value="5">
+
+<span id="velocityAValue">5.0 m/s</span>
+
+</label>
+
+<label>
+
+Mass B (kg)
+
+<input
+type="range"
+id="massB"
+min="1"
+max="10"
+step="0.5"
+value="5">
+
+<span id="massBValue">5.0 kg</span>
+
+</label>
+
+<label>
+
+Velocity B (m/s)
+
+<input
+type="range"
+id="velocityB"
+min="-10"
+max="10"
+step="0.5"
+value="-2">
+
+<span id="velocityBValue">−2.0 m/s</span>
+
+</label>
+
+<label>
+
+Collision Type
+
+<select id="collisionType">
+
+<option value="elastic">
+
+Elastic Collision
+
+</option>
+
+<option value="inelastic">
+
+Perfectly Inelastic
+
+</option>
+
+<option value="explosion">
+
+Explosion
+
+</option>
+
+</select>
+
+</label>
+
+<button id="startButton">
+
+Start Collision
+
+</button>
+
+</section>
+
+<section class="info">
+
+<h3>Live Calculations</h3>
+
+<div class="card">
+
+<h4>Momentum of Cart A</h4>
+
+<p id="momentumA"></p>
+
+</div>
+
+<div class="card">
+
+<h4>Momentum of Cart B</h4>
+
+<p id="momentumB"></p>
+
+</div>
+
+<div class="card">
+
+<h4>Total Momentum</h4>
+
+<p id="totalMomentum"></p>
+
+</div>
+
+<div class="card">
+
+<h4>Kinetic Energy</h4>
+
+<p id="kineticEnergy"></p>
+
+</div>
+
+<div class="card">
+
+<h4>After Collision</h4>
+
+<p id="afterCollision"></p>
+
+</div>
+
+<div class="card">
+
+<h4>Calculus Connection</h4>
+
+<p id="calculusView"></p>
+
+</div>
+
+<div class="card explanation">
+
+<h3>What's Happening?</h3>
+
+<p id="explanation"></p>
+
+</div>
+
+</section>
+
+</main>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
