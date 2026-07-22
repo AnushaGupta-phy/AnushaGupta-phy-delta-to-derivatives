@@ -20,8 +20,8 @@ const explanationDisplay = document.getElementById("explanation");
 
 let block;
 
-let running=false;
-let elapsed=0;
+let running = false;
+let elapsed = 0;
 
 resetSimulation();
 
@@ -94,12 +94,9 @@ function drawBlock(){
 
     );
 
-    //------------------------------------------------
-
     if(running){
 
-        const arrowLength=
-
+        const arrowLength =
         Number(forceSlider.value)*1.5;
 
         ctx.strokeStyle="#facc15";
@@ -108,43 +105,28 @@ function drawBlock(){
         ctx.beginPath();
 
         ctx.moveTo(
-
             block.x+block.size,
-
             block.y
-
         );
 
         ctx.lineTo(
-
             block.x+block.size+arrowLength,
-
             block.y
-
         );
 
         ctx.lineTo(
-
             block.x+block.size+arrowLength-10,
-
             block.y-6
-
         );
 
         ctx.moveTo(
-
             block.x+block.size+arrowLength,
-
             block.y
-
         );
 
         ctx.lineTo(
-
             block.x+block.size+arrowLength-10,
-
             block.y+6
-
         );
 
         ctx.stroke();
@@ -154,37 +136,85 @@ function drawBlock(){
 }
 
 //----------------------------------------------------
+// Force-Time Graph
+//----------------------------------------------------
 
 function drawGraph(){
 
-    const left=80;
-    const bottom=460;
+    const left = 80;
+    const bottom = 460;
 
-    const width=720;
-    const height=180;
+    const width = 720;
 
     ctx.strokeStyle="white";
     ctx.lineWidth=2;
 
     ctx.beginPath();
-
-    ctx.moveTo(left,bottom-height);
-
+    ctx.moveTo(left,280);
     ctx.lineTo(left,bottom);
-
     ctx.lineTo(left+width,bottom);
-
     ctx.stroke();
 
     ctx.fillStyle="white";
-
     ctx.font="16px Arial";
 
-    ctx.fillText("Force",20,bottom-height+20);
-
+    ctx.fillText("Force",20,300);
     ctx.fillText("Time",left+width-20,bottom+25);
 
+    const graphHeight =
+        (Number(forceSlider.value)/100)*140;
+
+    const totalWidth =
+        (Number(timeSlider.value)/5)*width;
+
+    const currentWidth =
+        Math.min(
+            elapsed/Number(timeSlider.value),
+            1
+        )*totalWidth;
+
+    ctx.fillStyle="rgba(96,165,250,.45)";
+
+    ctx.fillRect(
+
+        left,
+        bottom-graphHeight,
+
+        currentWidth,
+
+        graphHeight
+
+    );
+
+    ctx.strokeStyle="#60a5fa";
+
+    ctx.strokeRect(
+
+        left,
+
+        bottom-graphHeight,
+
+        totalWidth,
+
+        graphHeight
+
+    );
+
+    ctx.fillStyle="#60a5fa";
+
+    ctx.fillText(
+
+        "Impulse",
+
+        left+totalWidth/2-28,
+
+        bottom-graphHeight-10
+
+    );
+
 }
+
+//----------------------------------------------------
 
 function updateDisplays(){
 
@@ -203,41 +233,29 @@ function updateDisplays(){
     massValue.textContent=m.toFixed(1)+" kg";
 
     impulseDisplay.innerHTML=
-    `${impulse.toFixed(2)} N·s`;
+        `${impulse.toFixed(2)} N·s`;
 
     deltaMomentumDisplay.innerHTML=
-    `${impulse.toFixed(2)} kg·m/s`;
+        `${impulse.toFixed(2)} kg·m/s`;
 
     velocityDisplay.innerHTML=
-    `${velocity.toFixed(2)} m/s`;
+        `${velocity.toFixed(2)} m/s`;
 
     momentumDisplay.innerHTML=
-    `${momentum.toFixed(2)} kg·m/s`;
+        `${momentum.toFixed(2)} kg·m/s`;
 
-    calculusDisplay.innerHTML=
-    `
-    <strong>J = ∫F dt</strong>
-
-    <br><br>
-
-    The shaded area under the graph
-    equals the change in momentum.
-
-    <br><br>
-
-    <strong>J = Δp</strong>
+    calculusDisplay.innerHTML=`
+        <strong>J = ∫F dt</strong>
+        <br><br>
+        The shaded area under the graph equals the change in momentum.
+        <br><br>
+        <strong>J = Δp</strong>
     `;
 
-    explanationDisplay.innerHTML=
-    `
-    Apply a force for a certain amount
-    of time.
-
-    <br><br>
-
-    Increasing either the force or the
-    duration increases the impulse,
-    producing a larger change in momentum.
+    explanationDisplay.innerHTML=`
+        Apply a force for a certain amount of time.
+        <br><br>
+        Increasing either the force or the duration increases the impulse and therefore the object's momentum.
     `;
 
     drawScene();
@@ -261,22 +279,33 @@ function animate(){
     const T = Number(timeSlider.value);
     const M = Number(massSlider.value);
 
-    const acceleration = F / M;
+    const dt = 0.02;
 
-    elapsed += 0.02;
+    elapsed += dt;
 
     //------------------------------------------------
-    // Apply force while active
+    // Apply force only while it is active
     //------------------------------------------------
 
     if(elapsed <= T){
 
-        block.velocity += acceleration * 0.02;
-        block.x += block.velocity;
+        const acceleration = F / M;
+
+        block.velocity += acceleration * dt;
 
     }
 
-    else{
+    //------------------------------------------------
+    // Continue moving after the force ends
+    //------------------------------------------------
+
+    block.x += block.velocity;
+
+    //------------------------------------------------
+    // Stop after leaving the screen
+    //------------------------------------------------
+
+    if(block.x > canvas.width + block.size){
 
         running = false;
 
@@ -289,115 +318,21 @@ function animate(){
 }
 
 //----------------------------------------------------
-// Draw Force-Time Graph
-//----------------------------------------------------
-
-function drawGraph(){
-
-    const left = 80;
-    const bottom = 460;
-
-    const width = 720;
-    const height = 180;
-
-    ctx.strokeStyle = "white";
-    ctx.lineWidth = 2;
-
-    ctx.beginPath();
-    ctx.moveTo(left,bottom-height);
-    ctx.lineTo(left,bottom);
-    ctx.lineTo(left+width,bottom);
-    ctx.stroke();
-
-    ctx.fillStyle="white";
-    ctx.font="16px Arial";
-
-    ctx.fillText("Force",20,bottom-height+20);
-    ctx.fillText("Time",left+width-20,bottom+25);
-
-    const maxForce = 100;
-
-    const graphHeight =
-        (Number(forceSlider.value)/maxForce)*140;
-
-    const totalWidth =
-        (Number(timeSlider.value)/5)*width;
-
-    //------------------------------------------------
-    // Filled Area
-    //------------------------------------------------
-
-    const currentWidth =
-
-        Math.min(
-            elapsed/Number(timeSlider.value),
-            1
-        )*totalWidth;
-
-    ctx.fillStyle="rgba(96,165,250,0.45)";
-
-    ctx.fillRect(
-
-        left,
-
-        bottom-graphHeight,
-
-        currentWidth,
-
-        graphHeight
-
-    );
-
-    //------------------------------------------------
-    // Rectangle Outline
-    //------------------------------------------------
-
-    ctx.strokeStyle="#60a5fa";
-
-    ctx.strokeRect(
-
-        left,
-
-        bottom-graphHeight,
-
-        totalWidth,
-
-        graphHeight
-
-    );
-
-    //------------------------------------------------
-
-    ctx.fillStyle="#60a5fa";
-
-    ctx.fillText(
-
-        "Impulse",
-
-        left+totalWidth/2-25,
-
-        bottom-graphHeight-10
-
-    );
-
-}
-
-//----------------------------------------------------
 // Start Button
 //----------------------------------------------------
 
-startButton.onclick=function(){
+startButton.onclick = function(){
 
     resetSimulation();
 
-    running=true;
+    running = true;
 
     animate();
 
 };
 
 //----------------------------------------------------
-// Update Live Numbers
+// Live Updating Values
 //----------------------------------------------------
 
 setInterval(function(){
@@ -406,16 +341,16 @@ setInterval(function(){
 
     const momentum = m * block.velocity;
 
-    momentumDisplay.innerHTML =
+    impulseDisplay.innerHTML =
+        `${(Number(forceSlider.value) * Number(timeSlider.value)).toFixed(2)} N·s`;
+
+    deltaMomentumDisplay.innerHTML =
         `${momentum.toFixed(2)} kg·m/s`;
 
     velocityDisplay.innerHTML =
         `${block.velocity.toFixed(2)} m/s`;
 
-    deltaMomentumDisplay.innerHTML =
+    momentumDisplay.innerHTML =
         `${momentum.toFixed(2)} kg·m/s`;
-
-    impulseDisplay.innerHTML =
-        `${momentum.toFixed(2)} N·s`;
 
 },30);
