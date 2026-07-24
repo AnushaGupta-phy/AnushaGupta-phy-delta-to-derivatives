@@ -258,42 +258,47 @@ function updateInformation(){
     centerMassValue.innerHTML =
         `${centerX.toFixed(1)} px`;
 
-    equation.innerHTML =
+equation.innerHTML =
 
-    `
-    \\[
-    x_{cm}=
-    \\frac{m_1x_1+m_2x_2}
-    {m_1+m_2}
-    \\]
+`
+<strong>
 
-    <br>
+x<sub>cm</sub> =
+(m<sub>1</sub>x<sub>1</sub> + m<sub>2</sub>x<sub>2</sub>)
+/
+(m<sub>1</sub> + m<sub>2</sub>)
 
-    =
+</strong>
 
-    <br>
+<br><br>
 
-    <strong>
+=
 
-    (${block1.mass.toFixed(1)} × ${block1.x.toFixed(0)}
-    +
-    ${block2.mass.toFixed(1)} × ${block2.x.toFixed(0)})
+<br>
 
-    /
+<strong>
 
-    (${(block1.mass+block2.mass).toFixed(1)})
+(${block1.mass.toFixed(1)} × ${block1.x.toFixed(0)}
 
-    </strong>
++
 
-    <br><br>
+${block2.mass.toFixed(1)} × ${block2.x.toFixed(0)})
 
-    =
+/
 
-    <br>
+(${(block1.mass + block2.mass).toFixed(1)})
 
-    <strong>${centerX.toFixed(1)} px</strong>
+</strong>
 
-    `;
+<br><br>
+
+=
+
+<br>
+
+<strong>${centerX.toFixed(1)} px</strong>
+
+`;
 
     calculus.innerHTML=
 
