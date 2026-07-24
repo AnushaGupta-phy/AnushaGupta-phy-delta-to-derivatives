@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Day 21 | Center of Mass</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="back-container">
+
+    <a href="../index.html" class="back-button">
+        ← Back to Simulation Gallery
+    </a>
+
+</div>
+
+<header>
+
+    <h1>Day 21</h1>
+
+    <h2>Center of Mass</h2>
+
+    <p>
+
+        Every object, whether it's made of two blocks or billions of atoms,
+        has a single point where its mass can be considered concentrated.
+        Explore how changing the masses and positions of two objects shifts
+        the system's center of mass, and discover how this familiar weighted
+        average naturally extends into a calculus integral for continuous
+        objects.
+
+    </p>
+
+</header>
+
+<main>
+
+<section class="canvas-section">
+
+<canvas id="canvas" width="900" height="550"></canvas>
+
+</section>
+
+<section>
+
+<div class="controls">
+
+<h3>Controls</h3>
+
+<label>
+
+Mass 1
+
+<span id="mass1Value">5.0 kg</span>
+
+<input
+type="range"
+id="mass1"
+min="1"
+max="10"
+step="0.5"
+value="5">
+
+</label>
+
+<label>
+
+Mass 2
+
+<span id="mass2Value">5.0 kg</span>
+
+<input
+type="range"
+id="mass2"
+min="1"
+max="10"
+step="0.5"
+value="5">
+
+</label>
+
+<label>
+
+Position 1
+
+<span id="position1Value">200 px</span>
+
+<input
+type="range"
+id="position1"
+min="80"
+max="400"
+step="10"
+value="200">
+
+</label>
+
+<label>
+
+Position 2
+
+<span id="position2Value">700 px</span>
+
+<input
+type="range"
+id="position2"
+min="500"
+max="820"
+step="10"
+value="700">
+
+</label>
+
+<button id="resetButton">
+
+Reset
+
+</button>
+
+</div>
+
+<br>
+
+<div class="info">
+
+<h3>Center of Mass</h3>
+
+<div class="card">
+
+<h4>Center of Mass Position</h4>
+
+<p id="centerMassValue"></p>
+
+</div>
+
+<div class="card">
+
+<h4>Weighted Average</h4>
+
+<p id="equation"></p>
+
+</div>
+
+<div class="card explanation">
+
+<h4>Calculus Connection</h4>
+
+<p id="calculus"></p>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
