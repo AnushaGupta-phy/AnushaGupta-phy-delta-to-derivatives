@@ -15,7 +15,7 @@ body{
 header{
 
     text-align:center;
-    padding:50px 20px;
+    padding:50px 20px 30px;
 
 }
 
@@ -29,8 +29,8 @@ header h1{
 
 header h2{
 
-    margin-bottom:20px;
     color:white;
+    margin-bottom:20px;
 
 }
 
@@ -43,64 +43,74 @@ header p{
 
 }
 
-.journal{
+/* Back Button */
 
-    width:min(1000px,92%);
-    margin:30px auto;
-    background:#1e293b;
-    padding:25px;
-    border-radius:16px;
+.back-container{
+
+    width:min(1000px,95%);
+    margin:0 auto 20px;
 
 }
 
-.journal h2{
+.back-button{
 
+    display:inline-block;
     color:#60a5fa;
-    margin-bottom:15px;
+    text-decoration:none;
+    font-weight:bold;
+    font-size:1rem;
+    transition:.2s;
 
 }
 
-.coming-soon{
+.back-button:hover{
 
-    color:#cbd5e1;
+    color:white;
+    transform:translateX(-4px);
 
 }
+
+/* Main */
 
 main{
 
-    width:min(1300px,95%);
+    width:min(1000px,95%);
     margin:auto;
-
-    display:grid;
-    grid-template-columns:2fr 1fr;
-    gap:30px;
-
     padding-bottom:60px;
 
 }
+
+/* Canvas */
 
 .canvas-section{
 
     background:#1e293b;
     padding:25px;
     border-radius:16px;
+    margin-bottom:25px;
 
 }
 
 canvas{
 
+    display:block;
+    margin:auto;
     width:100%;
-    border-radius:12px;
+    max-width:900px;
+
     background:#0f172a;
 
+    border-radius:12px;
+
 }
+
+/* Controls */
 
 .controls{
 
     background:#1e293b;
     padding:25px;
     border-radius:16px;
-
     margin-bottom:25px;
 
 }
@@ -120,13 +130,6 @@ canvas{
 
 }
 
-.controls input{
-
-    width:100%;
-    margin:10px 0;
-
-}
-
 .controls span{
 
     display:block;
@@ -134,18 +137,69 @@ canvas{
 
 }
 
+.controls input{
+
+    width:100%;
+    margin-top:10px;
+
+}
+
+button{
+
+    width:100%;
+    margin-top:15px;
+    padding:12px;
+
+    border:none;
+    border-radius:10px;
+
+    background:#3b82f6;
+
+    color:white;
+
+    font-size:1rem;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+button:hover{
+
+    background:#2563eb;
+
+}
+
+/* Information */
+
 .info{
 
-    display:grid;
-    gap:20px;
+    background:#1e293b;
+    padding:25px;
+    border-radius:16px;
+
+}
+
+.info h3{
+
+    color:#60a5fa;
+    margin-bottom:20px;
 
 }
 
 .card{
 
-    background:#1e293b;
+    background:#111827;
     padding:20px;
     border-radius:14px;
+    margin-bottom:20px;
+
+}
+
+.card:last-child{
+
+    margin-bottom:0;
 
 }
 
@@ -158,82 +212,25 @@ canvas{
 
 .card p{
 
-    color:white;
-    line-height:1.6;
-
-}
-
-.explanation{
-
-    grid-column:1/-1;
-
-}
-
-.explanation h3{
-
-    color:#60a5fa;
-    margin-bottom:15px;
-
-}
-
-footer{
-
-    text-align:center;
-    padding:35px;
-    color:#94a3b8;
-
-}
-/* Back Button */
-
-.back-container{
-
-    width:min(1200px,95%);
-    margin:20px auto;
-
-}
-
-.back-button{
-
-    display:inline-block;
-
-    color:#60a5fa;
-
-    text-decoration:none;
-
-    font-weight:bold;
-
-    font-size:1rem;
-
-    transition:.2s;
-
-}
-
-.back-button:hover{
-
+    line-height:1.7;
     color:white;
 
-    transform:translateX(-4px);
-
 }
+
+/* Mobile */
 
 @media(max-width:900px){
 
-main{
+    header h1{
 
-    grid-template-columns:1fr;
+        font-size:2.3rem;
 
-}
+    }
 
-header h1{
+    canvas{
 
-    font-size:2.4rem;
+        height:auto;
 
-}
-
-canvas{
-
-    height:auto;
-
-}
+    }
 
 }
