@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Day 22 | Angular Position</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>Day 22</h1>
+
+    <h2>Angular Position</h2>
+
+    <p>
+
+        Position does not always have to describe where something is
+        along a straight line. When an object rotates, its position can
+        be described by an angle. Explore angular position as a function
+        of time and see how radians connect rotational motion to distance.
+
+    </p>
+
+</header>
+
+
+<div class="back-container">
+
+    <a
+        href="https://anushagupta-phy.github.io/AnushaGupta-phy-delta-to-derivatives/day00-landing/"
+        class="back-button">
+
+        ← Back to Simulation Gallery
+
+    </a>
+
+</div>
+
+
+<main>
+
+    <!-- ============================= -->
+    <!-- ROTATING WHEEL -->
+    <!-- ============================= -->
+
+    <section class="canvas-section">
+
+        <canvas
+            id="canvas"
+            width="850"
+            height="500">
+        </canvas>
+
+    </section>
+
+
+    <!-- ============================= -->
+    <!-- CONTROLS -->
+    <!-- ============================= -->
+
+    <section class="controls">
+
+        <h3>Controls</h3>
+
+
+        <label>
+
+            Angular Position
+
+            <span id="angleValue">0°</span>
+
+            <input
+                type="range"
+                id="angle"
+                min="0"
+                max="720"
+                step="1"
+                value="0">
+
+        </label>
+
+
+        <label>
+
+            Radius
+
+            <span id="radiusValue">120 px</span>
+
+            <input
+                type="range"
+                id="radius"
+                min="60"
+                max="180"
+                step="10"
+                value="120">
+
+        </label>
+
+
+        <label>
+
+            Rotation Rate
+
+            <span id="rateValue">45°/s</span>
+
+            <input
+                type="range"
+                id="rate"
+                min="10"
+                max="180"
+                step="5"
+                value="45">
+
+        </label>
+
+
+        <button id="startButton">
+
+            Start Rotation
+
+        </button>
+
+
+        <button id="resetButton">
+
+            Reset
+
+        </button>
+
+    </section>
+
+
+    <!-- ============================= -->
+    <!-- INFORMATION -->
+    <!-- ============================= -->
+
+    <section class="info">
+
+        <h3>Angular Motion</h3>
+
+
+        <div class="card">
+
+            <h4>Angular Position</h4>
+
+            <p id="positionDisplay"></p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h4>Radians</h4>
+
+            <p id="radianDisplay"></p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h4>Arc Length</h4>
+
+            <p id="arcDisplay"></p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h4>Calculus Connection</h4>
+
+            <p id="calculusDisplay"></p>
+
+        </div>
+
+
+        <div class="card explanation">
+
+            <h4>What Are We Measuring?</h4>
+
+            <p id="explanationDisplay"></p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ============================= -->
+    <!-- ANGULAR POSITION GRAPH -->
+    <!-- ============================= -->
+
+    <section class="graph-section">
+
+        <h3>Angular Position vs. Time</h3>
+
+        <canvas
+            id="graph"
+            width="900"
+            height="350">
+        </canvas>
+
+    </section>
+
+</main>
+
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
