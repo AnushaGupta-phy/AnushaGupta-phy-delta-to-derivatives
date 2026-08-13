@@ -1,0 +1,255 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #0f172a;
+    color: white;
+}
+
+/* ---------------- HEADER ---------------- */
+
+header {
+    text-align: center;
+    padding: 45px 20px 30px;
+}
+
+header h1 {
+    color: #60a5fa;
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+header h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+header p {
+    max-width: 850px;
+    margin: auto;
+    line-height: 1.7;
+    color: #d1d5db;
+}
+
+/* ---------------- BACK BUTTON ---------------- */
+
+.back-container {
+    width: min(1250px, 94%);
+    margin: 0 auto 25px;
+}
+
+.back-button {
+    display: inline-block;
+    color: #60a5fa;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.back-button:hover {
+    color: white;
+    transform: translateX(-4px);
+}
+
+/* ---------------- MAIN ---------------- */
+
+main {
+    width: min(1250px, 94%);
+    margin: auto;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 25px;
+
+    align-items: start;
+
+    padding-bottom: 30px;
+}
+
+/* ---------------- SIMULATION ---------------- */
+
+.simulation-section {
+    background: #1e293b;
+    padding: 22px;
+    border-radius: 16px;
+}
+
+.section-title {
+    margin-bottom: 18px;
+}
+
+.section-title h3 {
+    color: #60a5fa;
+    margin-bottom: 6px;
+}
+
+.section-title p {
+    color: #cbd5e1;
+    font-size: 0.95rem;
+}
+
+#canvas {
+    display: block;
+
+    width: 100%;
+    height: auto;
+
+    background: #0f172a;
+
+    border-radius: 12px;
+}
+
+/* ---------------- RIGHT SIDE ---------------- */
+
+.right-section {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* ---------------- CONTROLS ---------------- */
+
+.controls {
+    background: #1e293b;
+    padding: 25px;
+    border-radius: 16px;
+}
+
+.controls h3 {
+    color: #60a5fa;
+    margin-bottom: 22px;
+}
+
+.controls label {
+    display: block;
+    margin-bottom: 22px;
+    color: #e5e7eb;
+    line-height: 1.5;
+}
+
+.controls span {
+    display: block;
+    margin-top: 5px;
+    color: #cbd5e1;
+    font-size: 0.95rem;
+}
+
+.controls input {
+    width: 100%;
+    margin-top: 10px;
+    accent-color: #60a5fa;
+}
+
+/* ---------------- BUTTONS ---------------- */
+
+button {
+    border: none;
+    padding: 11px 18px;
+    margin-right: 8px;
+
+    border-radius: 8px;
+
+    background: #3b82f6;
+    color: white;
+
+    font-size: 0.95rem;
+    font-weight: bold;
+
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+}
+
+/* ---------------- GRAPH ---------------- */
+
+.graph-card {
+    background: #1e293b;
+    padding: 22px;
+    border-radius: 16px;
+}
+
+.graph-card h3 {
+    color: #60a5fa;
+    margin-bottom: 15px;
+}
+
+#graph {
+    display: block;
+
+    width: 100%;
+    height: auto;
+
+    background: #0f172a;
+
+    border-radius: 10px;
+}
+
+/* ---------------- INFORMATION ---------------- */
+
+.info-section {
+    width: min(1250px, 94%);
+    margin: 0 auto 50px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 20px;
+}
+
+.card {
+    background: #1e293b;
+    padding: 22px;
+    border-radius: 14px;
+}
+
+.card h3 {
+    color: #60a5fa;
+    margin-bottom: 12px;
+}
+
+.card p {
+    color: #e5e7eb;
+    line-height: 1.7;
+}
+
+.explanation {
+    grid-column: 1 / -1;
+}
+
+/* ---------------- FOOTER ---------------- */
+
+footer {
+    text-align: center;
+    padding: 35px;
+    color: #94a3b8;
+}
+
+/* ---------------- MOBILE ---------------- */
+
+@media (max-width: 900px) {
+
+    main {
+        grid-template-columns: 1fr;
+    }
+
+    .info-section {
+        grid-template-columns: 1fr;
+    }
+
+    .explanation {
+        grid-column: auto;
+    }
+
+    header h1 {
+        font-size: 2.4rem;
+    }
+}
