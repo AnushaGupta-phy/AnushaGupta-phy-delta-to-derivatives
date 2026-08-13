@@ -22,26 +22,25 @@
     <h2>Angular Velocity</h2>
 
     <p>
-
-        Yesterday, we described rotational motion using angular position.
-        Today, we take the next calculus step and ask how quickly that
-        angle is changing. Explore angular velocity as the derivative of
-        angular position and see how the slope of a graph describes
-        rotational motion.
-
+        Angular position tells us where a rotating object is.
+        Angular velocity tells us how quickly that position is changing.
+        Explore the connection between rotation, time, and calculus by
+        changing the angular velocity of a rotating disk and observing
+        how the angular-position graph changes.
     </p>
 
 </header>
 
 
+<!-- Back Button -->
+
 <div class="back-container">
 
     <a
         href="https://anushagupta-phy.github.io/AnushaGupta-phy-delta-to-derivatives/day00-landing/"
-        class="back-button">
-
+        class="back-button"
+    >
         ← Back to Simulation Gallery
-
     </a>
 
 </div>
@@ -49,42 +48,47 @@
 
 <main>
 
-    <!-- ============================= -->
-    <!-- ROTATING DISK -->
-    <!-- ============================= -->
+
+    <!-- ========================= -->
+    <!-- Simulation -->
+    <!-- ========================= -->
 
     <section class="canvas-section">
 
         <canvas
             id="canvas"
-            width="850"
-            height="500">
-        </canvas>
+            width="900"
+            height="550"
+        ></canvas>
 
     </section>
 
 
-    <!-- ============================= -->
-    <!-- CONTROLS -->
-    <!-- ============================= -->
+    <!-- ========================= -->
+    <!-- Controls -->
+    <!-- ========================= -->
 
     <section class="controls">
 
         <h3>Controls</h3>
 
+
         <label>
 
             Angular Velocity
 
-            <span id="velocityValue">45°/s</span>
+            <span id="angularVelocityValue">
+                1.0 rad/s
+            </span>
 
             <input
                 type="range"
                 id="angularVelocity"
-                min="-180"
-                max="180"
-                step="5"
-                value="45">
+                min="-5"
+                max="5"
+                step="0.1"
+                value="1"
+            >
 
         </label>
 
@@ -93,15 +97,18 @@
 
             Radius
 
-            <span id="radiusValue">120 px</span>
+            <span id="radiusValue">
+                150 px
+            </span>
 
             <input
                 type="range"
                 id="radius"
-                min="60"
-                max="180"
+                min="50"
+                max="250"
                 step="10"
-                value="120">
+                value="150"
+            >
 
         </label>
 
@@ -110,94 +117,37 @@
 
             Starting Angle
 
-            <span id="angleValue">0°</span>
+            <span id="startingAngleValue">
+                0°
+            </span>
 
             <input
                 type="range"
                 id="startingAngle"
                 min="0"
                 max="360"
-                step="1"
-                value="0">
+                step="5"
+                value="0"
+            >
 
         </label>
 
 
         <button id="startButton">
-
             Start Rotation
-
         </button>
 
 
         <button id="resetButton">
-
             Reset
-
         </button>
 
     </section>
 
 
-    <!-- ============================= -->
-    <!-- INFORMATION -->
-    <!-- ============================= -->
-
-    <section class="info">
-
-        <h3>Angular Motion</h3>
-
-
-        <div class="card">
-
-            <h4>Angular Position</h4>
-
-            <p id="positionDisplay"></p>
-
-        </div>
-
-
-        <div class="card">
-
-            <h4>Angular Velocity</h4>
-
-            <p id="velocityDisplay"></p>
-
-        </div>
-
-
-        <div class="card">
-
-            <h4>Linear Speed</h4>
-
-            <p id="linearSpeedDisplay"></p>
-
-        </div>
-
-
-        <div class="card">
-
-            <h4>Calculus Connection</h4>
-
-            <p id="calculusDisplay"></p>
-
-        </div>
-
-
-        <div class="card explanation">
-
-            <h4>What Does the Slope Mean?</h4>
-
-            <p id="explanationDisplay"></p>
-
-        </div>
-
-    </section>
-
-
-    <!-- ============================= -->
-    <!-- GRAPH -->
-    <!-- ============================= -->
+    <!-- ========================= -->
+    <!-- Graph -->
+    <!-- ========================= -->
 
     <section class="graph-section">
 
@@ -206,12 +156,89 @@
         <canvas
             id="graph"
             width="900"
-            height="350">
-        </canvas>
+            height="400"
+        ></canvas>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- Information -->
+    <!-- ========================= -->
+
+    <section class="info">
+
+        <div class="card">
+
+            <h4>Angular Position</h4>
+
+            <p id="angularPosition">
+                0°
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h4>Angular Velocity</h4>
+
+            <p id="angularVelocityDisplay">
+                1.00 rad/s
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h4>Linear Speed</h4>
+
+            <p id="linearSpeed">
+                150.00 px/s
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h4>Calculus Connection</h4>
+
+            <p id="calculus">
+
+                Angular velocity is the derivative
+                of angular position:
+
+                <br><br>
+
+                <strong>
+                    ω = dθ/dt
+                </strong>
+
+            </p>
+
+        </div>
+
+
+        <div class="card explanation">
+
+            <h4>What's Happening?</h4>
+
+            <p id="explanation">
+
+                Change the angular velocity and observe
+                how the slope of the angular-position
+                graph changes.
+
+            </p>
+
+        </div>
 
     </section>
 
 </main>
+
 
 <script src="script.js"></script>
 
