@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Day 27 | Angular Momentum</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>Delta To Derivatives</h1>
+
+    <h2>Day 27 — Angular Momentum</h2>
+
+    <p>
+        What happens when a spinning object changes its shape?
+        Explore angular momentum and see why a figure skater spins
+        faster when pulling their arms inward.
+    </p>
+
+</header>
+
+
+<div class="back-container">
+
+    <a
+        href="https://anushagupta-phy.github.io/AnushaGupta-phy-delta-to-derivatives/day00-landing/"
+        class="back-button"
+    >
+        ← Back to Simulation Gallery
+    </a>
+
+</div>
+
+
+<main>
+
+    <!-- LEFT: SIMULATION -->
+
+    <section class="simulation-section">
+
+        <div class="section-title">
+
+            <h3>Figure Skater</h3>
+
+            <p>
+                Change the skater's arm position and watch
+                angular velocity respond.
+            </p>
+
+        </div>
+
+        <canvas
+            id="canvas"
+            width="600"
+            height="600"
+        ></canvas>
+
+    </section>
+
+
+    <!-- RIGHT: CONTROLS + GRAPH -->
+
+    <section class="right-section">
+
+        <div class="controls">
+
+            <h3>Controls</h3>
+
+
+            <label>
+
+                Arm Position
+
+                <span id="armValue">
+                    Extended
+                </span>
+
+                <input
+                    type="range"
+                    id="armSlider"
+                    min="0"
+                    max="1"
+                    step="0.01"
+                    value="1"
+                >
+
+            </label>
+
+
+            <label>
+
+                Initial Angular Velocity
+
+                <span id="omegaValue">
+                    2.0 rad/s
+                </span>
+
+                <input
+                    type="range"
+                    id="omegaSlider"
+                    min="0.5"
+                    max="6"
+                    step="0.1"
+                    value="2"
+                >
+
+            </label>
+
+
+            <button id="toggleButton">
+                Pause
+            </button>
+
+            <button id="resetButton">
+                Reset
+            </button>
+
+        </div>
+
+
+        <div class="graph-card">
+
+            <h3>Angular Momentum</h3>
+
+            <canvas
+                id="graph"
+                width="600"
+                height="300"
+            ></canvas>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- INFORMATION -->
+
+<section class="info-section">
+
+    <div class="card">
+
+        <h3>Moment of Inertia</h3>
+
+        <p id="inertiaValue"></p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>Angular Velocity</h3>
+
+        <p id="currentOmega"></p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>Angular Momentum</h3>
+
+        <p id="momentumValue"></p>
+
+    </div>
+
+
+    <div class="card explanation">
+
+        <h3>The Calculus Connection</h3>
+
+        <p id="calculus"></p>
+
+    </div>
+
+</section>
+
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
