@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Day 26 | Rotational Energy</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+
+    <h1>Day 26</h1>
+
+    <h2>Rotational Energy</h2>
+
+    <p>
+        A rotating object stores kinetic energy just as a moving object does.
+        Today, I explore rotational kinetic energy by controlling a spinning
+        flywheel and seeing how its mass, radius, and angular velocity affect
+        the energy stored in its rotation.
+    </p>
+
+</header>
+
+
+<div class="back-container">
+
+    <a
+        href="https://anushagupta-phy.github.io/AnushaGupta-phy-delta-to-derivatives/day00-landing/"
+        class="back-button"
+    >
+        ← Back to Simulation Gallery
+    </a>
+
+</div>
+
+
+<main>
+
+    <!-- SIMULATION -->
+
+    <section class="simulation-section">
+
+        <div class="section-title">
+
+            <h3>Spinning Flywheel</h3>
+
+            <p>
+                Change the parameters and watch the rotational energy change.
+            </p>
+
+        </div>
+
+        <canvas
+            id="canvas"
+            width="600"
+            height="600"
+        ></canvas>
+
+    </section>
+
+
+    <!-- CONTROLS + GRAPH -->
+
+    <section class="right-section">
+
+        <div class="controls">
+
+            <h3>Controls</h3>
+
+            <label>
+
+                Mass
+
+                <span id="massValue">5.0 kg</span>
+
+                <input
+                    type="range"
+                    id="mass"
+                    min="1"
+                    max="10"
+                    step="0.5"
+                    value="5"
+                >
+
+            </label>
+
+
+            <label>
+
+                Radius
+
+                <span id="radiusValue">100 px</span>
+
+                <input
+                    type="range"
+                    id="radius"
+                    min="50"
+                    max="180"
+                    step="10"
+                    value="100"
+                >
+
+            </label>
+
+
+            <label>
+
+                Angular Velocity
+
+                <span id="omegaValue">2.0 rad/s</span>
+
+                <input
+                    type="range"
+                    id="omega"
+                    min="0"
+                    max="10"
+                    step="0.1"
+                    value="2"
+                >
+
+            </label>
+
+
+            <button id="startButton">
+                Start
+            </button>
+
+            <button id="resetButton">
+                Reset
+            </button>
+
+        </div>
+
+
+        <div class="graph-card">
+
+            <h3>Rotational Energy</h3>
+
+            <canvas
+                id="graph"
+                width="500"
+                height="280"
+            ></canvas>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- INFORMATION -->
+
+<section class="info-section">
+
+    <div class="card">
+
+        <h3>Moment of Inertia</h3>
+
+        <p id="inertiaDisplay"></p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>Angular Velocity</h3>
+
+        <p id="omegaDisplay"></p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>Rotational Energy</h3>
+
+        <p id="energyDisplay"></p>
+
+    </div>
+
+
+    <div class="card explanation">
+
+        <h3>Calculus Connection</h3>
+
+        <p id="calculus"></p>
+
+    </div>
+
+</section>
+
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
