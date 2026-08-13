@@ -2,11 +2,7 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
 const graph = document.getElementById("graph");
-const gctx = graph.getContext("2d");
-
-//----------------------------------------------------
-// Controls
-//----------------------------------------------------
+const graphCtx = graph.getContext("2d");
 
 const angularVelocitySlider =
     document.getElementById("angularVelocity");
@@ -17,14 +13,29 @@ const radiusSlider =
 const startingAngleSlider =
     document.getElementById("startingAngle");
 
-const velocityValue =
-    document.getElementById("velocityValue");
+const angularVelocityValue =
+    document.getElementById("angularVelocityValue");
 
 const radiusValue =
     document.getElementById("radiusValue");
 
-const angleValue =
-    document.getElementById("angleValue");
+const startingAngleValue =
+    document.getElementById("startingAngleValue");
+
+const angularPositionDisplay =
+    document.getElementById("angularPosition");
+
+const angularVelocityDisplay =
+    document.getElementById("angularVelocityDisplay");
+
+const linearSpeedDisplay =
+    document.getElementById("linearSpeed");
+
+const calculusDisplay =
+    document.getElementById("calculus");
+
+const explanationDisplay =
+    document.getElementById("explanation");
 
 const startButton =
     document.getElementById("startButton");
@@ -32,66 +43,44 @@ const startButton =
 const resetButton =
     document.getElementById("resetButton");
 
-//----------------------------------------------------
-// Displays
-//----------------------------------------------------
 
-const positionDisplay =
-    document.getElementById("positionDisplay");
-
-const velocityDisplay =
-    document.getElementById("velocityDisplay");
-
-const linearSpeedDisplay =
-    document.getElementById("linearSpeedDisplay");
-
-const calculusDisplay =
-    document.getElementById("calculusDisplay");
-
-const explanationDisplay =
-    document.getElementById("explanationDisplay");
-
-//----------------------------------------------------
-// Simulation variables
-//----------------------------------------------------
-
-let theta = 0;
-
-let angularVelocity = 45;
-
-let radius = 120;
-
-let elapsedTime = 0;
+/* ========================= */
+/* Simulation State */
+/* ========================= */
 
 let running = false;
 
-let history = [];
+let elapsed = 0;
 
-let lastTimestamp = null;
+let angle = 0;
+
+let animationFrame;
+
+let graphData = [];
+
+let lastTime = null;
 
 
-//----------------------------------------------------
-// Reset simulation
-//----------------------------------------------------
+/* ========================= */
+/* Reset */
+/* ========================= */
 
-function resetSimulation(){
+function resetSimulation() {
 
-    theta =
-        Number(startingAngleSlider.value);
-
-    angularVelocity =
-        Number(angularVelocitySlider.value);
-
-    radius =
-        Number(radiusSlider.value);
-
-    elapsedTime = 0;
+    cancelAnimationFrame(animationFrame);
 
     running = false;
 
-    history = [];
+    elapsed = 0;
 
-    lastTimestamp = null;
+    lastTime = null;
+
+    graphData = [];
+
+    angle =
+        Number(startingAngleSlider.value) *
+        Math.PI /
+        180;
 
     updateDisplays();
 
@@ -102,11 +91,92 @@ function resetSimulation(){
 }
 
 
-//----------------------------------------------------
-// Draw rotating disk
-//----------------------------------------------------
+/* ========================= */
+/* Update Displays */
+/* ========================= */
 
-function drawScene(){
+function updateDisplays() {
+
+    const omega =
+        Number(angularVelocitySlider.value);
+
+    const radius =
+        Number(radiusSlider.value);
+
+    const startingAngle =
+        Number(startingAngleSlider.value);
+
+
+    angularVelocityValue.textContent =
+        omega.toFixed(1) + " rad/s";
+
+    radiusValue.textContent =
+        radius.toFixed(0) + " px";
+
+    startingAngleValue.textContent =
+        startingAngle.toFixed(0) + "°";
+
+
+    const angleDegrees =
+        angle * 180 / Math.PI;
+
+
+    angularPositionDisplay.textContent =
+        angleDegrees.toFixed(1) + "°";
+
+
+    angularVelocityDisplay.textContent =
+        omega.toFixed(2) + " rad/s";
+
+
+    const linearSpeed =
+        Math.abs(radius * omega);
+
+
+    linearSpeedDisplay.textContent =
+        linearSpeed.toFixed(2) + " px/s";
+
+
+    calculusDisplay.innerHTML = `
+        Angular velocity is the derivative
+        of angular position:
+
+        <br><br>
+
+        <strong>ω = dθ/dt</strong>
+
+        <br><br>
+
+        This means angular velocity is the
+        slope of the θ vs. time graph.
+    `;
+
+
+    explanationDisplay.innerHTML = `
+        The disk rotates with angular velocity
+        <strong>${omega.toFixed(2)} rad/s</strong>.
+
+        <br><br>
+
+        A positive angular velocity produces
+        counterclockwise rotation, while a
+        negative angular velocity produces
+        clockwise rotation.
+
+        <br><br>
+
+        Watch how changing ω changes the slope
+        of the angular-position graph.
+    `;
+
+}
+
+
+/* ========================= */
+/* Draw Simulation */
+/* ========================= */
+
+function drawScene() {
 
     ctx.clearRect(
         0,
@@ -114,6 +184,7 @@ function drawScene(){
         canvas.width,
         canvas.height
     );
+
 
     ctx.fillStyle = "#0f172a";
 
@@ -125,24 +196,45 @@ function drawScene(){
     );
 
 
-    //------------------------------------------------
-    // Center
-    //------------------------------------------------
+    const centerX = canvas.width / 2;
 
-    const centerX =
-        canvas.width / 2;
+    const centerY = 250;
 
-    const centerY =
-        canvas.height / 2;
+    const radius =
+        Number(radiusSlider.value);
 
 
-    //------------------------------------------------
-    // Disk
-    //------------------------------------------------
+    /* Ground */
 
-    ctx.strokeStyle = "#60a5fa";
+    ctx.strokeStyle = "#475569";
 
-    ctx.lineWidth = 5;
+    ctx.lineWidth = 4;
+
+    ctx.beginPath();
+
+    ctx.moveTo(80, centerY);
+
+    ctx.lineTo(820, centerY);
+
+    ctx.stroke();
+
+
+    /* Vertical reference */
+
+    ctx.strokeStyle = "#334155";
+
+    ctx.lineWidth = 2;
+
+    ctx.beginPath();
+
+    ctx.moveTo(centerX, 60);
+
+    ctx.lineTo(centerX, 440);
+
+    ctx.stroke();
+
+
+    /* Disk */
 
     ctx.beginPath();
 
@@ -154,74 +246,50 @@ function drawScene(){
         Math.PI * 2
     );
 
+    ctx.fillStyle = "#1e3a5f";
+
+    ctx.fill();
+
+    ctx.strokeStyle = "#60a5fa";
+
+    ctx.lineWidth = 3;
+
     ctx.stroke();
 
 
-    //------------------------------------------------
-    // Spokes
-    //------------------------------------------------
+    /* Center */
 
-    ctx.strokeStyle = "#334155";
+    ctx.beginPath();
 
-    ctx.lineWidth = 2;
+    ctx.arc(
+        centerX,
+        centerY,
+        6,
+        0,
+        Math.PI * 2
+    );
 
-    for(let i = 0; i < 8; i++){
+    ctx.fillStyle = "#facc15";
 
-        const spokeAngle =
-            i * Math.PI / 4;
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            centerX,
-            centerY
-        );
-
-        ctx.lineTo(
-            centerX +
-            radius *
-            Math.cos(spokeAngle),
-
-            centerY +
-            radius *
-            Math.sin(spokeAngle)
-        );
-
-        ctx.stroke();
-
-    }
+    ctx.fill();
 
 
-    //------------------------------------------------
-    // Convert degrees → radians
-    //------------------------------------------------
-
-    const radians =
-        theta * Math.PI / 180;
-
-
-    //------------------------------------------------
-    // Rotating point
-    //------------------------------------------------
+    /* Rotating point */
 
     const pointX =
         centerX +
-        radius *
-        Math.cos(radians);
+        radius * Math.cos(angle);
 
     const pointY =
-        centerY +
-        radius *
-        Math.sin(radians);
+        centerY -
+        radius * Math.sin(angle);
 
 
-    //------------------------------------------------
-    // Radius vector
-    //------------------------------------------------
+    /* Radius line */
 
-    ctx.strokeStyle = "#facc15";
+    ctx.strokeStyle = "#94a3b8";
 
-    ctx.lineWidth = 4;
+    ctx.lineWidth = 3;
 
     ctx.beginPath();
 
@@ -238,413 +306,85 @@ function drawScene(){
     ctx.stroke();
 
 
-    //------------------------------------------------
-    // Tangential velocity arrow
-    //------------------------------------------------
-
-    const speedSign =
-        angularVelocity >= 0 ? 1 : -1;
-
-    const tangentX =
-        -Math.sin(radians) *
-        speedSign;
-
-    const tangentY =
-        Math.cos(radians) *
-        speedSign;
-
-    const arrowLength =
-        Math.min(
-            100,
-            Math.abs(angularVelocity) * 0.5
-        );
-
-
-    if(Math.abs(angularVelocity) > 0){
-
-        const arrowStartX =
-            pointX;
-
-        const arrowStartY =
-            pointY;
-
-        const arrowEndX =
-            pointX +
-            tangentX * arrowLength;
-
-        const arrowEndY =
-            pointY +
-            tangentY * arrowLength;
-
-
-        ctx.strokeStyle = "#22c55e";
-
-        ctx.lineWidth = 4;
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            arrowStartX,
-            arrowStartY
-        );
-
-        ctx.lineTo(
-            arrowEndX,
-            arrowEndY
-        );
-
-        ctx.stroke();
-
-
-        //------------------------------------------------
-        // Arrow head
-        //------------------------------------------------
-
-        const headSize = 9;
-
-        const angle =
-            Math.atan2(
-                arrowEndY - arrowStartY,
-                arrowEndX - arrowStartX
-            );
-
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            arrowEndX,
-            arrowEndY
-        );
-
-        ctx.lineTo(
-            arrowEndX -
-            headSize *
-            Math.cos(angle - Math.PI / 6),
-
-            arrowEndY -
-            headSize *
-            Math.sin(angle - Math.PI / 6)
-        );
-
-        ctx.lineTo(
-            arrowEndX -
-            headSize *
-            Math.cos(angle + Math.PI / 6),
-
-            arrowEndY -
-            headSize *
-            Math.sin(angle + Math.PI / 6)
-        );
-
-        ctx.closePath();
-
-        ctx.fillStyle = "#22c55e";
-
-        ctx.fill();
-
-    }
-
-
-    //------------------------------------------------
-    // Center point
-    //------------------------------------------------
-
-    ctx.fillStyle = "white";
-
-    ctx.beginPath();
-
-    ctx.arc(
-        centerX,
-        centerY,
-        5,
-        0,
-        Math.PI * 2
-    );
-
-    ctx.fill();
-
-
-    //------------------------------------------------
-    // Rotating point
-    //------------------------------------------------
-
-    ctx.fillStyle = "#22c55e";
+    /* Point */
 
     ctx.beginPath();
 
     ctx.arc(
         pointX,
         pointY,
-        9,
+        10,
         0,
         Math.PI * 2
     );
 
+    ctx.fillStyle = "#3b82f6";
+
     ctx.fill();
 
 
-    //------------------------------------------------
-    // Labels
-    //------------------------------------------------
+    /* Angle arc */
+
+    ctx.strokeStyle = "#22c55e";
+
+    ctx.lineWidth = 3;
+
+    ctx.beginPath();
+
+    ctx.arc(
+        centerX,
+        centerY,
+        55,
+        0,
+        -angle,
+        true
+    );
+
+    ctx.stroke();
+
+
+    /* Labels */
 
     ctx.fillStyle = "white";
 
-    ctx.font = "18px Arial";
+    ctx.font = "16px Arial";
 
     ctx.textAlign = "center";
 
     ctx.fillText(
-        `θ = ${normalizeAngle(theta).toFixed(1)}°`,
-        centerX,
-        centerY + radius + 40
+        "θ",
+        centerX + 70,
+        centerY - 25
     );
 
 
-    ctx.fillStyle = "#22c55e";
+    ctx.fillStyle = "#60a5fa";
 
     ctx.fillText(
-        `ω = ${angularVelocity.toFixed(1)}°/s`,
-        centerX,
-        centerY + radius + 68
+        "Rotating Point",
+        pointX,
+        pointY - 18
     );
 
 
     ctx.fillStyle = "#cbd5e1";
 
-    ctx.font = "15px Arial";
-
     ctx.fillText(
-        "Green arrow = tangential velocity direction",
+        "r = " + radius + " px",
         centerX,
-        30
+        centerY + radius + 30
     );
 
 }
 
 
-//----------------------------------------------------
-// Normalize angle for display
-//----------------------------------------------------
+/* ========================= */
+/* Draw Graph */
+/* ========================= */
 
-function normalizeAngle(value){
+function drawGraph() {
 
-    let result =
-        value % 360;
-
-    if(result < 0){
-
-        result += 360;
-
-    }
-
-    return result;
-
-}
-
-
-//----------------------------------------------------
-// Update information
-//----------------------------------------------------
-
-function updateDisplays(){
-
-    angularVelocity =
-        Number(angularVelocitySlider.value);
-
-    radius =
-        Number(radiusSlider.value);
-
-
-    const radians =
-        theta * Math.PI / 180;
-
-
-    //------------------------------------------------
-    // Linear speed
-    //
-    // v = rω
-    //
-    // ω must be in rad/s
-    //------------------------------------------------
-
-    const angularVelocityRad =
-        angularVelocity *
-        Math.PI /
-        180;
-
-    const linearSpeed =
-        radius *
-        Math.abs(angularVelocityRad);
-
-
-    //------------------------------------------------
-    // Control values
-    //------------------------------------------------
-
-    velocityValue.textContent =
-        `${angularVelocity.toFixed(0)}°/s`;
-
-    radiusValue.textContent =
-        `${radius.toFixed(0)} px`;
-
-    angleValue.textContent =
-        `${normalizeAngle(theta).toFixed(0)}°`;
-
-
-    //------------------------------------------------
-    // Angular position
-    //------------------------------------------------
-
-    positionDisplay.innerHTML =
-
-    `
-    <strong>
-
-    θ(t) = ${theta.toFixed(2)}°
-
-    </strong>
-
-    <br><br>
-
-    Angular position describes the object's
-    location around the circle.
-
-    `;
-
-
-    //------------------------------------------------
-    // Angular velocity
-    //------------------------------------------------
-
-    velocityDisplay.innerHTML =
-
-    `
-    <strong>
-
-    ω = ${angularVelocity.toFixed(2)}°/s
-
-    </strong>
-
-    <br><br>
-
-    In radians:
-
-    <strong>
-
-    ω = ${angularVelocityRad.toFixed(3)} rad/s
-
-    </strong>
-
-    `;
-
-
-    //------------------------------------------------
-    // Linear speed
-    //------------------------------------------------
-
-    linearSpeedDisplay.innerHTML =
-
-    `
-    <strong>
-
-    v = rω
-
-    </strong>
-
-    <br><br>
-
-    = ${radius.toFixed(0)}
-    × ${Math.abs(angularVelocityRad).toFixed(3)}
-
-    <br><br>
-
-    <strong>
-
-    v = ${linearSpeed.toFixed(2)} px/s
-
-    </strong>
-
-    `;
-
-
-    //------------------------------------------------
-    // Calculus connection
-    //------------------------------------------------
-
-    calculusDisplay.innerHTML =
-
-    `
-    Yesterday we described angular position
-    as a function of time:
-
-    <br><br>
-
-    <strong>
-
-    θ = θ(t)
-
-    </strong>
-
-    <br><br>
-
-    Today we take its derivative:
-
-    <br><br>
-
-    <strong>
-
-    ω(t) = dθ/dt
-
-    </strong>
-
-    <br><br>
-
-    Angular velocity is therefore the
-    <strong>slope of the θ vs. time graph</strong>.
-
-    `;
-
-
-    //------------------------------------------------
-    // Explanation
-    //------------------------------------------------
-
-    explanationDisplay.innerHTML =
-
-    `
-    A steeper θ(t) graph means the angle is
-    changing more quickly.
-
-    <br><br>
-
-    A positive slope corresponds to
-    counterclockwise rotation, while a
-    negative slope corresponds to
-    clockwise rotation.
-
-    <br><br>
-
-    This is the rotational equivalent of
-    velocity being the slope of a position-time
-    graph.
-
-    `;
-
-
-    drawScene();
-
-    drawGraph();
-
-}
-
-
-//----------------------------------------------------
-// Draw θ vs time graph
-//----------------------------------------------------
-
-function drawGraph(){
-
-    gctx.clearRect(
+    graphCtx.clearRect(
         0,
         0,
         graph.width,
@@ -652,9 +392,9 @@ function drawGraph(){
     );
 
 
-    gctx.fillStyle = "#0f172a";
+    graphCtx.fillStyle = "#0f172a";
 
-    gctx.fillRect(
+    graphCtx.fillRect(
         0,
         0,
         graph.width,
@@ -664,493 +404,402 @@ function drawGraph(){
 
     const left = 70;
 
-    const right = 30;
+    const right = 40;
 
-    const top = 30;
+    const top = 35;
 
-    const bottom = 50;
+    const bottom = 55;
 
     const width =
-        graph.width -
-        left -
-        right;
+        graph.width - left - right;
 
     const height =
-        graph.height -
-        top -
-        bottom;
+        graph.height - top - bottom;
 
 
-    //------------------------------------------------
-    // Axes
-    //------------------------------------------------
+    /* Axes */
 
-    gctx.strokeStyle = "#94a3b8";
+    graphCtx.strokeStyle = "#94a3b8";
 
-    gctx.lineWidth = 2;
+    graphCtx.lineWidth = 2;
 
-    gctx.beginPath();
+    graphCtx.beginPath();
 
-    gctx.moveTo(
+    graphCtx.moveTo(
         left,
         top
     );
 
-    gctx.lineTo(
+    graphCtx.lineTo(
         left,
-        top + height
+        graph.height - bottom
     );
 
-    gctx.lineTo(
-        left + width,
-        top + height
+    graphCtx.lineTo(
+        graph.width - right,
+        graph.height - bottom
     );
 
-    gctx.stroke();
+    graphCtx.stroke();
 
 
-    //------------------------------------------------
-    // Labels
-    //------------------------------------------------
+    /* Labels */
 
-    gctx.fillStyle = "white";
+    graphCtx.fillStyle = "white";
 
-    gctx.font = "15px Arial";
+    graphCtx.font = "15px Arial";
 
-    gctx.fillText(
-        "θ",
-        30,
-        top + 10
-    );
+    graphCtx.textAlign = "center";
 
-    gctx.fillText(
-        "Time",
-        left + width - 45,
+    graphCtx.fillText(
+        "Time (s)",
+        graph.width / 2,
         graph.height - 15
     );
 
 
-    //------------------------------------------------
-    // Empty graph
-    //------------------------------------------------
+    graphCtx.save();
 
-    if(history.length < 2){
+    graphCtx.translate(
+        18,
+        graph.height / 2
+    );
 
-        gctx.fillStyle = "#94a3b8";
+    graphCtx.rotate(-Math.PI / 2);
 
-        gctx.fillText(
-            "Press Start Rotation to generate the graph.",
-            left + 100,
-            top + height / 2
+    graphCtx.fillText(
+        "Angular Position θ",
+        0,
+        0
+    );
+
+    graphCtx.restore();
+
+
+    /* Grid */
+
+    graphCtx.strokeStyle = "#1e293b";
+
+    graphCtx.lineWidth = 1;
+
+
+    for (let i = 0; i <= 5; i++) {
+
+        const x =
+            left +
+            (width / 5) * i;
+
+        graphCtx.beginPath();
+
+        graphCtx.moveTo(
+            x,
+            top
         );
+
+        graphCtx.lineTo(
+            x,
+            graph.height - bottom
+        );
+
+        graphCtx.stroke();
+
+    }
+
+
+    for (let i = 0; i <= 4; i++) {
+
+        const y =
+            top +
+            (height / 4) * i;
+
+        graphCtx.beginPath();
+
+        graphCtx.moveTo(
+            left,
+            y
+        );
+
+        graphCtx.lineTo(
+            graph.width - right,
+            y
+        );
+
+        graphCtx.stroke();
+
+    }
+
+
+    /* Graph data */
+
+    if (graphData.length < 2) {
 
         return;
 
     }
 
 
-    //------------------------------------------------
-    // Graph ranges
-    //------------------------------------------------
+    const maxTime = 10;
 
-    const maxTime =
-        Math.max(
-            5,
-            history[history.length - 1].time
-        );
+    const maxAngle = 4 * Math.PI;
+
+    const minAngle = -4 * Math.PI;
 
 
-    const angles =
-        history.map(
-            point => point.theta
-        );
+    graphCtx.strokeStyle = "#60a5fa";
+
+    graphCtx.lineWidth = 3;
+
+    graphCtx.beginPath();
 
 
-    const minAngle =
-        Math.min(
-            0,
-            ...angles
-        );
+    graphData.forEach((point, index) => {
+
+        const x =
+            left +
+            (point.time / maxTime) *
+            width;
 
 
-    const maxAngle =
-        Math.max(
-            180,
-            ...angles
-        );
+        const normalized =
+            (point.angle - minAngle) /
+            (maxAngle - minAngle);
 
 
-    const angleRange =
-        Math.max(
-            180,
-            maxAngle - minAngle
-        );
+        const y =
+            graph.height -
+            bottom -
+            normalized * height;
 
 
-    //------------------------------------------------
-    // Zero line
-    //------------------------------------------------
+        if (index === 0) {
 
-    if(minAngle < 0 && maxAngle > 0){
+            graphCtx.moveTo(
+                x,
+                y
+            );
 
-        const zeroY =
-            top +
-            height -
-            ((0 - minAngle) /
-            angleRange) *
-            height;
+        } else {
 
-        gctx.strokeStyle =
-            "rgba(148,163,184,0.35)";
-
-        gctx.beginPath();
-
-        gctx.moveTo(
-            left,
-            zeroY
-        );
-
-        gctx.lineTo(
-            left + width,
-            zeroY
-        );
-
-        gctx.stroke();
-
-    }
-
-
-    //------------------------------------------------
-    // Draw θ curve
-    //------------------------------------------------
-
-    gctx.strokeStyle = "#60a5fa";
-
-    gctx.lineWidth = 3;
-
-    gctx.beginPath();
-
-
-    history.forEach(
-        (point,index)=>{
-
-            const x =
-                left +
-                (point.time / maxTime)
-                * width;
-
-
-            const y =
-                top +
-                height -
-                ((point.theta - minAngle) /
-                angleRange) *
-                height;
-
-
-            if(index === 0){
-
-                gctx.moveTo(
-                    x,
-                    y
-                );
-
-            }
-            else{
-
-                gctx.lineTo(
-                    x,
-                    y
-                );
-
-            }
+            graphCtx.lineTo(
+                x,
+                y
+            );
 
         }
+
+    });
+
+
+    graphCtx.stroke();
+
+
+    /* Current point */
+
+    const last =
+        graphData[graphData.length - 1];
+
+
+    const currentX =
+        left +
+        (last.time / maxTime) *
+        width;
+
+
+    const currentNormalized =
+        (last.angle - minAngle) /
+        (maxAngle - minAngle);
+
+
+    const currentY =
+        graph.height -
+        bottom -
+        currentNormalized * height;
+
+
+    graphCtx.beginPath();
+
+    graphCtx.arc(
+        currentX,
+        currentY,
+        5,
+        0,
+        Math.PI * 2
     );
 
+    graphCtx.fillStyle = "#facc15";
 
-    gctx.stroke();
-
-
-    //------------------------------------------------
-    // Tangent/slope indicator
-    //------------------------------------------------
-
-    if(history.length >= 2){
-
-        const last =
-            history[history.length - 1];
-
-        const previous =
-            history[history.length - 2];
-
-
-        const x1 =
-            left +
-            (previous.time / maxTime)
-            * width;
-
-        const y1 =
-            top +
-            height -
-            ((previous.theta - minAngle) /
-            angleRange) *
-            height;
-
-
-        const x2 =
-            left +
-            (last.time / maxTime)
-            * width;
-
-        const y2 =
-            top +
-            height -
-            ((last.theta - minAngle) /
-            angleRange) *
-            height;
-
-
-        gctx.strokeStyle = "#22c55e";
-
-        gctx.lineWidth = 2;
-
-        gctx.beginPath();
-
-        gctx.moveTo(
-            x1,
-            y1
-        );
-
-        gctx.lineTo(
-            x2,
-            y2
-        );
-
-        gctx.stroke();
-
-
-        //------------------------------------------------
-        // Current point
-        //------------------------------------------------
-
-        gctx.fillStyle = "#22c55e";
-
-        gctx.beginPath();
-
-        gctx.arc(
-            x2,
-            y2,
-            5,
-            0,
-            Math.PI * 2
-        );
-
-        gctx.fill();
-
-    }
-
-
-    //------------------------------------------------
-    // Angular velocity label
-    //------------------------------------------------
-
-    gctx.fillStyle = "#22c55e";
-
-    gctx.font = "15px Arial";
-
-    gctx.fillText(
-        `Slope = ω = ${angularVelocity.toFixed(1)}°/s`,
-        left + 15,
-        top + 20
-    );
+    graphCtx.fill();
 
 }
 
 
-//----------------------------------------------------
-// Slider events
-//----------------------------------------------------
+/* ========================= */
+/* Animation */
+/* ========================= */
+
+function animate(timestamp) {
+
+    if (!running) {
+
+        return;
+
+    }
+
+
+    if (lastTime === null) {
+
+        lastTime = timestamp;
+
+    }
+
+
+    const deltaTime =
+        Math.min(
+            (timestamp - lastTime) / 1000,
+            0.05
+        );
+
+
+    lastTime = timestamp;
+
+
+    const omega =
+        Number(
+            angularVelocitySlider.value
+        );
+
+
+    elapsed += deltaTime;
+
+
+    angle +=
+        omega * deltaTime;
+
+
+    graphData.push({
+
+        time: elapsed,
+
+        angle: angle
+
+    });
+
+
+    /* Keep graph at 10 seconds */
+
+    if (elapsed >= 10) {
+
+        running = false;
+
+    }
+
+
+    updateDisplays();
+
+    drawScene();
+
+    drawGraph();
+
+
+    if (running) {
+
+        animationFrame =
+            requestAnimationFrame(animate);
+
+    }
+
+}
+
+
+/* ========================= */
+/* Start */
+/* ========================= */
+
+startButton.onclick = function () {
+
+    cancelAnimationFrame(animationFrame);
+
+    elapsed = 0;
+
+    lastTime = null;
+
+    graphData = [];
+
+    angle =
+        Number(
+            startingAngleSlider.value
+        ) *
+        Math.PI /
+        180;
+
+    running = true;
+
+    animationFrame =
+        requestAnimationFrame(animate);
+
+};
+
+
+/* ========================= */
+/* Reset */
+/* ========================= */
+
+resetButton.onclick = function () {
+
+    resetSimulation();
+
+};
+
+
+/* ========================= */
+/* Sliders */
+/* ========================= */
 
 angularVelocitySlider.oninput =
-    function(){
-
-        angularVelocity =
-            Number(
-                angularVelocitySlider.value
-            );
+    function () {
 
         updateDisplays();
+
+        drawScene();
+
+        drawGraph();
 
     };
 
 
 radiusSlider.oninput =
-    function(){
-
-        radius =
-            Number(
-                radiusSlider.value
-            );
+    function () {
 
         updateDisplays();
+
+        drawScene();
 
     };
 
 
 startingAngleSlider.oninput =
-    function(){
+    function () {
 
-        if(!running){
+        if (!running) {
 
-            theta =
+            angle =
                 Number(
                     startingAngleSlider.value
-                );
-
-            updateDisplays();
+                ) *
+                Math.PI /
+                180;
 
         }
 
-    };
+        updateDisplays();
 
-
-//----------------------------------------------------
-// Start button
-//----------------------------------------------------
-
-startButton.onclick =
-    function(){
-
-        theta =
-            Number(
-                startingAngleSlider.value
-            );
-
-        elapsedTime = 0;
-
-        history = [];
-
-        running = true;
-
-        lastTimestamp = null;
-
-        requestAnimationFrame(
-            animate
-        );
+        drawScene();
 
     };
 
 
-//----------------------------------------------------
-// Reset button
-//----------------------------------------------------
+/* ========================= */
+/* Initial Draw */
+/* ========================= */
 
-resetButton.onclick =
-    function(){
-
-        startingAngleSlider.value = 0;
-
-        resetSimulation();
-
-    };
-
-
-//----------------------------------------------------
-// Animation
-//----------------------------------------------------
-
-function animate(timestamp){
-
-    if(!running){
-
-        return;
-
-    }
-
-
-    if(lastTimestamp === null){
-
-        lastTimestamp = timestamp;
-
-    }
-
-
-    let dt =
-        (timestamp - lastTimestamp) /
-        1000;
-
-
-    lastTimestamp = timestamp;
-
-
-    //------------------------------------------------
-    // Prevent huge jumps
-    //------------------------------------------------
-
-    dt =
-        Math.min(
-            dt,
-            0.05
-        );
-
-
-    //------------------------------------------------
-    // Update angle
-    //------------------------------------------------
-
-    theta +=
-        angularVelocity *
-        dt;
-
-
-    elapsedTime += dt;
-
-
-    //------------------------------------------------
-    // Record
-    //------------------------------------------------
-
-    history.push({
-
-        time: elapsedTime,
-
-        theta: theta
-
-    });
-
-
-    //------------------------------------------------
-    // Keep graph readable
-    //------------------------------------------------
-
-    if(history.length > 1000){
-
-        history.shift();
-
-    }
-
-
-    //------------------------------------------------
-    // Continue
-    //------------------------------------------------
-
-    updateDisplays();
-
-
-    requestAnimationFrame(
-        animate
-    );
-
-}
-
-
-//----------------------------------------------------
-// Initial state
-//----------------------------------------------------
-
-updateDisplays();
-
-drawScene();
-
-drawGraph();
+resetSimulation();
