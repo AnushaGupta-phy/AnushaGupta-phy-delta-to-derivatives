@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Day 25 | Torque</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>Day 25</h1>
+
+    <h2>Torque</h2>
+
+    <p>
+        A force can push an object forward, but it can also make an object
+        rotate. Today, I explore torque—the rotational effect of a force—
+        and how the point where a force is applied changes how easily
+        something turns.
+    </p>
+
+</header>
+
+
+<!-- Back Button -->
+
+<div class="back-container">
+
+    <a
+        href="https://anushagupta-phy.github.io/AnushaGupta-phy-delta-to-derivatives/day00-landing/"
+        class="back-button"
+    >
+        ← Back to Simulation Gallery
+    </a>
+
+</div>
+
+
+<main>
+
+
+    <!-- =========================
+         Simulation
+    ========================== -->
+
+    <section class="canvas-section">
+
+        <canvas
+            id="canvas"
+            width="900"
+            height="550"
+        ></canvas>
+
+    </section>
+
+
+    <!-- =========================
+         Controls
+    ========================== -->
+
+    <section class="controls">
+
+        <h3>Controls</h3>
+
+
+        <label>
+
+            Force
+
+            <span id="forceValue">
+                50 N
+            </span>
+
+            <input
+                type="range"
+                id="force"
+                min="0"
+                max="100"
+                step="1"
+                value="50"
+            >
+
+        </label>
+
+
+        <label>
+
+            Lever Arm
+
+            <span id="leverArmValue">
+                2.0 m
+            </span>
+
+            <input
+                type="range"
+                id="leverArm"
+                min="0.5"
+                max="4"
+                step="0.1"
+                value="2"
+            >
+
+        </label>
+
+
+        <label>
+
+            Force Angle
+
+            <span id="angleValue">
+                90°
+            </span>
+
+            <input
+                type="range"
+                id="angle"
+                min="0"
+                max="180"
+                step="1"
+                value="90"
+            >
+
+        </label>
+
+
+        <button id="startButton">
+            Apply Force
+        </button>
+
+
+        <button id="resetButton">
+            Reset
+        </button>
+
+    </section>
+
+
+    <!-- =========================
+         Torque Graph
+    ========================== -->
+
+    <section class="graph-section">
+
+        <h3>Torque vs. Force</h3>
+
+        <canvas
+            id="graph"
+            width="900"
+            height="400"
+        ></canvas>
+
+    </section>
+
+
+    <!-- =========================
+         Information
+    ========================== -->
+
+    <section class="info">
+
+
+        <div class="card">
+
+            <h4>Force</h4>
+
+            <p id="forceDisplay">
+                50 N
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h4>Lever Arm</h4>
+
+            <p id="leverArmDisplay">
+                2.00 m
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h4>Torque</h4>
+
+            <p id="torqueDisplay">
+                100.00 N·m
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h4>Calculus Connection</h4>
+
+            <p id="calculus">
+
+                Torque measures the rotational effect
+                of a force.
+
+                <br><br>
+
+                <strong>
+                    τ = rF sin(θ)
+                </strong>
+
+                <br><br>
+
+                More generally, torque connects force
+                to rotational motion and will lead into
+                rotational dynamics.
+
+            </p>
+
+        </div>
+
+
+        <div class="card explanation">
+
+            <h4>What's Happening?</h4>
+
+            <p id="explanation">
+
+                The same force can produce different
+                amounts of rotation depending on where
+                and how it is applied.
+
+                <br><br>
+
+                A force applied farther from the pivot
+                produces more torque.
+
+            </p>
+
+        </div>
+
+    </section>
+
+</main>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
