@@ -1,0 +1,266 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #0f172a;
+    color: white;
+}
+
+/* =========================
+   Header
+========================= */
+
+header {
+    text-align: center;
+    padding: 50px 20px 30px;
+}
+
+header h1 {
+    color: #60a5fa;
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+header h2 {
+    color: white;
+    margin-bottom: 20px;
+}
+
+header p {
+    max-width: 850px;
+    margin: auto;
+    line-height: 1.7;
+    color: #d1d5db;
+}
+
+/* =========================
+   Back Button
+========================= */
+
+.back-container {
+    width: min(1200px, 92%);
+    margin: 10px auto 25px;
+}
+
+.back-button {
+    display: inline-block;
+    color: #60a5fa;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: 0.2s;
+}
+
+.back-button:hover {
+    color: white;
+    transform: translateX(-4px);
+}
+
+/* =========================
+   Main Layout
+========================= */
+
+main {
+    width: min(1100px, 92%);
+    margin: auto;
+
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+
+    padding-bottom: 60px;
+}
+
+/* =========================
+   Simulation
+========================= */
+
+.canvas-section {
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 16px;
+}
+
+canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+
+    border-radius: 12px;
+    background: #0f172a;
+}
+
+/* =========================
+   Controls
+========================= */
+
+.controls {
+    background: #1e293b;
+    padding: 25px;
+    border-radius: 16px;
+}
+
+.controls h3 {
+    color: #60a5fa;
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+}
+
+.controls label {
+    display: block;
+    margin-bottom: 22px;
+    line-height: 1.6;
+    color: white;
+}
+
+.controls span {
+    display: block;
+    margin-top: 5px;
+    color: #cbd5e1;
+}
+
+.controls input {
+    width: 100%;
+    margin-top: 10px;
+    accent-color: #60a5fa;
+}
+
+/* =========================
+   Buttons
+========================= */
+
+button {
+    border: none;
+    border-radius: 8px;
+
+    padding: 11px 20px;
+    margin-right: 10px;
+
+    background: #3b82f6;
+    color: white;
+
+    font-size: 1rem;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+button:hover {
+    background: #60a5fa;
+    transform: translateY(-2px);
+}
+
+/* =========================
+   Graph
+========================= */
+
+.graph-section {
+    background: #1e293b;
+    padding: 25px;
+    border-radius: 16px;
+}
+
+.graph-section h3 {
+    color: #60a5fa;
+    margin-bottom: 18px;
+}
+
+#graph {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* =========================
+   Information
+========================= */
+
+.info {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 20px;
+}
+
+.card {
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 14px;
+}
+
+.card h4 {
+    color: #60a5fa;
+    margin-bottom: 10px;
+}
+
+.card p {
+    color: white;
+    line-height: 1.7;
+}
+
+/* Calculus explanation spans
+   the full width */
+
+.card:nth-child(4),
+.explanation {
+    grid-column: 1 / -1;
+}
+
+/* =========================
+   Footer
+========================= */
+
+footer {
+    text-align: center;
+    padding: 35px;
+    color: #94a3b8;
+}
+
+/* =========================
+   Mobile
+========================= */
+
+@media (max-width: 800px) {
+
+    header {
+        padding: 35px 20px 25px;
+    }
+
+    header h1 {
+        font-size: 2.4rem;
+    }
+
+    main {
+        width: 94%;
+    }
+
+    .info {
+        grid-template-columns: 1fr;
+    }
+
+    .card:nth-child(4),
+    .explanation {
+        grid-column: auto;
+    }
+
+    .controls {
+        padding: 20px;
+    }
+
+    .canvas-section,
+    .graph-section {
+        padding: 15px;
+    }
+
+    button {
+        margin-bottom: 10px;
+    }
+}
