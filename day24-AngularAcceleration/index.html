@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Day 24 | Angular Acceleration</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>Day 24</h1>
+
+    <h2>Angular Acceleration</h2>
+
+    <p>
+        Angular velocity tells us how quickly an object is rotating.
+        But what happens when that rotational speed itself changes?
+        Today, we take another derivative and explore angular acceleration.
+    </p>
+
+</header>
+
+
+<!-- Back Button -->
+
+<div class="back-container">
+
+    <a
+        href="https://anushagupta-phy.github.io/AnushaGupta-phy-delta-to-derivatives/day00-landing/"
+        class="back-button"
+    >
+        ← Back to Simulation Gallery
+    </a>
+
+</div>
+
+
+<main>
+
+    <!-- ========================= -->
+    <!-- Simulation -->
+    <!-- ========================= -->
+
+    <section class="canvas-section">
+
+        <canvas
+            id="canvas"
+            width="900"
+            height="550"
+        ></canvas>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- Controls -->
+    <!-- ========================= -->
+
+    <section class="controls">
+
+        <h3>Controls</h3>
+
+
+        <label>
+
+            Angular Acceleration
+
+            <span id="angularAccelerationValue">
+                1.0 rad/s²
+            </span>
+
+            <input
+                type="range"
+                id="angularAcceleration"
+                min="-5"
+                max="5"
+                step="0.1"
+                value="1"
+            >
+
+        </label>
+
+
+        <label>
+
+            Initial Angular Velocity
+
+            <span id="initialVelocityValue">
+                0.0 rad/s
+            </span>
+
+            <input
+                type="range"
+                id="initialVelocity"
+                min="-10"
+                max="10"
+                step="0.1"
+                value="0"
+            >
+
+        </label>
+
+
+        <label>
+
+            Starting Angle
+
+            <span id="startingAngleValue">
+                0°
+            </span>
+
+            <input
+                type="range"
+                id="startingAngle"
+                min="0"
+                max="360"
+                step="5"
+                value="0"
+            >
+
+        </label>
+
+
+        <button id="startButton">
+            Start Rotation
+        </button>
+
+
+        <button id="resetButton">
+            Reset
+        </button>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- Graph -->
+    <!-- ========================= -->
+
+    <section class="graph-section">
+
+        <h3>Angular Velocity vs. Time</h3>
+
+        <canvas
+            id="graph"
+            width="900"
+            height="400"
+        ></canvas>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- Information -->
+    <!-- ========================= -->
+
+    <section class="info">
+
+
+        <div class="card">
+
+            <h4>Angular Position</h4>
+
+            <p id="angularPosition">
+                0°
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h4>Angular Velocity</h4>
+
+            <p id="angularVelocity">
+                0.00 rad/s
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h4>Angular Acceleration</h4>
+
+            <p id="angularAccelerationDisplay">
+                1.00 rad/s²
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h4>Calculus Connection</h4>
+
+            <p id="calculus">
+
+                Angular acceleration is the derivative
+                of angular velocity:
+
+                <br><br>
+
+                <strong>
+                    α = dω/dt
+                </strong>
+
+                <br><br>
+
+                Since
+
+                <strong>
+                    ω = dθ/dt
+                </strong>
+
+                we can also write:
+
+                <br><br>
+
+                <strong>
+                    α = d²θ/dt²
+                </strong>
+
+            </p>
+
+        </div>
+
+
+        <div class="card explanation">
+
+            <h4>What's Happening?</h4>
+
+            <p id="explanation">
+
+                Angular acceleration describes how quickly
+                the angular velocity changes.
+
+                <br><br>
+
+                A positive angular acceleration increases
+                the angular velocity, while a negative
+                angular acceleration decreases it.
+
+            </p>
+
+        </div>
+
+    </section>
+
+</main>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
