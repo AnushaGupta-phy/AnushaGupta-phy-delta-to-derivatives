@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Day 28 | Simple Harmonic Motion</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>Delta To Derivatives</h1>
+
+    <h2>Day 28 — Simple Harmonic Motion</h2>
+
+    <p>
+        A spring can turn a simple push or pull into continuous motion.
+        Explore how displacement, velocity, acceleration, and restoring
+        force are connected in simple harmonic motion.
+    </p>
+
+</header>
+
+
+<div class="back-container">
+
+    <a
+        href="https://anushagupta-phy.github.io/AnushaGupta-phy-delta-to-derivatives/day00-landing/"
+        class="back-button"
+    >
+        ← Back to Simulation Gallery
+    </a>
+
+</div>
+
+
+<main>
+
+    <!-- SIMULATION -->
+
+    <section class="simulation-section">
+
+        <div class="section-title">
+
+            <h3>Spring Oscillator</h3>
+
+            <p>
+                Adjust the spring and watch the mass oscillate.
+            </p>
+
+        </div>
+
+        <canvas
+            id="canvas"
+            width="600"
+            height="500"
+        ></canvas>
+
+    </section>
+
+
+    <!-- CONTROLS + GRAPH -->
+
+    <section class="right-section">
+
+        <div class="controls">
+
+            <h3>Controls</h3>
+
+
+            <label>
+
+                Spring Constant
+
+                <span id="kValue">
+                    20 N/m
+                </span>
+
+                <input
+                    type="range"
+                    id="kSlider"
+                    min="5"
+                    max="50"
+                    step="1"
+                    value="20"
+                >
+
+            </label>
+
+
+            <label>
+
+                Mass
+
+                <span id="massValue">
+                    2.0 kg
+                </span>
+
+                <input
+                    type="range"
+                    id="massSlider"
+                    min="0.5"
+                    max="5"
+                    step="0.1"
+                    value="2"
+                >
+
+            </label>
+
+
+            <label>
+
+                Initial Displacement
+
+                <span id="amplitudeValue">
+                    100 px
+                </span>
+
+                <input
+                    type="range"
+                    id="amplitudeSlider"
+                    min="40"
+                    max="160"
+                    step="5"
+                    value="100"
+                >
+
+            </label>
+
+
+            <button id="toggleButton">
+                Pause
+            </button>
+
+            <button id="resetButton">
+                Reset
+            </button>
+
+        </div>
+
+
+        <div class="graph-card">
+
+            <h3>Displacement vs Time</h3>
+
+            <canvas
+                id="graph"
+                width="600"
+                height="300"
+            ></canvas>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- INFORMATION -->
+
+<section class="info-section">
+
+    <div class="card">
+
+        <h3>Angular Frequency</h3>
+
+        <p id="frequencyValue"></p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>Period</h3>
+
+        <p id="periodValue"></p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>Current Displacement</h3>
+
+        <p id="displacementValue"></p>
+
+    </div>
+
+
+    <div class="card explanation">
+
+        <h3>The Calculus Connection</h3>
+
+        <p id="calculus"></p>
+
+    </div>
+
+</section>
+
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
