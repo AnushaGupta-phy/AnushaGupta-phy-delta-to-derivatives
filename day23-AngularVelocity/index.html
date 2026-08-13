@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Day 23 | Angular Velocity</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>Day 23</h1>
+
+    <h2>Angular Velocity</h2>
+
+    <p>
+
+        Yesterday, we described rotational motion using angular position.
+        Today, we take the next calculus step and ask how quickly that
+        angle is changing. Explore angular velocity as the derivative of
+        angular position and see how the slope of a graph describes
+        rotational motion.
+
+    </p>
+
+</header>
+
+
+<div class="back-container">
+
+    <a
+        href="https://anushagupta-phy.github.io/AnushaGupta-phy-delta-to-derivatives/day00-landing/"
+        class="back-button">
+
+        ← Back to Simulation Gallery
+
+    </a>
+
+</div>
+
+
+<main>
+
+    <!-- ============================= -->
+    <!-- ROTATING DISK -->
+    <!-- ============================= -->
+
+    <section class="canvas-section">
+
+        <canvas
+            id="canvas"
+            width="850"
+            height="500">
+        </canvas>
+
+    </section>
+
+
+    <!-- ============================= -->
+    <!-- CONTROLS -->
+    <!-- ============================= -->
+
+    <section class="controls">
+
+        <h3>Controls</h3>
+
+        <label>
+
+            Angular Velocity
+
+            <span id="velocityValue">45°/s</span>
+
+            <input
+                type="range"
+                id="angularVelocity"
+                min="-180"
+                max="180"
+                step="5"
+                value="45">
+
+        </label>
+
+
+        <label>
+
+            Radius
+
+            <span id="radiusValue">120 px</span>
+
+            <input
+                type="range"
+                id="radius"
+                min="60"
+                max="180"
+                step="10"
+                value="120">
+
+        </label>
+
+
+        <label>
+
+            Starting Angle
+
+            <span id="angleValue">0°</span>
+
+            <input
+                type="range"
+                id="startingAngle"
+                min="0"
+                max="360"
+                step="1"
+                value="0">
+
+        </label>
+
+
+        <button id="startButton">
+
+            Start Rotation
+
+        </button>
+
+
+        <button id="resetButton">
+
+            Reset
+
+        </button>
+
+    </section>
+
+
+    <!-- ============================= -->
+    <!-- INFORMATION -->
+    <!-- ============================= -->
+
+    <section class="info">
+
+        <h3>Angular Motion</h3>
+
+
+        <div class="card">
+
+            <h4>Angular Position</h4>
+
+            <p id="positionDisplay"></p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h4>Angular Velocity</h4>
+
+            <p id="velocityDisplay"></p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h4>Linear Speed</h4>
+
+            <p id="linearSpeedDisplay"></p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h4>Calculus Connection</h4>
+
+            <p id="calculusDisplay"></p>
+
+        </div>
+
+
+        <div class="card explanation">
+
+            <h4>What Does the Slope Mean?</h4>
+
+            <p id="explanationDisplay"></p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ============================= -->
+    <!-- GRAPH -->
+    <!-- ============================= -->
+
+    <section class="graph-section">
+
+        <h3>Angular Position vs. Time</h3>
+
+        <canvas
+            id="graph"
+            width="900"
+            height="350">
+        </canvas>
+
+    </section>
+
+</main>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
