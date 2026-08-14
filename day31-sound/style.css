@@ -1,0 +1,386 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background: #0f172a;
+
+    color: #e2e8f0;
+}
+
+
+/* ================================
+   HEADER
+================================ */
+
+header {
+    max-width: 1200px;
+
+    margin: 0 auto;
+
+    padding: 45px 30px 25px;
+}
+
+header h1 {
+    margin: 0;
+
+    font-size: 42px;
+
+    color: #f8fafc;
+}
+
+header h2 {
+    margin: 8px 0 15px;
+
+    font-size: 28px;
+
+    font-weight: 500;
+
+    color: #60a5fa;
+}
+
+header p {
+    max-width: 750px;
+
+    line-height: 1.7;
+
+    font-size: 17px;
+
+    color: #cbd5e1;
+}
+
+
+/* ================================
+   BACK
+================================ */
+
+.back-container {
+    max-width: 1200px;
+
+    margin: 0 auto;
+
+    padding: 0 30px 25px;
+}
+
+.back-button {
+    text-decoration: none;
+
+    color: #60a5fa;
+
+    font-weight: 600;
+}
+
+.back-button:hover {
+    color: #93c5fd;
+}
+
+
+/* ================================
+   MAIN
+================================ */
+
+main {
+    max-width: 1200px;
+
+    margin: 0 auto;
+
+    padding: 0 30px 35px;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 1fr);
+
+    gap: 25px;
+
+    align-items: start;
+}
+
+
+/* ================================
+   SIMULATION
+================================ */
+
+.simulation-section {
+    min-width: 0;
+
+    background: #1e293b;
+
+    border: 1px solid #334155;
+
+    border-radius: 14px;
+
+    padding: 20px;
+}
+
+.section-title h3 {
+    margin: 0 0 5px;
+
+    font-size: 22px;
+
+    color: #f8fafc;
+}
+
+.section-title p {
+    margin-top: 5px;
+
+    color: #94a3b8;
+
+    line-height: 1.5;
+}
+
+#canvas {
+    display: block;
+
+    width: 100%;
+
+    height: auto;
+
+    margin-top: 20px;
+
+    background: #020617;
+
+    border: 1px solid #334155;
+
+    border-radius: 10px;
+}
+
+
+/* ================================
+   RIGHT PANEL
+================================ */
+
+.side-panel {
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 20px;
+}
+
+
+/* ================================
+   CONTROLS
+================================ */
+
+.controls,
+.graph-card {
+    background: #1e293b;
+
+    border: 1px solid #334155;
+
+    border-radius: 14px;
+
+    padding: 20px;
+}
+
+.controls h3,
+.graph-card h3 {
+    margin-top: 0;
+
+    color: #f8fafc;
+}
+
+.controls label {
+    display: block;
+
+    margin-bottom: 22px;
+
+    font-weight: 600;
+
+    color: #e2e8f0;
+}
+
+.controls label span {
+    float: right;
+
+    font-weight: normal;
+
+    color: #60a5fa;
+}
+
+input[type="range"] {
+    width: 100%;
+
+    margin-top: 10px;
+
+    accent-color: #60a5fa;
+}
+
+
+/* ================================
+   BUTTONS
+================================ */
+
+button {
+    border: none;
+
+    border-radius: 8px;
+
+    padding: 10px 18px;
+
+    margin-right: 8px;
+
+    background: #2563eb;
+
+    color: white;
+
+    font-size: 14px;
+
+    cursor: pointer;
+}
+
+button:hover {
+    background: #3b82f6;
+}
+
+
+/* ================================
+   GRAPH
+================================ */
+
+#graph {
+    display: block;
+
+    width: 100%;
+
+    height: auto;
+
+    background: #020617;
+
+    border: 1px solid #334155;
+
+    border-radius: 10px;
+}
+
+
+/* ================================
+   INFO
+================================ */
+
+.info-section {
+    max-width: 1200px;
+
+    margin: 0 auto;
+
+    padding: 0 30px 60px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 20px;
+}
+
+.info-card {
+    background: #1e293b;
+
+    border: 1px solid #334155;
+
+    border-radius: 14px;
+
+    padding: 22px;
+
+    text-align: center;
+}
+
+.info-card h3 {
+    margin-top: 0;
+
+    margin-bottom: 15px;
+
+    color: #60a5fa;
+}
+
+.info-card div {
+    line-height: 1.7;
+
+    color: #cbd5e1;
+}
+
+
+/* ================================
+   CALCULUS
+================================ */
+
+.calculus-card {
+    grid-column: 1 / -1;
+
+    max-width: 850px;
+
+    width: 100%;
+
+    margin: 0 auto;
+
+    padding: 30px 40px;
+}
+
+.calculus-card h3 {
+    font-size: 21px;
+}
+
+
+/* ================================
+   MATHJAX
+================================ */
+
+mjx-container {
+    color: #60a5fa !important;
+}
+
+
+/* ================================
+   MOBILE
+================================ */
+
+@media (max-width: 850px) {
+
+    main {
+        grid-template-columns: 1fr;
+    }
+
+    .info-section {
+        grid-template-columns: 1fr;
+
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .calculus-card {
+        grid-column: auto;
+    }
+
+    header {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .back-container {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    main {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    header h1 {
+        font-size: 34px;
+    }
+
+    header h2 {
+        font-size: 24px;
+    }
+}
