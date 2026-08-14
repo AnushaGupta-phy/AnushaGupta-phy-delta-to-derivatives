@@ -1,659 +1,241 @@
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
+<!DOCTYPE html>
+<html lang="en">
 
-const graph = document.getElementById("graph");
-const graphCtx = graph.getContext("2d");
+<head>
 
-const kSlider = document.getElementById("kSlider");
-const massSlider = document.getElementById("massSlider");
-const amplitudeSlider = document.getElementById("amplitudeSlider");
+    <meta charset="UTF-8">
 
-const kValue = document.getElementById("kValue");
-const massValue = document.getElementById("massValue");
-const amplitudeValue = document.getElementById("amplitudeValue");
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-const frequencyValue = document.getElementById("frequencyValue");
-const periodValue = document.getElementById("periodValue");
-const displacementValue = document.getElementById("displacementValue");
-const calculus = document.getElementById("calculus");
+    <title>Day 30 | Mechanical Waves</title>
 
-const toggleButton = document.getElementById("toggleButton");
-const resetButton = document.getElementById("resetButton");
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 
+</head>
 
-// --------------------------------------------------
-// State
-// --------------------------------------------------
+<body>
 
-let k = 20;
-let mass = 2;
-let amplitude = 100;
+<header>
 
-let time = 0;
-let running = true;
+    <h1>Delta To Derivatives</h1>
 
-let lastTime = performance.now();
+    <h2>Day 30 — Mechanical Waves</h2>
 
-let graphData = [];
+    <p>
+        A wave can move through a system without permanently moving
+        the material itself. Explore how amplitude, wavelength, and
+        frequency shape a traveling wave and see how calculus describes
+        its changing position.
+    </p>
 
-const GRAPH_TIME = 5;
+</header>
 
 
-// --------------------------------------------------
-// Physics
-// --------------------------------------------------
+<div class="back-container">
 
-function getAngularFrequency() {
-    return Math.sqrt(k / mass);
-}
+    <a
+        href="https://anushagupta-phy.github.io/AnushaGupta-phy-delta-to-derivatives/day00-landing/"
+        class="back-button"
+    >
+        ← Back to Simulation Gallery
+    </a>
 
+</div>
 
-function getPeriod() {
-    return 2 * Math.PI * Math.sqrt(mass / k);
-}
 
+<main>
 
-function getDisplacement() {
-    const omega = getAngularFrequency();
+    <!-- LEFT: SIMULATION -->
 
-    return amplitude * Math.cos(omega * time);
-}
+    <section class="simulation-section">
 
+        <div class="section-title">
 
-// --------------------------------------------------
-// Draw Spring
-// --------------------------------------------------
+            <h3>Traveling Wave</h3>
 
-function drawSpring() {
+            <p>
+                Adjust the wave and watch it travel through the medium.
+            </p>
 
-    ctx.clearRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-    );
+        </div>
 
-    const centerY = canvas.height / 2;
 
-    const wallX = 70;
-    const equilibriumX = 380;
+        <canvas
+            id="canvas"
+            width="700"
+            height="500"
+        ></canvas>
 
-    const displacement = getDisplacement();
+    </section>
 
-    const massX = equilibriumX + displacement;
 
+    <!-- RIGHT: CONTROLS + GRAPH -->
 
-    // Floor
+    <section class="side-panel">
 
-    ctx.beginPath();
+        <div class="controls">
 
-    ctx.moveTo(40, centerY + 90);
-    ctx.lineTo(560, centerY + 90);
+            <h3>Controls</h3>
 
-    ctx.strokeStyle = "#334155";
-    ctx.lineWidth = 3;
 
-    ctx.stroke();
+            <label>
 
+                Amplitude
 
-    // Wall
+                <span id="amplitudeValue">
+                    50 px
+                </span>
 
-    ctx.fillStyle = "#475569";
+                <input
+                    type="range"
+                    id="amplitude"
+                    min="10"
+                    max="100"
+                    step="5"
+                    value="50"
+                >
 
-    ctx.fillRect(
-        wallX,
-        centerY - 100,
-        15,
-        200
-    );
+            </label>
 
 
-    // Spring
+            <label>
 
-    const springStart = wallX + 15;
-    const springEnd = massX - 35;
+                Wavelength
 
-    const springLength = springEnd - springStart;
+                <span id="wavelengthValue">
+                    200 px
+                </span>
 
-    const coils = 14;
-    const coilHeight = 18;
+                <input
+                    type="range"
+                    id="wavelength"
+                    min="80"
+                    max="400"
+                    step="10"
+                    value="200"
+                >
 
+            </label>
 
-    ctx.beginPath();
 
-    ctx.moveTo(
-        springStart,
-        centerY
-    );
+            <label>
 
+                Frequency
 
-    for (let i = 1; i <= coils; i++) {
+                <span id="frequencyValue">
+                    1.0 Hz
+                </span>
 
-        const x =
-            springStart +
-            (springLength / coils) * i;
+                <input
+                    type="range"
+                    id="frequency"
+                    min="0.2"
+                    max="3"
+                    step="0.1"
+                    value="1"
+                >
 
-        let y = centerY;
+            </label>
 
-        if (i < coils) {
 
-            y =
-                centerY +
-                (i % 2 === 0
-                    ? -coilHeight
-                    : coilHeight);
+            <button id="toggleButton">
+                Pause
+            </button>
 
-        }
 
-        ctx.lineTo(x, y);
-    }
+            <button id="resetButton">
+                Reset
+            </button>
 
+        </div>
 
-    ctx.strokeStyle = "#60a5fa";
-    ctx.lineWidth = 4;
 
-    ctx.stroke();
+        <div class="graph-card">
 
+            <h3>Wave Profile</h3>
 
-    // Mass
+            <canvas
+                id="graph"
+                width="600"
+                height="300"
+            ></canvas>
 
-    ctx.fillStyle = "#e2e8f0";
+        </div>
 
-    ctx.fillRect(
-        massX - 35,
-        centerY - 35,
-        70,
-        70
-    );
+    </section>
 
-    ctx.strokeStyle = "#60a5fa";
-    ctx.lineWidth = 4;
+</main>
 
-    ctx.strokeRect(
-        massX - 35,
-        centerY - 35,
-        70,
-        70
-    );
 
+<!-- INFORMATION -->
 
-    // Equilibrium line
+<section class="info-section">
 
-    ctx.beginPath();
+    <div class="info-card">
 
-    ctx.setLineDash([6, 6]);
+        <h3>Wave Speed</h3>
 
-    ctx.moveTo(
-        equilibriumX,
-        centerY - 130
-    );
+        <div id="speedValue"></div>
 
-    ctx.lineTo(
-        equilibriumX,
-        centerY + 130
-    );
+    </div>
 
-    ctx.strokeStyle = "#64748b";
-    ctx.lineWidth = 2;
 
-    ctx.stroke();
+    <div class="info-card">
 
-    ctx.setLineDash([]);
+        <h3>Wave Properties</h3>
 
+        <div id="waveValue"></div>
 
-    // Labels
+    </div>
 
-    ctx.fillStyle = "#334155";
 
-    ctx.font = "15px Arial";
-    ctx.textAlign = "center";
+    <div class="info-card calculus-card">
 
-    ctx.fillText(
-        "Equilibrium",
-        equilibriumX,
-        centerY - 145
-    );
+        <h3>The Calculus Connection</h3>
 
-    ctx.fillText(
-        "Mass",
-        massX,
-        centerY + 125
-    );
+        <div id="calculus"></div>
 
-    ctx.fillText(
-        "x(t)",
-        massX,
-        centerY - 55
-    );
-}
+    </div>
 
+</section>
 
-// --------------------------------------------------
-// Graph
-// --------------------------------------------------
 
-function drawGraph() {
+<!-- MATHJAX -->
 
-    graphCtx.clearRect(
-        0,
-        0,
-        graph.width,
-        graph.height
-    );
+<script>
 
+window.MathJax = {
 
-    const left = 55;
-    const right = graph.width - 25;
+    tex: {
 
-    const top = 25;
-    const bottom = graph.height - 40;
+        inlineMath: [
+            ['\\(', '\\)']
+        ],
 
-    const centerY =
-        (top + bottom) / 2;
-
-
-    // Background
-
-    graphCtx.fillStyle = "#fafafa";
-
-    graphCtx.fillRect(
-        0,
-        0,
-        graph.width,
-        graph.height
-    );
-
-
-    // Zero line
-
-    graphCtx.beginPath();
-
-    graphCtx.moveTo(left, centerY);
-    graphCtx.lineTo(right, centerY);
-
-    graphCtx.strokeStyle = "#cbd5e1";
-    graphCtx.lineWidth = 1;
-
-    graphCtx.stroke();
-
-
-    // Y axis
-
-    graphCtx.beginPath();
-
-    graphCtx.moveTo(left, top);
-    graphCtx.lineTo(left, bottom);
-
-    graphCtx.strokeStyle = "#64748b";
-
-    graphCtx.stroke();
-
-
-    // X axis
-
-    graphCtx.beginPath();
-
-    graphCtx.moveTo(left, bottom);
-    graphCtx.lineTo(right, bottom);
-
-    graphCtx.strokeStyle = "#64748b";
-
-    graphCtx.stroke();
-
-
-    if (graphData.length < 2) {
-        return;
-    }
-
-
-    // Find time range
-
-    const newestTime =
-        graphData[graphData.length - 1].time;
-
-    const oldestTime =
-        Math.max(0, newestTime - GRAPH_TIME);
-
-
-    // Plot displacement
-
-    graphCtx.beginPath();
-
-
-    graphData.forEach((point, index) => {
-
-        if (point.time < oldestTime) {
-            return;
-        }
-
-
-        const progress =
-            (point.time - oldestTime) /
-            GRAPH_TIME;
-
-
-        const x =
-            left +
-            progress *
-            (right - left);
-
-
-        const y =
-            centerY -
-            (point.displacement / 180) *
-            95;
-
-
-        if (index === 0 || point.time === oldestTime) {
-
-            graphCtx.moveTo(x, y);
-
-        } else {
-
-            graphCtx.lineTo(x, y);
-
-        }
-
-    });
-
-
-    graphCtx.strokeStyle = "#60a5fa";
-    graphCtx.lineWidth = 3;
-
-    graphCtx.stroke();
-
-
-    // Labels
-
-    graphCtx.fillStyle = "#334155";
-
-    graphCtx.font = "13px Arial";
-    graphCtx.textAlign = "left";
-
-    graphCtx.fillText(
-        "Displacement",
-        left + 5,
-        17
-    );
-
-    graphCtx.textAlign = "right";
-
-    graphCtx.fillText(
-        "Time",
-        right,
-        graph.height - 12
-    );
-}
-
-
-// --------------------------------------------------
-// Information + LaTeX
-// --------------------------------------------------
-
-function updateInformation() {
-
-    const omega =
-        getAngularFrequency();
-
-    const period =
-        getPeriod();
-
-    const displacement =
-        getDisplacement();
-
-
-    kValue.textContent =
-        `${k.toFixed(0)} N/m`;
-
-    massValue.textContent =
-        `${mass.toFixed(1)} kg`;
-
-    amplitudeValue.textContent =
-        `${amplitude.toFixed(0)} px`;
-
-
-    frequencyValue.innerHTML = `
-        \\[
-        \\omega = \\sqrt{\\frac{k}{m}}
-        \\]
-
-        \\[
-        \\omega = ${omega.toFixed(2)}\\ \\text{rad/s}
-        \\]
-    `;
-
-
-    periodValue.innerHTML = `
-        \\[
-        T = 2\\pi\\sqrt{\\frac{m}{k}}
-        \\]
-
-        \\[
-        T = ${period.toFixed(2)}\\ \\text{s}
-        \\]
-    `;
-
-
-    displacementValue.innerHTML = `
-        \\[
-        x(t) = ${displacement.toFixed(1)}\\ \\text{px}
-        \\]
-    `;
-
-
-    calculus.innerHTML = `
-        Simple harmonic motion can be described
-        using a sinusoidal function:
-
-        \\[
-        x(t) = A\\cos(\\omega t)
-        \\]
-
-        Taking the derivative gives velocity:
-
-        \\[
-        v(t) = \\frac{dx}{dt}
-        \\]
-
-        Taking another derivative gives acceleration:
-
-        \\[
-        a(t) = \\frac{d^2x}{dt^2}
-        \\]
-
-        For a spring, Hooke's law gives:
-
-        \\[
-        F = -kx
-        \\]
-
-        Combining this with Newton's second law gives:
-
-        \\[
-        m\\frac{d^2x}{dt^2} = -kx
-        \\]
-
-        or
-
-        \\[
-        \\frac{d^2x}{dt^2}
-        +
-        \\frac{k}{m}x
-        = 0
-        \\]
-    `;
-
-
-    if (window.MathJax) {
-
-        MathJax.typesetClear([
-            frequencyValue,
-            periodValue,
-            displacementValue,
-            calculus
-        ]);
-
-        MathJax.typesetPromise([
-            frequencyValue,
-            periodValue,
-            displacementValue,
-            calculus
-        ]);
-    }
-}
-
-
-// --------------------------------------------------
-// Animation
-// --------------------------------------------------
-
-function animate(currentTime) {
-
-    const deltaTime =
-        Math.min(
-            (currentTime - lastTime) / 1000,
-            0.05
-        );
-
-    lastTime = currentTime;
-
-
-    if (running) {
-
-        time += deltaTime;
-
-
-        graphData.push({
-            time: time,
-            displacement: getDisplacement()
-        });
-
-
-        // Keep enough data for the graph
-        // without allowing the array to grow forever.
-
-        while (
-            graphData.length > 0 &&
-            graphData[0].time < time - GRAPH_TIME
-        ) {
-
-            graphData.shift();
-
-        }
+        displayMath: [
+            ['\\[', '\\]']
+        ]
 
     }
 
+};
 
-    drawSpring();
-    drawGraph();
-
-
-    // Update text separately from the animation
-    // so MathJax does not get hammered every frame.
-
-    if (
-        !window.__lastInfoUpdate ||
-        currentTime - window.__lastInfoUpdate > 100
-    ) {
-
-        updateInformation();
-
-        window.__lastInfoUpdate = currentTime;
-    }
+</script>
 
 
-    requestAnimationFrame(animate);
-}
+<script
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+></script>
 
 
-// --------------------------------------------------
-// Controls
-// --------------------------------------------------
+<script src="script.js"></script>
 
-kSlider.addEventListener(
-    "input",
-    () => {
+</body>
 
-        k =
-            parseFloat(kSlider.value);
-
-        updateInformation();
-
-    }
-);
-
-
-massSlider.addEventListener(
-    "input",
-    () => {
-
-        mass =
-            parseFloat(massSlider.value);
-
-        updateInformation();
-
-    }
-);
-
-
-amplitudeSlider.addEventListener(
-    "input",
-    () => {
-
-        amplitude =
-            parseFloat(amplitudeSlider.value);
-
-        updateInformation();
-
-    }
-);
-
-
-toggleButton.addEventListener(
-    "click",
-    () => {
-
-        running = !running;
-
-        toggleButton.textContent =
-            running
-                ? "Pause"
-                : "Play";
-
-    }
-);
-
-
-resetButton.addEventListener(
-    "click",
-    () => {
-
-        k = 20;
-        mass = 2;
-        amplitude = 100;
-
-        time = 0;
-
-        graphData = [];
-
-        kSlider.value = 20;
-        massSlider.value = 2;
-        amplitudeSlider.value = 100;
-
-        running = true;
-
-        toggleButton.textContent = "Pause";
-
-        updateInformation();
-
-    }
-);
-
-
-// --------------------------------------------------
-// Start
-// --------------------------------------------------
-
-updateInformation();
-
-requestAnimationFrame(animate);
+</html>
