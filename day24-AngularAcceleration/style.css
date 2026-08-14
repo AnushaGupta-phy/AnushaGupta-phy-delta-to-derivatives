@@ -4,57 +4,68 @@
     box-sizing: border-box;
 }
 
+
 body {
     font-family: Arial, Helvetica, sans-serif;
+
     background: #0f172a;
+
     color: white;
+
+    line-height: 1.6;
 }
 
 
-/* =========================
-   HEADER
-========================= */
+/* ========================= */
+/* Header */
+/* ========================= */
 
 header {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-
     text-align: center;
 
-    padding: 50px 30px 30px;
+    padding: 50px 20px 30px;
 }
+
 
 header h1 {
     color: #60a5fa;
+
     font-size: 3rem;
+
     margin-bottom: 10px;
 }
 
+
 header h2 {
     color: white;
+
     font-size: 1.8rem;
+
     margin-bottom: 20px;
 }
 
+
 header p {
     max-width: 850px;
+
     margin: auto;
 
-    line-height: 1.7;
-
     color: #d1d5db;
+
+    line-height: 1.7;
 }
 
 
-/* =========================
-   BACK BUTTON
-========================= */
+/* ========================= */
+/* Back Button */
+/* ========================= */
 
 .back-container {
-    width: min(1200px, 92%);
+    width: min(1100px, 92%);
+
     margin: 10px auto 25px;
 }
+
 
 .back-button {
     display: inline-block;
@@ -64,113 +75,99 @@ header p {
     text-decoration: none;
 
     font-weight: bold;
+
     font-size: 1rem;
 
     transition: 0.2s;
 }
 
+
 .back-button:hover {
     color: white;
+
     transform: translateX(-4px);
 }
 
 
-/* =========================
-   MAIN LAYOUT
-========================= */
+/* ========================= */
+/* Main */
+/* ========================= */
 
 main {
-    width: min(1200px, 92%);
+    width: min(1100px, 92%);
+
     margin: auto;
 
-    display: grid;
+    padding-bottom: 70px;
 
-    grid-template-columns:
-        minmax(0, 1fr)
-        minmax(0, 1fr);
+    display: flex;
+
+    flex-direction: column;
 
     gap: 25px;
-
-    align-items: start;
-
-    padding-bottom: 60px;
 }
 
 
-/* =========================
-   SIMULATION
-========================= */
+/* ========================= */
+/* Simulation */
+/* ========================= */
 
-.simulation-section {
-    min-width: 0;
+.canvas-section {
+    width: 100%;
 
     background: #1e293b;
 
     padding: 20px;
 
     border-radius: 16px;
+
+    box-shadow:
+        0 0 20px rgba(0, 0, 0, 0.25);
+
+    display: flex;
+
+    justify-content: center;
 }
 
-.section-title {
-    text-align: center;
-
-    margin-bottom: 15px;
-}
-
-.section-title h3 {
-    color: #60a5fa;
-
-    font-size: 1.4rem;
-
-    margin-bottom: 8px;
-}
-
-.section-title p {
-    color: #94a3b8;
-
-    line-height: 1.6;
-}
 
 #canvas {
     display: block;
 
     width: 100%;
+
+    max-width: 900px;
+
     height: auto;
 
-    border-radius: 12px;
-
-    background: #020617;
+    background: #0f172a;
 
     border: 1px solid #334155;
+
+    border-radius: 12px;
 }
 
 
-/* =========================
-   RIGHT PANEL
-========================= */
-
-.side-panel {
-    min-width: 0;
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 20px;
-}
-
-
-/* =========================
-   CONTROLS
-========================= */
+/* ========================= */
+/* Controls */
+/* ========================= */
 
 .controls {
+    width: 100%;
+
+    max-width: 900px;
+
+    margin: 0 auto;
+
     background: #1e293b;
 
     padding: 25px;
 
     border-radius: 16px;
+
+    box-shadow:
+        0 0 20px rgba(0, 0, 0, 0.25);
 }
+
 
 .controls h3 {
     color: #60a5fa;
@@ -180,45 +177,48 @@ main {
     font-size: 1.3rem;
 }
 
+
 .controls label {
     display: block;
 
     margin-bottom: 22px;
 
-    line-height: 1.6;
-
     color: white;
 }
 
-.controls label span {
-    float: right;
 
-    color: #60a5fa;
+.controls span {
+    display: block;
 
-    font-weight: normal;
+    margin-top: 4px;
+
+    color: #cbd5e1;
 }
 
-.controls input {
+
+.controls input[type="range"] {
     width: 100%;
 
     margin-top: 10px;
 
-    accent-color: #60a5fa;
+    cursor: pointer;
 }
 
 
-/* =========================
-   BUTTONS
-========================= */
+/* ========================= */
+/* Buttons */
+/* ========================= */
 
 button {
+    width: 100%;
+
+    margin-top: 10px;
+
+    padding: 13px 18px;
+
     border: none;
 
-    border-radius: 8px;
-
-    padding: 11px 20px;
-
-    margin-right: 10px;
+    border-radius: 10px;
 
     background: #3b82f6;
 
@@ -230,173 +230,252 @@ button {
 
     cursor: pointer;
 
-    transition: 0.2s;
+    transition:
+        background 0.2s,
+        transform 0.2s;
 }
 
+
 button:hover {
-    background: #60a5fa;
+    background: #2563eb;
 
     transform: translateY(-2px);
 }
 
 
-/* =========================
-   GRAPH
-========================= */
+#resetButton {
+    background: #334155;
+}
 
-.graph-card {
+
+#resetButton:hover {
+    background: #475569;
+}
+
+
+/* ========================= */
+/* Graph */
+/* ========================= */
+
+.graph-section {
+    width: 100%;
+
+    max-width: 900px;
+
+    margin: 0 auto;
+
     background: #1e293b;
 
     padding: 25px;
 
     border-radius: 16px;
+
+    box-shadow:
+        0 0 20px rgba(0, 0, 0, 0.25);
 }
 
-.graph-card h3 {
+
+.graph-section h3 {
     color: #60a5fa;
 
+    text-align: center;
+
     margin-bottom: 18px;
+
+    font-size: 1.4rem;
 }
+
 
 #graph {
     display: block;
 
     width: 100%;
+
+    max-width: 850px;
+
     height: auto;
-
-    border-radius: 12px;
-
-    background: #020617;
-
-    border: 1px solid #334155;
-}
-
-
-/* =========================
-   INFORMATION
-========================= */
-
-.info-section {
-    width: min(1200px, 92%);
 
     margin: 0 auto;
 
-    padding-bottom: 60px;
+    background: #0f172a;
+
+    border: 1px solid #334155;
+
+    border-radius: 12px;
+}
+
+
+/* ========================= */
+/* Information */
+/* ========================= */
+
+.info {
+    width: 100%;
+
+    max-width: 900px;
+
+    margin: 0 auto;
 
     display: grid;
 
     grid-template-columns:
-        repeat(3, minmax(0, 1fr));
+        repeat(2, minmax(0, 1fr));
 
     gap: 20px;
 }
 
-.info-card {
+
+/* ========================= */
+/* Cards */
+/* ========================= */
+
+.card {
     background: #1e293b;
 
     padding: 20px;
 
     border-radius: 14px;
 
-    text-align: center;
+    border-left: 4px solid #3b82f6;
+
+    box-shadow:
+        0 0 15px rgba(0, 0, 0, 0.2);
 }
 
-.info-card h3 {
+
+.card h4 {
     color: #60a5fa;
 
     margin-bottom: 10px;
 }
 
-.info-card p {
-    color: white;
+
+.card p {
+    color: #e5e7eb;
 
     line-height: 1.7;
 }
 
 
-/* =========================
-   CALCULUS
-========================= */
+/* Calculus card */
 
-.calculus-card {
+.info .card:nth-child(4) {
+    border-left-color: #22c55e;
+}
+
+
+/* Explanation */
+
+.explanation {
     grid-column: 1 / -1;
 
-    max-width: 850px;
-
-    width: 100%;
-
-    margin: 0 auto;
-
-    padding: 30px 40px;
-
-    text-align: center;
+    border-left-color: #f97316;
 }
 
-.calculus-card h3 {
+
+/* ========================= */
+/* Strong Text */
+/* ========================= */
+
+strong {
     color: #60a5fa;
-
-    margin-bottom: 18px;
-}
-
-.calculus-card p {
-    color: #d1d5db;
-
-    line-height: 1.8;
 }
 
 
-/* =========================
-   MATHJAX
-========================= */
+/* ========================= */
+/* Footer */
+/* ========================= */
 
-mjx-container {
-    color: #60a5fa !important;
+footer {
+    text-align: center;
+
+    padding: 35px 20px;
+
+    color: #94a3b8;
 }
 
 
-/* =========================
-   MOBILE
-========================= */
+/* ========================= */
+/* Tablet */
+/* ========================= */
 
-@media (max-width: 850px) {
+@media (max-width: 700px) {
 
     header {
-        padding: 35px 20px 25px;
+        padding: 35px 18px 25px;
     }
+
 
     header h1 {
         font-size: 2.4rem;
     }
 
+
     header h2 {
         font-size: 1.5rem;
     }
 
+
     main {
         width: 94%;
+    }
 
+
+    .canvas-section {
+        padding: 10px;
+    }
+
+
+    .controls {
+        padding: 20px;
+    }
+
+
+    .graph-section {
+        padding: 15px;
+    }
+
+
+    .info {
         grid-template-columns: 1fr;
     }
 
-    .info-section {
-        width: 94%;
 
-        grid-template-columns: 1fr;
-    }
-
-    .calculus-card {
+    .explanation {
         grid-column: auto;
-
-        padding: 25px 20px;
     }
 
-    .simulation-section,
-    .controls,
-    .graph-card {
-        padding: 18px;
+}
+
+
+/* ========================= */
+/* Small Phones */
+/* ========================= */
+
+@media (max-width: 450px) {
+
+    header h1 {
+        font-size: 2rem;
     }
+
+
+    header h2 {
+        font-size: 1.3rem;
+    }
+
+
+    header p {
+        font-size: 0.95rem;
+    }
+
+
+    .back-container {
+        width: 94%;
+    }
+
 
     button {
-        margin-bottom: 10px;
+        padding: 12px;
     }
+
 }
