@@ -1,121 +1,134 @@
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
 body {
-    margin: 0;
     font-family: Arial, Helvetica, sans-serif;
     background: #0f172a;
-    color: #e2e8f0;
+    color: white;
 }
 
 
-/* ================================
+/* =========================
    HEADER
-================================ */
+========================= */
 
 header {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 45px 30px 25px;
+
     text-align: center;
+
+    padding: 50px 30px 30px;
 }
 
 header h1 {
-    margin: 0;
-    font-size: 42px;
-    color: #f8fafc;
+    color: #60a5fa;
+    font-size: 3rem;
+    margin-bottom: 10px;
 }
 
 header h2 {
-    margin: 8px 0 15px;
-    font-size: 28px;
-    font-weight: 500;
-    color: #60a5fa;
+    color: white;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
 }
 
 header p {
-    max-width: 750px;
-    margin: 0 auto;
+    max-width: 850px;
+    margin: auto;
+
     line-height: 1.7;
-    font-size: 17px;
-    color: #cbd5e1;
+
+    color: #d1d5db;
 }
 
 
-/* ================================
-   BACK
-================================ */
+/* =========================
+   BACK BUTTON
+========================= */
 
 .back-container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 30px 25px;
+    width: min(1200px, 92%);
+    margin: 10px auto 25px;
 }
 
 .back-button {
-    text-decoration: none;
+    display: inline-block;
+
     color: #60a5fa;
-    font-weight: 600;
+
+    text-decoration: none;
+
+    font-weight: bold;
+    font-size: 1rem;
+
+    transition: 0.2s;
 }
 
 .back-button:hover {
-    color: #93c5fd;
+    color: white;
+    transform: translateX(-4px);
 }
 
 
-/* ================================
-   MAIN
-================================ */
+/* =========================
+   MAIN LAYOUT
+========================= */
 
 main {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 30px 35px;
+    width: min(1200px, 92%);
+    margin: auto;
 
     display: grid;
 
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 1fr);
 
     gap: 25px;
 
     align-items: start;
+
+    padding-bottom: 60px;
 }
 
 
-/* ================================
+/* =========================
    SIMULATION
-================================ */
+========================= */
 
 .simulation-section {
     min-width: 0;
 
     background: #1e293b;
 
-    border: 1px solid #334155;
-
-    border-radius: 14px;
-
     padding: 20px;
+
+    border-radius: 16px;
 }
 
 .section-title {
     text-align: center;
+
+    margin-bottom: 15px;
 }
 
 .section-title h3 {
-    margin: 0 0 5px;
-    font-size: 22px;
-    color: #f8fafc;
+    color: #60a5fa;
+
+    font-size: 1.4rem;
+
+    margin-bottom: 8px;
 }
 
 .section-title p {
-    margin: 5px 0;
     color: #94a3b8;
-    line-height: 1.5;
+
+    line-height: 1.6;
 }
 
 #canvas {
@@ -124,19 +137,17 @@ main {
     width: 100%;
     height: auto;
 
-    margin-top: 20px;
+    border-radius: 12px;
 
     background: #020617;
 
     border: 1px solid #334155;
-
-    border-radius: 10px;
 }
 
 
-/* ================================
+/* =========================
    RIGHT PANEL
-================================ */
+========================= */
 
 .side-panel {
     min-width: 0;
@@ -149,25 +160,24 @@ main {
 }
 
 
-/* ================================
+/* =========================
    CONTROLS
-================================ */
+========================= */
 
-.controls,
-.graph-card {
+.controls {
     background: #1e293b;
 
-    border: 1px solid #334155;
+    padding: 25px;
 
-    border-radius: 14px;
-
-    padding: 20px;
+    border-radius: 16px;
 }
 
-.controls h3,
-.graph-card h3 {
-    margin-top: 0;
-    color: #f8fafc;
+.controls h3 {
+    color: #60a5fa;
+
+    margin-bottom: 20px;
+
+    font-size: 1.3rem;
 }
 
 .controls label {
@@ -175,20 +185,20 @@ main {
 
     margin-bottom: 22px;
 
-    font-weight: 600;
+    line-height: 1.6;
 
-    color: #e2e8f0;
+    color: white;
 }
 
 .controls label span {
     float: right;
 
-    font-weight: normal;
-
     color: #60a5fa;
+
+    font-weight: normal;
 }
 
-input[type="range"] {
+.controls input {
     width: 100%;
 
     margin-top: 10px;
@@ -197,36 +207,56 @@ input[type="range"] {
 }
 
 
-/* ================================
+/* =========================
    BUTTONS
-================================ */
+========================= */
 
 button {
     border: none;
 
     border-radius: 8px;
 
-    padding: 10px 18px;
+    padding: 11px 20px;
 
-    margin-right: 8px;
+    margin-right: 10px;
 
-    background: #2563eb;
+    background: #3b82f6;
 
     color: white;
 
-    font-size: 14px;
+    font-size: 1rem;
+
+    font-weight: bold;
 
     cursor: pointer;
+
+    transition: 0.2s;
 }
 
 button:hover {
-    background: #3b82f6;
+    background: #60a5fa;
+
+    transform: translateY(-2px);
 }
 
 
-/* ================================
+/* =========================
    GRAPH
-================================ */
+========================= */
+
+.graph-card {
+    background: #1e293b;
+
+    padding: 25px;
+
+    border-radius: 16px;
+}
+
+.graph-card h3 {
+    color: #60a5fa;
+
+    margin-bottom: 18px;
+}
 
 #graph {
     display: block;
@@ -234,30 +264,29 @@ button:hover {
     width: 100%;
     height: auto;
 
+    border-radius: 12px;
+
     background: #020617;
 
     border: 1px solid #334155;
-
-    border-radius: 10px;
 }
 
 
-/* ================================
-   INFO
-================================ */
+/* =========================
+   INFORMATION
+========================= */
 
 .info-section {
-    width: 100%;
-    max-width: 1200px;
+    width: min(1200px, 92%);
 
     margin: 0 auto;
 
-    padding: 0 30px 60px;
+    padding-bottom: 60px;
 
     display: grid;
 
     grid-template-columns:
-        repeat(2, minmax(0, 1fr));
+        repeat(3, minmax(0, 1fr));
 
     gap: 20px;
 }
@@ -265,35 +294,35 @@ button:hover {
 .info-card {
     background: #1e293b;
 
-    border: 1px solid #334155;
+    padding: 20px;
 
     border-radius: 14px;
-
-    padding: 22px;
 
     text-align: center;
 }
 
 .info-card h3 {
-    margin-top: 0;
-    margin-bottom: 15px;
     color: #60a5fa;
+
+    margin-bottom: 10px;
 }
 
-.info-card div {
+.info-card p {
+    color: white;
+
     line-height: 1.7;
-    color: #cbd5e1;
 }
 
 
-/* ================================
+/* =========================
    CALCULUS
-================================ */
+========================= */
 
 .calculus-card {
     grid-column: 1 / -1;
 
     max-width: 850px;
+
     width: 100%;
 
     margin: 0 auto;
@@ -304,60 +333,70 @@ button:hover {
 }
 
 .calculus-card h3 {
-    font-size: 21px;
+    color: #60a5fa;
+
+    margin-bottom: 18px;
+}
+
+.calculus-card p {
+    color: #d1d5db;
+
+    line-height: 1.8;
 }
 
 
-/* ================================
+/* =========================
    MATHJAX
-================================ */
+========================= */
 
 mjx-container {
     color: #60a5fa !important;
 }
 
 
-/* ================================
+/* =========================
    MOBILE
-================================ */
+========================= */
 
 @media (max-width: 850px) {
 
+    header {
+        padding: 35px 20px 25px;
+    }
+
+    header h1 {
+        font-size: 2.4rem;
+    }
+
+    header h2 {
+        font-size: 1.5rem;
+    }
+
     main {
+        width: 94%;
+
         grid-template-columns: 1fr;
     }
 
     .info-section {
-        grid-template-columns: 1fr;
+        width: 94%;
 
-        padding-left: 20px;
-        padding-right: 20px;
+        grid-template-columns: 1fr;
     }
 
     .calculus-card {
         grid-column: auto;
+
+        padding: 25px 20px;
     }
 
-    header {
-        padding-left: 20px;
-        padding-right: 20px;
+    .simulation-section,
+    .controls,
+    .graph-card {
+        padding: 18px;
     }
 
-    .back-container {
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-
-    main {
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-
-    header h1 {
-        font-size: 34px;
-    }
-
-    header h2 {
-        font-size: 24px;
+    button {
+        margin-bottom: 10px;
     }
 }
