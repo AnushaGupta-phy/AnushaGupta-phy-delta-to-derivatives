@@ -4,14 +4,8 @@
 
 body {
     margin: 0;
-
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
+    font-family: Arial, Helvetica, sans-serif;
     background: #0f172a;
-
     color: #e2e8f0;
 }
 
@@ -21,38 +15,31 @@ body {
 ================================ */
 
 header {
+    width: 100%;
     max-width: 1200px;
-
     margin: 0 auto;
-
     padding: 45px 30px 25px;
+    text-align: center;
 }
 
 header h1 {
     margin: 0;
-
     font-size: 42px;
-
     color: #f8fafc;
 }
 
 header h2 {
     margin: 8px 0 15px;
-
     font-size: 28px;
-
     font-weight: 500;
-
     color: #60a5fa;
 }
 
 header p {
     max-width: 750px;
-
+    margin: 0 auto;
     line-height: 1.7;
-
     font-size: 17px;
-
     color: #cbd5e1;
 }
 
@@ -62,18 +49,15 @@ header p {
 ================================ */
 
 .back-container {
+    width: 100%;
     max-width: 1200px;
-
     margin: 0 auto;
-
     padding: 0 30px 25px;
 }
 
 .back-button {
     text-decoration: none;
-
     color: #60a5fa;
-
     font-weight: 600;
 }
 
@@ -87,17 +71,14 @@ header p {
 ================================ */
 
 main {
+    width: 100%;
     max-width: 1200px;
-
     margin: 0 auto;
-
     padding: 0 30px 35px;
 
     display: grid;
 
-    grid-template-columns:
-        minmax(0, 1fr)
-        minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 
     gap: 25px;
 
@@ -121,19 +102,19 @@ main {
     padding: 20px;
 }
 
+.section-title {
+    text-align: center;
+}
+
 .section-title h3 {
     margin: 0 0 5px;
-
     font-size: 22px;
-
     color: #f8fafc;
 }
 
 .section-title p {
-    margin-top: 5px;
-
+    margin: 5px 0;
     color: #94a3b8;
-
     line-height: 1.5;
 }
 
@@ -141,7 +122,6 @@ main {
     display: block;
 
     width: 100%;
-
     height: auto;
 
     margin-top: 20px;
@@ -187,7 +167,6 @@ main {
 .controls h3,
 .graph-card h3 {
     margin-top: 0;
-
     color: #f8fafc;
 }
 
@@ -253,7 +232,6 @@ button:hover {
     display: block;
 
     width: 100%;
-
     height: auto;
 
     background: #020617;
@@ -269,6 +247,7 @@ button:hover {
 ================================ */
 
 .info-section {
+    width: 100%;
     max-width: 1200px;
 
     margin: 0 auto;
@@ -297,15 +276,12 @@ button:hover {
 
 .info-card h3 {
     margin-top: 0;
-
     margin-bottom: 15px;
-
     color: #60a5fa;
 }
 
 .info-card div {
     line-height: 1.7;
-
     color: #cbd5e1;
 }
 
@@ -318,12 +294,13 @@ button:hover {
     grid-column: 1 / -1;
 
     max-width: 850px;
-
     width: 100%;
 
     margin: 0 auto;
 
     padding: 30px 40px;
+
+    text-align: center;
 }
 
 .calculus-card h3 {
