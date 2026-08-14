@@ -1,0 +1,265 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #0f172a;
+    color: white;
+}
+
+
+/* ---------------- HEADER ---------------- */
+
+header {
+    text-align: center;
+    padding: 45px 20px 30px;
+}
+
+header h1 {
+    color: #60a5fa;
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+header h2 {
+    margin-bottom: 18px;
+    font-size: 1.7rem;
+}
+
+header p {
+    max-width: 850px;
+    margin: auto;
+    line-height: 1.7;
+    color: #d1d5db;
+}
+
+
+/* ---------------- BACK BUTTON ---------------- */
+
+.back-container {
+    width: min(1250px, 94%);
+    margin: 10px auto 25px;
+}
+
+.back-button {
+    display: inline-block;
+    color: #60a5fa;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.back-button:hover {
+    color: white;
+    transform: translateX(-4px);
+}
+
+
+/* ---------------- MAIN LAYOUT ---------------- */
+
+main {
+    width: min(1250px, 94%);
+    margin: auto;
+
+    display: grid;
+
+    /*
+        Simulation takes roughly half.
+        Controls + graph take the other half.
+    */
+    grid-template-columns: 1fr 1fr;
+
+    gap: 25px;
+
+    padding-bottom: 60px;
+}
+
+
+/* ---------------- SIMULATION ---------------- */
+
+.simulation-section {
+    background: #1e293b;
+    padding: 22px;
+    border-radius: 16px;
+
+    min-width: 0;
+}
+
+.section-title {
+    margin-bottom: 15px;
+}
+
+.section-title h3 {
+    color: #60a5fa;
+    margin-bottom: 5px;
+}
+
+.section-title p {
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+#canvas {
+    display: block;
+
+    width: 100%;
+    height: auto;
+
+    background: #0f172a;
+
+    border-radius: 12px;
+}
+
+
+/* ---------------- SIDE PANEL ---------------- */
+
+.side-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    min-width: 0;
+}
+
+
+/* ---------------- CONTROLS ---------------- */
+
+.controls {
+    background: #1e293b;
+    padding: 22px;
+    border-radius: 16px;
+}
+
+.controls h3 {
+    color: #60a5fa;
+    margin-bottom: 20px;
+}
+
+.controls label {
+    display: block;
+    margin-bottom: 22px;
+    line-height: 1.6;
+}
+
+.controls span {
+    display: block;
+    color: #cbd5e1;
+    margin-top: 3px;
+}
+
+.controls input {
+    width: 100%;
+    margin-top: 10px;
+    accent-color: #60a5fa;
+}
+
+button {
+    border: none;
+    background: #60a5fa;
+    color: #0f172a;
+
+    padding: 10px 20px;
+
+    border-radius: 8px;
+
+    font-size: 1rem;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+button:hover {
+    background: white;
+    transform: translateY(-2px);
+}
+
+
+/* ---------------- GRAPH ---------------- */
+
+.graph-card {
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 16px;
+}
+
+.graph-card h3 {
+    color: #60a5fa;
+    margin-bottom: 15px;
+}
+
+#graph {
+    display: block;
+
+    width: 100%;
+    height: auto;
+
+    background: #0f172a;
+
+    border-radius: 10px;
+}
+
+
+/* ---------------- INFORMATION ---------------- */
+
+.info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.card {
+    background: #1e293b;
+    padding: 18px;
+    border-radius: 14px;
+}
+
+.card h4 {
+    color: #60a5fa;
+    margin-bottom: 10px;
+}
+
+.card p {
+    color: white;
+    line-height: 1.6;
+}
+
+.explanation {
+    grid-column: 1 / -1;
+}
+
+
+/* ---------------- FOOTER ---------------- */
+
+footer {
+    text-align: center;
+    padding: 30px;
+    color: #94a3b8;
+}
+
+
+/* ---------------- RESPONSIVE ---------------- */
+
+@media (max-width: 900px) {
+
+    main {
+        grid-template-columns: 1fr;
+    }
+
+    header h1 {
+        font-size: 2.4rem;
+    }
+
+    .info {
+        grid-template-columns: 1fr;
+    }
+
+    .explanation {
+        grid-column: auto;
+    }
+
+}
