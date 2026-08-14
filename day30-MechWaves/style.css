@@ -1,183 +1,192 @@
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
 body {
-    margin: 0;
     font-family: Arial, Helvetica, sans-serif;
     background: #0f172a;
-    color: #e2e8f0;
+    color: white;
 }
 
+/* ---------------- HEADER ---------------- */
+
 header {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 45px 30px 25px;
+    text-align: center;
+    padding: 45px 20px 30px;
 }
 
 header h1 {
-    margin: 0;
-    font-size: 42px;
-    color: #f8fafc;
+    color: #60a5fa;
+    font-size: 3rem;
+    margin-bottom: 10px;
 }
 
 header h2 {
-    margin: 8px 0 15px;
-    font-size: 28px;
-    font-weight: 500;
-    color: #60a5fa;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
 }
 
 header p {
-    max-width: 750px;
+    max-width: 850px;
+    margin: auto;
     line-height: 1.7;
-    font-size: 17px;
-    color: #cbd5e1;
+    color: #d1d5db;
 }
 
+/* ---------------- BACK BUTTON ---------------- */
+
 .back-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 30px 25px;
+    width: min(1250px, 94%);
+    margin: 0 auto 25px;
 }
 
 .back-button {
-    text-decoration: none;
+    display: inline-block;
     color: #60a5fa;
-    font-weight: 600;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.2s;
 }
 
 .back-button:hover {
-    color: #93c5fd;
+    color: white;
+    transform: translateX(-4px);
 }
 
-
-/* ================================
-   MAIN SIMULATION AREA
-================================ */
+/* ---------------- MAIN ---------------- */
 
 main {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 30px 35px;
+    width: min(1250px, 94%);
+    margin: auto;
 
     display: grid;
     grid-template-columns: 1fr 1fr;
+
     gap: 25px;
+
     align-items: start;
+
+    padding-bottom: 30px;
 }
 
-
-/* ================================
-   LEFT — SIMULATION
-================================ */
+/* ---------------- SIMULATION ---------------- */
 
 .simulation-section {
     background: #1e293b;
-    border: 1px solid #334155;
-    border-radius: 14px;
-    padding: 20px;
+    padding: 22px;
+    border-radius: 16px;
+}
+
+.section-title {
+    margin-bottom: 18px;
 }
 
 .section-title h3 {
-    margin: 0 0 5px;
-    font-size: 22px;
-    color: #f8fafc;
+    color: #60a5fa;
+    margin-bottom: 6px;
 }
 
 .section-title p {
-    margin-top: 5px;
-    color: #94a3b8;
-    line-height: 1.5;
+    color: #cbd5e1;
+    font-size: 0.95rem;
 }
 
 #canvas {
     display: block;
-
     width: 100%;
     height: auto;
 
-    margin-top: 20px;
+    background: #0f172a;
 
-    background: #020617;
-    border: 1px solid #334155;
-    border-radius: 10px;
+    border-radius: 12px;
 }
 
+/* ---------------- RIGHT SIDE ---------------- */
 
-/* ================================
-   RIGHT — CONTROLS + GRAPH
-================================ */
-
-.side-panel {
+.right-section {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-
-    min-width: 0;
+    gap: 25px;
 }
 
-.controls,
-.graph-card {
+/* ---------------- CONTROLS ---------------- */
+
+.controls {
     background: #1e293b;
-    border: 1px solid #334155;
-    border-radius: 14px;
-    padding: 20px;
+    padding: 25px;
+    border-radius: 16px;
 }
 
-.controls h3,
-.graph-card h3 {
-    margin-top: 0;
-    color: #f8fafc;
+.controls h3 {
+    color: #60a5fa;
+    margin-bottom: 22px;
 }
-
-
-/* ================================
-   CONTROLS
-================================ */
 
 .controls label {
     display: block;
-    margin-bottom: 20px;
-    font-weight: 600;
-    color: #e2e8f0;
+    margin-bottom: 22px;
+
+    color: #e5e7eb;
+
+    line-height: 1.5;
 }
 
-.controls label span {
-    float: right;
-    font-weight: normal;
-    color: #60a5fa;
+.controls span {
+    display: block;
+    margin-top: 5px;
+
+    color: #cbd5e1;
+
+    font-size: 0.95rem;
 }
 
-input[type="range"] {
+.controls input {
     width: 100%;
     margin-top: 10px;
+
     accent-color: #60a5fa;
 }
 
+/* ---------------- BUTTONS ---------------- */
+
 button {
     border: none;
+
+    padding: 11px 18px;
+    margin-right: 8px;
+
     border-radius: 8px;
 
-    padding: 10px 18px;
-
-    background: #2563eb;
+    background: #3b82f6;
     color: white;
 
-    font-size: 14px;
+    font-size: 0.95rem;
+    font-weight: bold;
+
     cursor: pointer;
 
-    margin-right: 8px;
+    transition: 0.2s;
 }
 
 button:hover {
-    background: #3b82f6;
+    background: #2563eb;
+    transform: translateY(-1px);
 }
 
+/* ---------------- GRAPH ---------------- */
 
-/* ================================
-   GRAPH
-================================ */
+.graph-card {
+    background: #1e293b;
+    padding: 22px;
+    border-radius: 16px;
+}
+
+.graph-card h3 {
+    color: #60a5fa;
+    margin-bottom: 15px;
+}
 
 #graph {
     display: block;
@@ -185,145 +194,68 @@ button:hover {
     width: 100%;
     height: auto;
 
-    background: #020617;
+    background: #0f172a;
 
-    border: 1px solid #334155;
     border-radius: 10px;
 }
 
+/* ---------------- INFORMATION ---------------- */
 
-/* ================================
-   EXPLANATION / INFO
-================================ */
-
-.info {
-    max-width: 1200px;
-
+.info-section {
+    width: min(1250px, 94%);
     margin: 0 auto 50px;
 
-    padding: 0 30px;
-
     display: grid;
-
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr 1fr;
 
     gap: 20px;
 }
 
-
-/* Individual cards */
-
 .card {
-    padding: 20px;
-
     background: #1e293b;
-
-    border: 1px solid #334155;
-
+    padding: 22px;
     border-radius: 14px;
-
-    text-align: center;
 }
 
-.card h4 {
-    margin: 0 0 12px;
-
+.card h3 {
     color: #60a5fa;
-
-    font-size: 18px;
+    margin-bottom: 12px;
 }
 
 .card p {
-    margin: 0;
-
+    color: #e5e7eb;
     line-height: 1.7;
-
-    color: #cbd5e1;
 }
 
-
-/* ================================
-   CALCULUS EXPLANATION
-================================ */
-
-/*
-   The calculus card sits underneath
-   everything and spans the whole page.
-*/
-
-.card.explanation {
+.explanation {
     grid-column: 1 / -1;
+}
 
-    max-width: 850px;
+/* ---------------- FOOTER ---------------- */
 
-    width: 100%;
-
-    margin: 5px auto 0;
-
+footer {
     text-align: center;
-
-    padding: 28px 35px;
+    padding: 35px;
+    color: #94a3b8;
 }
 
-.card.explanation h4 {
-    font-size: 21px;
-    margin-bottom: 18px;
-}
+/* ---------------- MOBILE ---------------- */
 
-.card.explanation p {
-    font-size: 16px;
-    line-height: 1.9;
-}
-
-
-/* MathJax */
-
-mjx-container {
-    color: #60a5fa !important;
-}
-
-
-/* ================================
-   MOBILE
-================================ */
-
-@media (max-width: 850px) {
+@media (max-width: 900px) {
 
     main {
         grid-template-columns: 1fr;
     }
 
-    .info {
+    .info-section {
         grid-template-columns: 1fr;
-
-        padding-left: 20px;
-        padding-right: 20px;
     }
 
-    .card.explanation {
+    .explanation {
         grid-column: auto;
     }
 
-    header {
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-
-    .back-container {
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-
-    main {
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-
     header h1 {
-        font-size: 34px;
-    }
-
-    header h2 {
-        font-size: 24px;
+        font-size: 2.4rem;
     }
 }
