@@ -386,35 +386,35 @@ function updateInformation() {
     frequencyValue.innerHTML =
 
         `
+        \\[
         \\omega = \\sqrt{\\frac{k}{m}}
+        \\]
 
-        <br><br>
-
-        <strong>
-        \\omega = ${omega.toFixed(2)} rad/s
-        </strong>
+        \\[
+        \\omega = ${omega.toFixed(2)}\\ \\text{rad/s}
+        \\]
         `;
 
 
     periodValue.innerHTML =
 
         `
+        \\[
         T = 2\\pi\\sqrt{\\frac{m}{k}}
+        \\]
 
-        <br><br>
-
-        <strong>
-        T = ${period.toFixed(2)} s
-        </strong>
+        \\[
+        T = ${period.toFixed(2)}\\ \\text{s}
+        \\]
         `;
 
 
     displacementValue.innerHTML =
 
         `
-        <strong>
-        x = ${displacement.toFixed(1)} px
-        </strong>
+        \\[
+        x = ${displacement.toFixed(1)}\\ \\text{px}
+        \\]
         `;
 
 
@@ -424,48 +424,50 @@ function updateInformation() {
         Simple harmonic motion can be described
         using a sinusoidal function:
 
-        <br><br>
-
-        <strong>
+        \\[
         x(t) = A\\cos(\\omega t)
-        </strong>
-
-        <br><br>
+        \\]
 
         Taking the derivative gives velocity:
 
-        <br><br>
-
-        <strong>
+        \\[
         v(t) = \\frac{dx}{dt}
-        </strong>
-
-        <br><br>
+        \\]
 
         Taking another derivative gives acceleration:
 
-        <br><br>
-
-        <strong>
+        \\[
         a(t) = \\frac{d^2x}{dt^2}
-        </strong>
+        \\]
 
-        <br><br>
+        For a spring, Hooke's law gives:
 
-        For a spring, Hooke's law gives
-
-        <br><br>
-
-        <strong>
+        \\[
         F = -kx
-        </strong>
-
-        <br><br>
+        \\]
 
         Combining this with Newton's second law
         produces the differential equation that
-        describes simple harmonic motion.
+        describes simple harmonic motion:
+
+        \\[
+        m\\frac{d^2x}{dt^2} = -kx
+        \\]
         `;
+
+
+    // MathJax must re-render dynamically inserted equations.
+
+    if (window.MathJax) {
+
+        MathJax.typesetPromise([
+            frequencyValue,
+            periodValue,
+            displacementValue,
+            calculus
+        ]);
+
+    }
 
 }
 
@@ -529,6 +531,8 @@ kSlider.addEventListener(
         k =
             parseFloat(kSlider.value);
 
+        updateInformation();
+
     }
 );
 
@@ -540,6 +544,8 @@ massSlider.addEventListener(
         mass =
             parseFloat(massSlider.value);
 
+        updateInformation();
+
     }
 );
 
@@ -550,6 +556,8 @@ amplitudeSlider.addEventListener(
 
         amplitude =
             parseFloat(amplitudeSlider.value);
+
+        updateInformation();
 
     }
 );
@@ -591,6 +599,8 @@ resetButton.addEventListener(
         running = true;
 
         toggleButton.textContent = "Pause";
+
+        updateInformation();
 
     }
 );
