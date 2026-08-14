@@ -21,9 +21,9 @@ const toggleButton = document.getElementById("toggleButton");
 const resetButton = document.getElementById("resetButton");
 
 
-// --------------------------------------------------
-// State
-// --------------------------------------------------
+// ==================================================
+// STATE
+// ==================================================
 
 let k = 20;
 let mass = 2;
@@ -39,9 +39,9 @@ let graphData = [];
 const GRAPH_TIME = 5;
 
 
-// --------------------------------------------------
-// Physics
-// --------------------------------------------------
+// ==================================================
+// PHYSICS
+// ==================================================
 
 function getAngularFrequency() {
     return Math.sqrt(k / mass);
@@ -60,9 +60,9 @@ function getDisplacement() {
 }
 
 
-// --------------------------------------------------
-// Draw Spring
-// --------------------------------------------------
+// ==================================================
+// SPRING SIMULATION
+// ==================================================
 
 function drawSpring() {
 
@@ -83,7 +83,9 @@ function drawSpring() {
     const massX = equilibriumX + displacement;
 
 
+    // ----------------------------------------------
     // Floor
+    // ----------------------------------------------
 
     ctx.beginPath();
 
@@ -96,7 +98,9 @@ function drawSpring() {
     ctx.stroke();
 
 
+    // ----------------------------------------------
     // Wall
+    // ----------------------------------------------
 
     ctx.fillStyle = "#475569";
 
@@ -108,12 +112,17 @@ function drawSpring() {
     );
 
 
+    // ----------------------------------------------
     // Spring
+    // ----------------------------------------------
 
     const springStart = wallX + 15;
     const springEnd = massX - 35;
 
-    const springLength = springEnd - springStart;
+    const springLength = Math.max(
+        springEnd - springStart,
+        20
+    );
 
     const coils = 14;
     const coilHeight = 18;
@@ -155,7 +164,9 @@ function drawSpring() {
     ctx.stroke();
 
 
+    // ----------------------------------------------
     // Mass
+    // ----------------------------------------------
 
     ctx.fillStyle = "#e2e8f0";
 
@@ -177,7 +188,9 @@ function drawSpring() {
     );
 
 
-    // Equilibrium line
+    // ----------------------------------------------
+    // Equilibrium Line
+    // ----------------------------------------------
 
     ctx.beginPath();
 
@@ -201,9 +214,11 @@ function drawSpring() {
     ctx.setLineDash([]);
 
 
+    // ----------------------------------------------
     // Labels
+    // ----------------------------------------------
 
-    ctx.fillStyle = "#334155";
+    ctx.fillStyle = "#60a5fa";
 
     ctx.font = "15px Arial";
     ctx.textAlign = "center";
@@ -228,9 +243,9 @@ function drawSpring() {
 }
 
 
-// --------------------------------------------------
-// Graph
-// --------------------------------------------------
+// ==================================================
+// GRAPH
+// ==================================================
 
 function drawGraph() {
 
@@ -252,9 +267,11 @@ function drawGraph() {
         (top + bottom) / 2;
 
 
+    // ----------------------------------------------
     // Background
+    // ----------------------------------------------
 
-    graphCtx.fillStyle = "#fafafa";
+    graphCtx.fillStyle = "#020617";
 
     graphCtx.fillRect(
         0,
@@ -264,97 +281,126 @@ function drawGraph() {
     );
 
 
-    // Zero line
+    // ----------------------------------------------
+    // Grid / zero line
+    // ----------------------------------------------
 
     graphCtx.beginPath();
 
     graphCtx.moveTo(left, centerY);
     graphCtx.lineTo(right, centerY);
 
-    graphCtx.strokeStyle = "#cbd5e1";
+    graphCtx.strokeStyle = "#334155";
     graphCtx.lineWidth = 1;
 
     graphCtx.stroke();
 
 
+    // ----------------------------------------------
     // Y axis
+    // ----------------------------------------------
 
     graphCtx.beginPath();
 
     graphCtx.moveTo(left, top);
     graphCtx.lineTo(left, bottom);
 
-    graphCtx.strokeStyle = "#64748b";
+    graphCtx.strokeStyle = "#475569";
 
     graphCtx.stroke();
 
 
+    // ----------------------------------------------
     // X axis
+    // ----------------------------------------------
 
     graphCtx.beginPath();
 
     graphCtx.moveTo(left, bottom);
     graphCtx.lineTo(right, bottom);
 
-    graphCtx.strokeStyle = "#64748b";
+    graphCtx.strokeStyle = "#475569";
 
     graphCtx.stroke();
 
 
+    // ----------------------------------------------
+    // Find only visible points
+    // ----------------------------------------------
+
     if (graphData.length < 2) {
+        drawGraphLabels(left, right);
         return;
     }
 
-
-    // Find time range
 
     const newestTime =
         graphData[graphData.length - 1].time;
 
     const oldestTime =
-        Math.max(0, newestTime - GRAPH_TIME);
+        Math.max(
+            0,
+            newestTime - GRAPH_TIME
+        );
 
 
-    // Plot displacement
+    const visiblePoints =
+        graphData.filter(
+            point =>
+                point.time >= oldestTime &&
+                point.time <= newestTime
+        );
+
+
+    if (visiblePoints.length < 2) {
+        drawGraphLabels(left, right);
+        return;
+    }
+
+
+    // ----------------------------------------------
+    // Plot
+    // ----------------------------------------------
 
     graphCtx.beginPath();
 
 
-    graphData.forEach((point, index) => {
+    visiblePoints.forEach(
+        (point, index) => {
 
-        if (point.time < oldestTime) {
-            return;
+            const progress =
+                newestTime === oldestTime
+                    ? 0
+                    : (
+                        (point.time - oldestTime) /
+                        (newestTime - oldestTime)
+                    );
+
+
+            const x =
+                left +
+                progress *
+                (right - left);
+
+
+            const y =
+                centerY -
+                (point.displacement / 180) *
+                95;
+
+
+            if (index === 0) {
+
+                graphCtx.moveTo(x, y);
+
+            } else {
+
+                graphCtx.lineTo(x, y);
+
+            }
+
         }
-
-
-        const progress =
-            (point.time - oldestTime) /
-            GRAPH_TIME;
-
-
-        const x =
-            left +
-            progress *
-            (right - left);
-
-
-        const y =
-            centerY -
-            (point.displacement / 180) *
-            95;
-
-
-        if (index === 0 || point.time === oldestTime) {
-
-            graphCtx.moveTo(x, y);
-
-        } else {
-
-            graphCtx.lineTo(x, y);
-
-        }
-
-    });
+    );
 
 
     graphCtx.strokeStyle = "#60a5fa";
@@ -363,11 +409,20 @@ function drawGraph() {
     graphCtx.stroke();
 
 
-    // Labels
+    drawGraphLabels(left, right);
+}
 
-    graphCtx.fillStyle = "#334155";
+
+// ==================================================
+// GRAPH LABELS
+// ==================================================
+
+function drawGraphLabels(left, right) {
+
+    graphCtx.fillStyle = "#60a5fa";
 
     graphCtx.font = "13px Arial";
+
     graphCtx.textAlign = "left";
 
     graphCtx.fillText(
@@ -386,9 +441,9 @@ function drawGraph() {
 }
 
 
-// --------------------------------------------------
-// Information + LaTeX
-// --------------------------------------------------
+// ==================================================
+// INFORMATION
+// ==================================================
 
 function updateInformation() {
 
@@ -402,6 +457,10 @@ function updateInformation() {
         getDisplacement();
 
 
+    // ----------------------------------------------
+    // Control values
+    // ----------------------------------------------
+
     kValue.textContent =
         `${k.toFixed(0)} N/m`;
 
@@ -412,16 +471,25 @@ function updateInformation() {
         `${amplitude.toFixed(0)} px`;
 
 
+    // ----------------------------------------------
+    // Angular frequency
+    // ----------------------------------------------
+
     frequencyValue.innerHTML = `
         \\[
         \\omega = \\sqrt{\\frac{k}{m}}
         \\]
 
         \\[
-        \\omega = ${omega.toFixed(2)}\\ \\text{rad/s}
+        \\omega = ${omega.toFixed(2)}
+        \\;\\text{rad/s}
         \\]
     `;
 
+
+    // ----------------------------------------------
+    // Period
+    // ----------------------------------------------
 
     periodValue.innerHTML = `
         \\[
@@ -429,17 +497,28 @@ function updateInformation() {
         \\]
 
         \\[
-        T = ${period.toFixed(2)}\\ \\text{s}
+        T = ${period.toFixed(2)}
+        \\;\\text{s}
         \\]
     `;
 
+
+    // ----------------------------------------------
+    // Current displacement
+    // ----------------------------------------------
 
     displacementValue.innerHTML = `
         \\[
-        x(t) = ${displacement.toFixed(1)}\\ \\text{px}
+        x(t) =
+        ${displacement.toFixed(1)}
+        \\;\\text{px}
         \\]
     `;
 
+
+    // ----------------------------------------------
+    // Calculus
+    // ----------------------------------------------
 
     calculus.innerHTML = `
         Simple harmonic motion can be described
@@ -484,6 +563,10 @@ function updateInformation() {
     `;
 
 
+    // ----------------------------------------------
+    // MathJax
+    // ----------------------------------------------
+
     if (window.MathJax) {
 
         MathJax.typesetClear([
@@ -503,9 +586,9 @@ function updateInformation() {
 }
 
 
-// --------------------------------------------------
-// Animation
-// --------------------------------------------------
+// ==================================================
+// ANIMATION
+// ==================================================
 
 function animate(currentTime) {
 
@@ -529,8 +612,8 @@ function animate(currentTime) {
         });
 
 
-        // Keep enough data for the graph
-        // without allowing the array to grow forever.
+        // Keep only the most recent
+        // five seconds of data.
 
         while (
             graphData.length > 0 &&
@@ -540,16 +623,17 @@ function animate(currentTime) {
             graphData.shift();
 
         }
-
     }
 
 
     drawSpring();
+
     drawGraph();
 
 
-    // Update text separately from the animation
-    // so MathJax does not get hammered every frame.
+    // Update information about
+    // ten times per second instead
+    // of every animation frame.
 
     if (
         !window.__lastInfoUpdate ||
@@ -558,7 +642,8 @@ function animate(currentTime) {
 
         updateInformation();
 
-        window.__lastInfoUpdate = currentTime;
+        window.__lastInfoUpdate =
+            currentTime;
     }
 
 
@@ -566,9 +651,9 @@ function animate(currentTime) {
 }
 
 
-// --------------------------------------------------
-// Controls
-// --------------------------------------------------
+// ==================================================
+// CONTROLS
+// ==================================================
 
 kSlider.addEventListener(
     "input",
@@ -578,7 +663,6 @@ kSlider.addEventListener(
             parseFloat(kSlider.value);
 
         updateInformation();
-
     }
 );
 
@@ -591,7 +675,6 @@ massSlider.addEventListener(
             parseFloat(massSlider.value);
 
         updateInformation();
-
     }
 );
 
@@ -604,10 +687,13 @@ amplitudeSlider.addEventListener(
             parseFloat(amplitudeSlider.value);
 
         updateInformation();
-
     }
 );
 
+
+// ==================================================
+// PAUSE / PLAY
+// ==================================================
 
 toggleButton.addEventListener(
     "click",
@@ -620,9 +706,15 @@ toggleButton.addEventListener(
                 ? "Pause"
                 : "Play";
 
+        lastTime =
+            performance.now();
     }
 );
 
+
+// ==================================================
+// RESET
+// ==================================================
 
 resetButton.addEventListener(
     "click",
@@ -642,17 +734,22 @@ resetButton.addEventListener(
 
         running = true;
 
-        toggleButton.textContent = "Pause";
+        toggleButton.textContent =
+            "Pause";
+
+        lastTime =
+            performance.now();
+
+        window.__lastInfoUpdate = 0;
 
         updateInformation();
-
     }
 );
 
 
-// --------------------------------------------------
-// Start
-// --------------------------------------------------
+// ==================================================
+// START
+// ==================================================
 
 updateInformation();
 
