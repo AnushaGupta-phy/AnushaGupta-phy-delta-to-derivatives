@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Day 31 | Sound</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>Delta To Derivatives</h1>
+
+    <h2>Day 31 — Sound</h2>
+
+    <p>
+        Sound is a mechanical wave, but what makes one sound
+        different from another? Explore how frequency and amplitude
+        affect pitch and loudness while seeing the mathematics
+        behind changing air pressure.
+    </p>
+
+</header>
+
+
+<div class="back-container">
+
+    <a
+        href="https://anushagupta-phy.github.io/AnushaGupta-phy-delta-to-derivatives/day00-landing/"
+        class="back-button"
+    >
+        ← Back to Simulation Gallery
+    </a>
+
+</div>
+
+
+<main>
+
+    <!-- SIMULATION -->
+
+    <section class="simulation-section">
+
+        <div class="section-title">
+
+            <h3>Sound Wave</h3>
+
+            <p>
+                Change the frequency and amplitude to hear the
+                difference between pitch and loudness.
+            </p>
+
+        </div>
+
+
+        <canvas
+            id="canvas"
+            width="700"
+            height="500"
+        ></canvas>
+
+    </section>
+
+
+    <!-- CONTROLS + GRAPH -->
+
+    <section class="side-panel">
+
+        <div class="controls">
+
+            <h3>Controls</h3>
+
+
+            <label>
+
+                Frequency
+
+                <span id="frequencyValue">
+                    440 Hz
+                </span>
+
+                <input
+                    type="range"
+                    id="frequency"
+                    min="100"
+                    max="800"
+                    step="10"
+                    value="440"
+                >
+
+            </label>
+
+
+            <label>
+
+                Amplitude
+
+                <span id="amplitudeValue">
+                    50 %
+                </span>
+
+                <input
+                    type="range"
+                    id="amplitude"
+                    min="10"
+                    max="100"
+                    step="5"
+                    value="50"
+                >
+
+            </label>
+
+
+            <button id="toggleButton">
+                Play Sound
+            </button>
+
+
+            <button id="resetButton">
+                Reset
+            </button>
+
+        </div>
+
+
+        <div class="graph-card">
+
+            <h3>Air Pressure vs Time</h3>
+
+            <canvas
+                id="graph"
+                width="600"
+                height="300"
+            ></canvas>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- INFORMATION -->
+
+<section class="info-section">
+
+    <div class="info-card">
+
+        <h3>Frequency</h3>
+
+        <div id="frequencyInfo"></div>
+
+    </div>
+
+
+    <div class="info-card">
+
+        <h3>Amplitude</h3>
+
+        <div id="amplitudeInfo"></div>
+
+    </div>
+
+
+    <div class="info-card calculus-card">
+
+        <h3>The Calculus Connection</h3>
+
+        <div id="calculus"></div>
+
+    </div>
+
+</section>
+
+
+<!-- MATHJAX -->
+
+<script>
+
+window.MathJax = {
+
+    tex: {
+
+        inlineMath: [
+            ['\\(', '\\)']
+        ],
+
+        displayMath: [
+            ['\\[', '\\]']
+        ]
+
+    }
+
+};
+
+</script>
+
+
+<script
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+></script>
+
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
