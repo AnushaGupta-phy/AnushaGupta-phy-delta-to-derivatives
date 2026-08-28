@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Day 32 | Density & Pressure</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- MathJax -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+
+    <script
+        async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+    </script>
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>Delta To Derivatives</h1>
+
+    <h2>Day 32 — Density & Pressure</h2>
+
+    <p>
+        Fluids may look simple, but their behavior can be described
+        using relationships between mass, volume, force, and area.
+        Explore how density and pressure change inside a fluid system.
+    </p>
+
+</header>
+
+
+<div class="back-container">
+
+    <a
+        href="https://anushagupta-phy.github.io/AnushaGupta-phy-delta-to-derivatives/day00-landing/"
+        class="back-button"
+    >
+        ← Back to Simulation Gallery
+    </a>
+
+</div>
+
+
+<main>
+
+    <!-- SIMULATION -->
+
+    <section class="simulation-section">
+
+        <div class="section-title">
+
+            <h3>Water Tank</h3>
+
+            <p>
+                Change the mass, volume, and applied force to explore
+                density and pressure.
+            </p>
+
+        </div>
+
+        <canvas
+            id="canvas"
+            width="600"
+            height="500"
+        ></canvas>
+
+    </section>
+
+
+    <!-- CONTROLS + GRAPH -->
+
+    <section class="right-section">
+
+        <div class="controls">
+
+            <h3>Controls</h3>
+
+
+            <label>
+
+                Mass
+
+                <span id="massValue">
+                    10 kg
+                </span>
+
+                <input
+                    type="range"
+                    id="massSlider"
+                    min="1"
+                    max="30"
+                    step="1"
+                    value="10"
+                >
+
+            </label>
+
+
+            <label>
+
+                Volume
+
+                <span id="volumeValue">
+                    10 L
+                </span>
+
+                <input
+                    type="range"
+                    id="volumeSlider"
+                    min="2"
+                    max="30"
+                    step="1"
+                    value="10"
+                >
+
+            </label>
+
+
+            <label>
+
+                Applied Force
+
+                <span id="forceValue">
+                    100 N
+                </span>
+
+                <input
+                    type="range"
+                    id="forceSlider"
+                    min="20"
+                    max="300"
+                    step="10"
+                    value="100"
+                >
+
+            </label>
+
+
+            <button id="resetButton">
+                Reset
+            </button>
+
+        </div>
+
+
+        <div class="graph-card">
+
+            <h3>Density & Pressure</h3>
+
+            <canvas
+                id="graph"
+                width="600"
+                height="300"
+            ></canvas>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- INFORMATION -->
+
+<section class="info-section">
+
+    <div class="card">
+
+        <h3>Density</h3>
+
+        <p id="densityValue"></p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>Pressure</h3>
+
+        <p id="pressureValue"></p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>Pressure Relationship</h3>
+
+        <p id="relationshipValue"></p>
+
+    </div>
+
+
+    <div class="card explanation">
+
+        <h3>The Calculus Connection</h3>
+
+        <p id="calculus"></p>
+
+    </div>
+
+</section>
+
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
