@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Day 33 | Buoyancy</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- MathJax -->
+
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+
+    <script
+        async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+    </script>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>Delta To Derivatives</h1>
+
+    <h2>Day 33 — Buoyancy</h2>
+
+    <p>
+        Why do some objects float while others sink?
+        Today’s simulation explores buoyancy by showing how
+        fluid density, object density, and displaced fluid
+        determine whether an object floats, sinks, or stays
+        suspended.
+    </p>
+
+</header>
+
+
+<div class="back-container">
+
+    <a
+        href="https://anushagupta-phy.github.io/AnushaGupta-phy-delta-to-derivatives/day00-landing/"
+        class="back-button"
+    >
+        ← Back to Simulation Gallery
+    </a>
+
+</div>
+
+
+<main>
+
+
+    <!-- SIMULATION -->
+
+    <section class="simulation-section">
+
+        <div class="section-title">
+
+            <h3>Buoyancy Simulator</h3>
+
+            <p>
+                Change the object and fluid densities to see
+                how the forces determine its motion.
+            </p>
+
+        </div>
+
+
+        <canvas
+            id="canvas"
+            width="600"
+            height="500"
+        ></canvas>
+
+    </section>
+
+
+    <!-- CONTROLS + GRAPH -->
+
+    <section class="right-section">
+
+
+        <div class="controls">
+
+            <h3>Controls</h3>
+
+
+            <label>
+
+                Object Density
+
+                <span id="objectDensityValue">
+                    600 kg/m³
+                </span>
+
+                <input
+                    type="range"
+                    id="objectDensitySlider"
+                    min="200"
+                    max="1200"
+                    step="10"
+                    value="600"
+                >
+
+            </label>
+
+
+            <label>
+
+                Fluid Density
+
+                <span id="fluidDensityValue">
+                    1000 kg/m³
+                </span>
+
+                <input
+                    type="range"
+                    id="fluidDensitySlider"
+                    min="500"
+                    max="1500"
+                    step="10"
+                    value="1000"
+                >
+
+            </label>
+
+
+            <label>
+
+                Object Volume
+
+                <span id="volumeValue">
+                    1.0 m³
+                </span>
+
+                <input
+                    type="range"
+                    id="volumeSlider"
+                    min="0.5"
+                    max="2"
+                    step="0.1"
+                    value="1"
+                >
+
+            </label>
+
+
+            <button id="toggleButton">
+                Pause
+            </button>
+
+            <button id="resetButton">
+                Reset
+            </button>
+
+        </div>
+
+
+        <div class="graph-card">
+
+            <h3>Buoyant Force vs Weight</h3>
+
+            <canvas
+                id="graph"
+                width="600"
+                height="300"
+            ></canvas>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- INFORMATION -->
+
+<section class="info-section">
+
+
+    <div class="card">
+
+        <h3>Buoyant Force</h3>
+
+        <p id="buoyantForceValue"></p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>Weight</h3>
+
+        <p id="weightValue"></p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>Result</h3>
+
+        <p id="resultValue"></p>
+
+    </div>
+
+
+    <div class="card explanation">
+
+        <h3>The Calculus Connection</h3>
+
+        <p id="calculus"></p>
+
+    </div>
+
+</section>
+
+
+<script src="script.js"></script>
+
+
+</body>
+
+</html>
