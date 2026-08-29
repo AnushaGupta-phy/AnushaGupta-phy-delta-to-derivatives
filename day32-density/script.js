@@ -1,103 +1,69 @@
+// ==================================================
+// DAY 32 — DENSITY & PRESSURE
+// ==================================================
+
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
 const graph = document.getElementById("graph");
 const graphCtx = graph.getContext("2d");
 
+const massSlider = document.getElementById("massSlider");
+const volumeSlider = document.getElementById("volumeSlider");
+const forceSlider = document.getElementById("forceSlider");
 
-// --------------------------------------------------
-// Controls
-// --------------------------------------------------
+const massValue = document.getElementById("massValue");
+const volumeValue = document.getElementById("volumeValue");
+const forceValue = document.getElementById("forceValue");
 
-const massSlider =
-    document.getElementById("massSlider");
+const densityValue = document.getElementById("densityValue");
+const pressureValue = document.getElementById("pressureValue");
+const relationshipValue = document.getElementById("relationshipValue");
+const calculus = document.getElementById("calculus");
 
-const volumeSlider =
-    document.getElementById("volumeSlider");
-
-const forceSlider =
-    document.getElementById("forceSlider");
-
-
-const massValue =
-    document.getElementById("massValue");
-
-const volumeValue =
-    document.getElementById("volumeValue");
-
-const forceValue =
-    document.getElementById("forceValue");
+const resetButton = document.getElementById("resetButton");
 
 
-const densityValue =
-    document.getElementById("densityValue");
-
-const pressureValue =
-    document.getElementById("pressureValue");
-
-const relationshipValue =
-    document.getElementById("relationshipValue");
-
-const calculus =
-    document.getElementById("calculus");
-
-const resetButton =
-    document.getElementById("resetButton");
-
-
-// --------------------------------------------------
-// State
-// --------------------------------------------------
+// ==================================================
+// STATE
+// ==================================================
 
 let mass = 10;
 let volume = 10;
 let force = 100;
 
-
-// History for graph
-
-let graphData = [];
+let time = 0;
+let lastTime = performance.now();
 
 
-// --------------------------------------------------
-// Physics
-// --------------------------------------------------
-
-// Density:
-//
-// ρ = m / V
+// ==================================================
+// PHYSICS
+// ==================================================
 
 function getDensity() {
 
-    return mass / volume;
+    // 1 L = 0.001 m³
 
-}
+    const volumeM3 = volume * 0.001;
 
-
-// Pressure:
-//
-// P = F / A
-//
-// We use the tank's bottom area
-// as the contact area.
-
-function getArea() {
-
-    return 2.5;
-
+    return mass / volumeM3;
 }
 
 
 function getPressure() {
 
-    return force / getArea();
+    // Approximate tank cross-sectional area.
+    // This keeps the pressure visualization simple.
 
+    const area = 0.1;
+
+    return force / area;
 }
 
 
-// --------------------------------------------------
-// Draw Tank
-// --------------------------------------------------
+// ==================================================
+// DRAW WATER TANK
+// ==================================================
 
 function drawTank() {
 
@@ -109,210 +75,234 @@ function drawTank() {
     );
 
 
-    const tankX = 110;
-    const tankY = 80;
+    const width = canvas.width;
+    const height = canvas.height;
 
-    const tankWidth = 380;
-    const tankHeight = 330;
+    const tankLeft = 100;
+    const tankRight = 500;
+
+    const tankTop = 70;
+    const tankBottom = 420;
+
+    const tankWidth = tankRight - tankLeft;
+    const tankHeight = tankBottom - tankTop;
 
 
-    // ----------------------------------------------
-    // Background
-    // ----------------------------------------------
+    // ------------------------------------------------
+    // Title
+    // ------------------------------------------------
 
-    ctx.fillStyle = "#020617";
+    ctx.fillStyle = "#f8fafc";
+    ctx.font = "20px Arial";
+    ctx.textAlign = "center";
 
-    ctx.fillRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
+    ctx.fillText(
+        "Fluid Tank",
+        width / 2,
+        35
     );
 
 
-    // ----------------------------------------------
-    // Tank
-    // ----------------------------------------------
+    // ------------------------------------------------
+    // Tank outline
+    // ------------------------------------------------
 
-    ctx.strokeStyle = "#60a5fa";
+    ctx.strokeStyle = "#94a3b8";
     ctx.lineWidth = 4;
 
     ctx.strokeRect(
-        tankX,
-        tankY,
+        tankLeft,
+        tankTop,
         tankWidth,
         tankHeight
     );
 
 
-    // ----------------------------------------------
-    // Water
-    // ----------------------------------------------
+    // ------------------------------------------------
+    // Water level
+    // ------------------------------------------------
+
+    const volumeFraction =
+        (volume - 2) / (30 - 2);
 
     const waterHeight =
-        70 + (volume / 30) * 190;
+        80 +
+        volumeFraction * 220;
 
-    const waterY =
-        tankY + tankHeight - waterHeight;
+    const waterTop =
+        tankBottom - waterHeight;
 
 
-    ctx.fillStyle = "#1d4ed8";
+    ctx.fillStyle = "#2563eb";
 
     ctx.fillRect(
-        tankX + 4,
-        waterY,
+        tankLeft + 4,
+        waterTop,
         tankWidth - 8,
         waterHeight - 4
     );
 
 
-    // ----------------------------------------------
+    // ------------------------------------------------
     // Water surface
-    // ----------------------------------------------
+    // ------------------------------------------------
 
     ctx.beginPath();
 
     ctx.moveTo(
-        tankX + 4,
-        waterY
+        tankLeft + 4,
+        waterTop
     );
 
     ctx.lineTo(
-        tankX + tankWidth - 4,
-        waterY
+        tankRight - 4,
+        waterTop
     );
 
-    ctx.strokeStyle = "#93c5fd";
+    ctx.strokeStyle = "#60a5fa";
     ctx.lineWidth = 3;
 
     ctx.stroke();
 
 
-    // ----------------------------------------------
-    // Pressure arrows
-    // ----------------------------------------------
+    // ------------------------------------------------
+    // Particles
+    // ------------------------------------------------
 
-    const arrowCount = 7;
+    const particleCount = 28;
 
-    for (let i = 0; i < arrowCount; i++) {
+    for (let i = 0; i < particleCount; i++) {
 
         const x =
-            tankX +
-            45 +
-            i *
-            ((tankWidth - 90) / (arrowCount - 1));
-
-        const bottomY =
-            tankY +
-            tankHeight -
-            20;
-
-        const arrowLength =
+            tankLeft +
             20 +
-            (force / 300) * 45;
+            ((i * 73) % (tankWidth - 40));
 
+        const yRange =
+            Math.max(
+                20,
+                waterHeight - 25
+            );
 
-        ctx.beginPath();
-
-        ctx.moveTo(
-            x,
-            bottomY - arrowLength
-        );
-
-        ctx.lineTo(
-            x,
-            bottomY
-        );
-
-        ctx.strokeStyle = "#60a5fa";
-        ctx.lineWidth = 2;
-
-        ctx.stroke();
-
-
-        // Arrowhead
+        const y =
+            waterTop +
+            20 +
+            ((i * 47 + time * 18) % yRange);
 
         ctx.beginPath();
 
-        ctx.moveTo(
-            x - 5,
-            bottomY - 8
-        );
-
-        ctx.lineTo(
+        ctx.arc(
             x,
-            bottomY
+            y,
+            4,
+            0,
+            Math.PI * 2
         );
 
-        ctx.lineTo(
-            x + 5,
-            bottomY - 8
-        );
+        ctx.fillStyle = "#bfdbfe";
 
-        ctx.stroke();
+        ctx.fill();
     }
 
 
-    // ----------------------------------------------
+    // ------------------------------------------------
+    // Force arrow
+    // ------------------------------------------------
+
+    const arrowX = width / 2;
+
+    const arrowBottom =
+        tankTop - 10;
+
+    const arrowLength =
+        40 + (force / 300) * 80;
+
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        arrowX,
+        arrowBottom - arrowLength
+    );
+
+    ctx.lineTo(
+        arrowX,
+        arrowBottom
+    );
+
+    ctx.strokeStyle = "#f8fafc";
+    ctx.lineWidth = 5;
+
+    ctx.stroke();
+
+
+    // Arrow head
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        arrowX - 9,
+        arrowBottom - 12
+    );
+
+    ctx.lineTo(
+        arrowX,
+        arrowBottom
+    );
+
+    ctx.lineTo(
+        arrowX + 9,
+        arrowBottom - 12
+    );
+
+    ctx.strokeStyle = "#f8fafc";
+    ctx.lineWidth = 4;
+
+    ctx.stroke();
+
+
+    ctx.fillStyle = "#f8fafc";
+    ctx.font = "15px Arial";
+
+    ctx.fillText(
+        "Applied Force",
+        arrowX,
+        arrowBottom - arrowLength - 12
+    );
+
+
+    // ------------------------------------------------
     // Labels
-    // ----------------------------------------------
-
-    ctx.fillStyle = "#e2e8f0";
-
-    ctx.font = "16px Arial";
-
-    ctx.textAlign = "center";
-
-
-    ctx.fillText(
-        "Water",
-        canvas.width / 2,
-        waterY + 35
-    );
-
-
-    ctx.fillText(
-        `ρ = ${getDensity().toFixed(2)} kg/L`,
-        canvas.width / 2,
-        waterY + 60
-    );
-
-
-    ctx.fillText(
-        `P = ${getPressure().toFixed(1)} Pa`,
-        canvas.width / 2,
-        tankY + tankHeight + 45
-    );
-
-
-    // ----------------------------------------------
-    // Mass label
-    // ----------------------------------------------
+    // ------------------------------------------------
 
     ctx.textAlign = "left";
 
-    ctx.fillStyle = "#94a3b8";
+    ctx.fillStyle = "#cbd5e1";
+    ctx.font = "15px Arial";
 
     ctx.fillText(
         `Mass: ${mass.toFixed(0)} kg`,
-        tankX,
-        45
+        25,
+        465
     );
-
-
-    ctx.textAlign = "right";
 
     ctx.fillText(
         `Volume: ${volume.toFixed(0)} L`,
-        tankX + tankWidth,
-        45
+        220,
+        465
+    );
+
+    ctx.fillText(
+        `Density: ${getDensity().toFixed(0)} kg/m³`,
+        390,
+        465
     );
 }
 
 
-// --------------------------------------------------
-// Graph
-// --------------------------------------------------
+// ==================================================
+// GRAPH
+// ==================================================
 
 function drawGraph() {
 
@@ -324,11 +314,14 @@ function drawGraph() {
     );
 
 
-    const left = 55;
+    const left = 60;
     const right = graph.width - 25;
 
-    const top = 30;
+    const top = 25;
     const bottom = graph.height - 45;
+
+    const centerY =
+        (top + bottom) / 2;
 
 
     // Background
@@ -343,128 +336,109 @@ function drawGraph() {
     );
 
 
-    // Axes
-
-    graphCtx.strokeStyle = "#64748b";
-    graphCtx.lineWidth = 1;
-
+    // Center line
 
     graphCtx.beginPath();
 
     graphCtx.moveTo(
         left,
-        top
-    );
-
-    graphCtx.lineTo(
-        left,
-        bottom
+        centerY
     );
 
     graphCtx.lineTo(
         right,
-        bottom
-    );
-
-    graphCtx.stroke();
-
-
-    // Zero/reference line
-
-    graphCtx.beginPath();
-
-    graphCtx.moveTo(
-        left,
-        bottom / 2 + top / 2
-    );
-
-    graphCtx.lineTo(
-        right,
-        bottom / 2 + top / 2
+        centerY
     );
 
     graphCtx.strokeStyle = "#334155";
+    graphCtx.lineWidth = 1;
 
     graphCtx.stroke();
 
 
-    if (graphData.length < 2) {
-        return;
-    }
+    // Pressure indicator
 
+    const pressure =
+        getPressure();
 
-    // Density history
+    const maxPressure = 3000;
 
-    graphCtx.beginPath();
+    const barWidth =
+        (pressure / maxPressure) *
+        (right - left);
 
+    graphCtx.fillStyle = "#60a5fa";
 
-    graphData.forEach(
-        (point, index) => {
-
-            const x =
-                left +
-                (index /
-                    Math.max(
-                        graphData.length - 1,
-                        1
-                    )) *
-                (right - left);
-
-
-            const y =
-                bottom -
-                Math.min(
-                    point.density / 3,
-                    1
-                ) *
-                (bottom - top);
-
-
-            if (index === 0) {
-
-                graphCtx.moveTo(
-                    x,
-                    y
-                );
-
-            } else {
-
-                graphCtx.lineTo(
-                    x,
-                    y
-                );
-
-            }
-
-        }
+    graphCtx.fillRect(
+        left,
+        centerY - 30,
+        Math.min(
+            barWidth,
+            right - left
+        ),
+        30
     );
 
 
-    graphCtx.strokeStyle = "#60a5fa";
-    graphCtx.lineWidth = 3;
+    // Density indicator
 
-    graphCtx.stroke();
+    const density =
+        getDensity();
+
+    const densityRatio =
+        Math.min(
+            density / 15000,
+            1
+        );
+
+    graphCtx.fillStyle = "#93c5fd";
+
+    graphCtx.fillRect(
+        left,
+        centerY + 20,
+        densityRatio *
+            (right - left),
+        30
+    );
 
 
-    // Label
+    // Labels
 
-    graphCtx.fillStyle = "#cbd5e1";
-
-    graphCtx.font = "13px Arial";
-
+    graphCtx.fillStyle = "#f8fafc";
+    graphCtx.font = "14px Arial";
     graphCtx.textAlign = "left";
 
     graphCtx.fillText(
-        "Density over time",
-        left + 5,
-        18
+        `Pressure: ${pressure.toFixed(0)} Pa`,
+        left,
+        centerY - 38
+    );
+
+    graphCtx.fillText(
+        `Density: ${density.toFixed(0)} kg/m³`,
+        left,
+        centerY + 62
+    );
+
+    graphCtx.fillStyle = "#94a3b8";
+
+    graphCtx.fillText(
+        "Pressure",
+        right - 65,
+        centerY - 38
+    );
+
+    graphCtx.fillText(
+        "Density",
+        right - 60,
+        centerY + 62
     );
 }
 
 
-// --------------------------------------------------
-// Information
-// --------------------------------------------------
+// ==================================================
+// INFORMATION
+// ==================================================
 
 function updateInformation() {
 
@@ -491,8 +465,7 @@ function updateInformation() {
         \\]
 
         \\[
-        \\rho = ${density.toFixed(2)}
-        \\ \\text{kg/L}
+        \\rho = ${density.toFixed(0)}\\ \\text{kg/m}^3
         \\]
     `;
 
@@ -503,22 +476,25 @@ function updateInformation() {
         \\]
 
         \\[
-        P = ${pressure.toFixed(1)}
-        \\ \\text{Pa}
+        P = ${pressure.toFixed(0)}\\ \\text{Pa}
         \\]
     `;
 
 
     relationshipValue.innerHTML = `
-        Increasing mass while keeping volume fixed
-        increases density.
+        Increasing mass increases density.
 
         \\[
         \\rho \\propto m
         \\]
 
-        Increasing the applied force over the same
-        area increases pressure.
+        Increasing volume decreases density.
+
+        \\[
+        \\rho \\propto \\frac{1}{V}
+        \\]
+
+        Increasing force increases pressure.
 
         \\[
         P \\propto F
@@ -527,93 +503,94 @@ function updateInformation() {
 
 
     calculus.innerHTML = `
-        Density and pressure are both ratios.
-
-        Density describes how much mass is contained
-        in a given volume:
+        Density and pressure are both built from
+        rates and ratios.
 
         \\[
         \\rho = \\frac{m}{V}
         \\]
 
-        Pressure describes how force is distributed
-        over an area:
+        Pressure is force distributed across an area:
 
         \\[
         P = \\frac{F}{A}
         \\]
 
-        These relationships are closely connected to
-        the calculus idea of a rate or ratio between
-        changing quantities.
+        These relationships can be viewed as
+        functions of changing quantities.
 
-        More generally, calculus lets us describe how
-        physical quantities change with respect to one
-        another:
-
-        \\[
-        \\frac{dQ}{dX}
-        \\]
-
-        This idea becomes especially important as we
-        move from simple ratios to continuously varying
-        fluid systems.
+        Calculus lets us study how quickly these
+        quantities change when mass, volume, force,
+        or area changes.
     `;
 
 
-    if (window.MathJax) {
-
-        MathJax.typesetClear([
-            densityValue,
-            pressureValue,
-            relationshipValue,
-            calculus
-        ]);
-
-        MathJax.typesetPromise([
-            densityValue,
-            pressureValue,
-            relationshipValue,
-            calculus
-        ]);
-    }
+    renderMath();
 }
 
 
-// --------------------------------------------------
-// Store Graph Data
-// --------------------------------------------------
+// ==================================================
+// MATHJAX
+// ==================================================
 
-function recordData() {
+let mathRendering = false;
 
-    graphData.push({
+function renderMath() {
 
-        density:
-            getDensity(),
+    if (!window.MathJax) {
+        return;
+    }
 
-        time:
-            performance.now()
+    if (mathRendering) {
+        return;
+    }
+
+    mathRendering = true;
+
+
+    MathJax.typesetClear([
+        densityValue,
+        pressureValue,
+        relationshipValue,
+        calculus
+    ]);
+
+
+    MathJax.typesetPromise([
+        densityValue,
+        pressureValue,
+        relationshipValue,
+        calculus
+    ])
+    .catch(() => {})
+    .finally(() => {
+
+        mathRendering = false;
 
     });
-
-
-    if (graphData.length > 120) {
-
-        graphData.shift();
-
-    }
 }
 
 
-// --------------------------------------------------
-// Animation
-// --------------------------------------------------
+// ==================================================
+// ANIMATION
+// ==================================================
 
-function animate() {
+function animate(currentTime) {
+
+    const deltaTime =
+        Math.min(
+            (currentTime - lastTime) / 1000,
+            0.05
+        );
+
+    lastTime = currentTime;
+
+    time += deltaTime;
+
 
     drawTank();
-
     drawGraph();
+
 
     requestAnimationFrame(
         animate
@@ -621,9 +598,9 @@ function animate() {
 }
 
 
-// --------------------------------------------------
-// Controls
-// --------------------------------------------------
+// ==================================================
+// CONTROLS
+// ==================================================
 
 massSlider.addEventListener(
     "input",
@@ -633,8 +610,6 @@ massSlider.addEventListener(
             parseFloat(
                 massSlider.value
             );
-
-        recordData();
 
         updateInformation();
 
@@ -650,8 +625,6 @@ volumeSlider.addEventListener(
             parseFloat(
                 volumeSlider.value
             );
-
-        recordData();
 
         updateInformation();
 
@@ -674,10 +647,6 @@ forceSlider.addEventListener(
 );
 
 
-// --------------------------------------------------
-// Reset
-// --------------------------------------------------
-
 resetButton.addEventListener(
     "click",
     () => {
@@ -690,20 +659,21 @@ resetButton.addEventListener(
         volumeSlider.value = 10;
         forceSlider.value = 100;
 
-        graphData = [];
-
         updateInformation();
 
     }
 );
 
 
-// --------------------------------------------------
-// Start
-// --------------------------------------------------
+// ==================================================
+// START
+// ==================================================
 
 updateInformation();
 
-recordData();
+drawTank();
+drawGraph();
 
-animate();
+requestAnimationFrame(
+    animate
+);
