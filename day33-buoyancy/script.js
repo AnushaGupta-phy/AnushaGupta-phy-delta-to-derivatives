@@ -1,3 +1,7 @@
+// ==================================================
+// DAY 33 — BUOYANCY
+// ==================================================
+
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
@@ -5,69 +9,88 @@ const graph = document.getElementById("graph");
 const graphCtx = graph.getContext("2d");
 
 const objectDensitySlider =
-    document.getElementById("objectDensitySlider");
+    document.getElementById(
+        "objectDensitySlider"
+    );
 
 const fluidDensitySlider =
-    document.getElementById("fluidDensitySlider");
+    document.getElementById(
+        "fluidDensitySlider"
+    );
 
 const volumeSlider =
-    document.getElementById("volumeSlider");
+    document.getElementById(
+        "volumeSlider"
+    );
 
 const objectDensityValue =
-    document.getElementById("objectDensityValue");
+    document.getElementById(
+        "objectDensityValue"
+    );
 
 const fluidDensityValue =
-    document.getElementById("fluidDensityValue");
+    document.getElementById(
+        "fluidDensityValue"
+    );
 
 const volumeValue =
-    document.getElementById("volumeValue");
+    document.getElementById(
+        "volumeValue"
+    );
 
 const buoyantForceValue =
-    document.getElementById("buoyantForceValue");
+    document.getElementById(
+        "buoyantForceValue"
+    );
 
 const weightValue =
-    document.getElementById("weightValue");
+    document.getElementById(
+        "weightValue"
+    );
 
 const resultValue =
-    document.getElementById("resultValue");
+    document.getElementById(
+        "resultValue"
+    );
 
 const calculus =
-    document.getElementById("calculus");
+    document.getElementById(
+        "calculus"
+    );
 
 const toggleButton =
-    document.getElementById("toggleButton");
+    document.getElementById(
+        "toggleButton"
+    );
 
 const resetButton =
-    document.getElementById("resetButton");
+    document.getElementById(
+        "resetButton"
+    );
 
 
-// --------------------------------------------------
-// State
-// --------------------------------------------------
+// ==================================================
+// STATE
+// ==================================================
 
 let objectDensity = 600;
-
 let fluidDensity = 1000;
-
 let volume = 1;
 
-let time = 0;
-
 let running = true;
+
+let objectY = 270;
+let velocity = 0;
 
 let lastTime = performance.now();
 
 
-// --------------------------------------------------
-// Physics
-// --------------------------------------------------
+// ==================================================
+// PHYSICS
+// ==================================================
 
 const g = 9.81;
 
-
-// Mass:
-//
-// m = ρV
 
 function getMass() {
 
@@ -76,10 +99,6 @@ function getMass() {
 }
 
 
-// Weight:
-//
-// W = mg
-
 function getWeight() {
 
     return getMass() * g;
@@ -87,87 +106,28 @@ function getWeight() {
 }
 
 
-// Buoyant force:
-//
-// F_b = ρ_fluid g V_displaced
-
 function getBuoyantForce() {
 
-    const displacedVolume =
-        getDisplacedVolume();
-
     return fluidDensity *
-        g *
-        displacedVolume;
+        volume *
+        g;
 
 }
 
 
-// --------------------------------------------------
-// Floating Physics
-// --------------------------------------------------
+function getNetForce() {
 
-function getDisplacedVolume() {
-
-    const densityRatio =
-        objectDensity / fluidDensity;
-
-
-    // Object is less dense than fluid.
-    // It floats partially submerged.
-
-    if (objectDensity < fluidDensity) {
-
-        return volume * densityRatio;
-
-    }
-
-
-    // Object is exactly neutrally buoyant.
-
-    if (objectDensity === fluidDensity) {
-
-        return volume;
-
-    }
-
-
-    // Object is denser than the fluid.
-    // It sinks completely.
-
-    return volume;
+    return (
+        getBuoyantForce() -
+        getWeight()
+    );
 
 }
 
 
-// --------------------------------------------------
-// Result
-// --------------------------------------------------
-
-function getState() {
-
-    if (objectDensity < fluidDensity) {
-
-        return "Floating";
-
-    }
-
-
-    if (Math.abs(objectDensity - fluidDensity) < 0.01) {
-
-        return "Neutrally Buoyant";
-
-    }
-
-
-    return "Sinking";
-
-}
-
-
-// --------------------------------------------------
-// Draw Simulation
-// --------------------------------------------------
+// ==================================================
+// DRAW SIMULATION
+// ==================================================
 
 function drawSimulation() {
 
@@ -179,363 +139,270 @@ function drawSimulation() {
     );
 
 
+    const width = canvas.width;
+    const height = canvas.height;
+
+
+    // ------------------------------------------------
     // Background
+    // ------------------------------------------------
 
     ctx.fillStyle = "#020617";
 
     ctx.fillRect(
         0,
         0,
-        canvas.width,
-        canvas.height
+        width,
+        height
     );
 
 
-    const waterTop = 220;
+    // ------------------------------------------------
+    // Tank
+    // ------------------------------------------------
 
-    const waterBottom = 470;
+    const tankLeft = 90;
+    const tankRight = 510;
+
+    const tankTop = 70;
+    const tankBottom = 450;
 
 
+    ctx.strokeStyle = "#94a3b8";
+    ctx.lineWidth = 4;
+
+    ctx.strokeRect(
+        tankLeft,
+        tankTop,
+        tankRight - tankLeft,
+        tankBottom - tankTop
+    );
+
+
+    // ------------------------------------------------
     // Water
+    // ------------------------------------------------
 
-    ctx.fillStyle = "#172554";
+    const waterTop = 145;
+
+
+    ctx.fillStyle = "#2563eb";
 
     ctx.fillRect(
-        0,
+        tankLeft + 4,
         waterTop,
-        canvas.width,
-        waterBottom - waterTop
+        tankRight - tankLeft - 8,
+        tankBottom - waterTop - 4
     );
 
 
+    // ------------------------------------------------
     // Water surface
+    // ------------------------------------------------
 
     ctx.beginPath();
 
-    ctx.moveTo(0, waterTop);
-
-    for (
-        let x = 0;
-        x <= canvas.width;
-        x += 8
-    ) {
-
-        const y =
-            waterTop +
-            Math.sin(
-                x * 0.035 +
-                time * 2
-            ) * 3;
-
-        ctx.lineTo(x, y);
-
-    }
-
-    ctx.lineTo(
-        canvas.width,
+    ctx.moveTo(
+        tankLeft + 4,
         waterTop
     );
 
-    ctx.closePath();
-
-    ctx.fillStyle = "#1e40af";
-
-    ctx.fill();
-
-
-    // Labels
-
-    ctx.fillStyle = "#cbd5e1";
-
-    ctx.font = "15px Arial";
-
-    ctx.textAlign = "left";
-
-    ctx.fillText(
-        "Fluid",
-        25,
-        waterTop + 35
+    ctx.lineTo(
+        tankRight - 4,
+        waterTop
     );
 
-
-    // Object position
-
-    let objectX = 300;
-
-    let objectY = 150;
-
-
-    const state = getState();
-
-
-    // Floating
-
-    if (state === "Floating") {
-
-        const displacedFraction =
-            getDisplacedVolume() / volume;
-
-
-        const objectHeight = 100;
-
-        const submergedHeight =
-            objectHeight *
-            displacedFraction;
-
-
-        objectY =
-            waterTop -
-            (objectHeight - submergedHeight) -
-            15;
-
-    }
-
-
-    // Neutral
-
-    else if (
-        state === "Neutrally Buoyant"
-    ) {
-
-        objectY = 285;
-
-    }
-
-
-    // Sinking
-
-    else {
-
-        const sinkMotion =
-            Math.sin(time * 0.8) * 10;
-
-        objectY =
-            300 +
-            sinkMotion;
-
-    }
-
-
-    const objectWidth = 130;
-
-    const objectHeight = 100;
-
-
-    // Object
-
-    ctx.fillStyle = "#60a5fa";
-
-    ctx.fillRect(
-        objectX,
-        objectY,
-        objectWidth,
-        objectHeight
-    );
-
-
-    ctx.strokeStyle = "#bfdbfe";
-
+    ctx.strokeStyle = "#60a5fa";
     ctx.lineWidth = 3;
 
+    ctx.stroke();
+
+
+    // ------------------------------------------------
+    // Object
+    // ------------------------------------------------
+
+    const objectSize =
+        55 + volume * 15;
+
+    const objectX =
+        width / 2;
+
+
+    ctx.fillStyle = "#f8fafc";
+
+    ctx.fillRect(
+        objectX - objectSize / 2,
+        objectY - objectSize / 2,
+        objectSize,
+        objectSize
+    );
+
+
+    ctx.strokeStyle = "#60a5fa";
+    ctx.lineWidth = 4;
+
     ctx.strokeRect(
-        objectX,
-        objectY,
-        objectWidth,
-        objectHeight
+        objectX - objectSize / 2,
+        objectY - objectSize / 2,
+        objectSize,
+        objectSize
     );
 
 
-    // Object label
+    // ------------------------------------------------
+    // Buoyant force arrow
+    // ------------------------------------------------
 
-    ctx.fillStyle = "#f8fafc";
-
-    ctx.font = "bold 16px Arial";
-
-    ctx.textAlign = "center";
-
-    ctx.fillText(
-        "Object",
-        objectX + objectWidth / 2,
-        objectY + objectHeight / 2 + 5
-    );
-
-
-    // --------------------------------------------------
-    // Force arrows
-    // --------------------------------------------------
-
-    const centerX =
-        objectX + objectWidth / 2;
-
-    const centerY =
-        objectY + objectHeight / 2;
-
-
-    const buoyantForce =
-        getBuoyantForce();
-
-    const weight =
-        getWeight();
-
-
-    const maxForce =
-        Math.max(
-            buoyantForce,
-            weight,
-            1
-        );
-
-
-    const forceScale = 90 / maxForce;
-
-
-    // Upward buoyant force
-
-    drawArrow(
-        centerX,
-        centerY,
-        centerX,
-        centerY -
-            Math.max(
-                30,
-                buoyantForce * forceScale
-            ),
-        "#38bdf8"
-    );
-
-
-    // Downward weight
-
-    drawArrow(
-        centerX,
-        centerY,
-        centerX,
-        centerY +
-            Math.max(
-                30,
-                weight * forceScale
-            ),
-        "#f87171"
-    );
-
-
-    // Force labels
-
-    ctx.font = "14px Arial";
-
-    ctx.fillStyle = "#38bdf8";
-
-    ctx.fillText(
-        "Buoyant Force",
-        centerX + 85,
-        centerY - 55
-    );
-
-
-    ctx.fillStyle = "#f87171";
-
-    ctx.fillText(
-        "Weight",
-        centerX + 65,
-        centerY + 60
-    );
-
-
-    // State
-
-    ctx.font = "bold 20px Arial";
-
-    ctx.fillStyle = "#f8fafc";
-
-    ctx.fillText(
-        state,
-        canvas.width / 2,
-        55
-    );
-
-}
-
-
-// --------------------------------------------------
-// Arrow Helper
-// --------------------------------------------------
-
-function drawArrow(
-    x1,
-    y1,
-    x2,
-    y2,
-    color
-) {
-
-    const angle =
-        Math.atan2(
-            y2 - y1,
-            x2 - x1
+    const buoyantArrow =
+        Math.min(
+            getBuoyantForce() / 100,
+            110
         );
 
 
     ctx.beginPath();
 
     ctx.moveTo(
-        x1,
-        y1
+        objectX,
+        objectY - objectSize / 2
     );
 
     ctx.lineTo(
-        x2,
-        y2
+        objectX,
+        objectY - objectSize / 2 - buoyantArrow
     );
 
-    ctx.strokeStyle = color;
-
+    ctx.strokeStyle = "#f8fafc";
     ctx.lineWidth = 4;
 
     ctx.stroke();
 
 
-    const headLength = 10;
+    // Arrow head
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        objectX - 8,
+        objectY - objectSize / 2 - buoyantArrow + 12
+    );
+
+    ctx.lineTo(
+        objectX,
+        objectY - objectSize / 2 - buoyantArrow
+    );
+
+    ctx.lineTo(
+        objectX + 8,
+        objectY - objectSize / 2 - buoyantArrow + 12
+    );
+
+    ctx.stroke();
+
+
+    ctx.fillStyle = "#f8fafc";
+    ctx.font = "14px Arial";
+    ctx.textAlign = "left";
+
+    ctx.fillText(
+        "Buoyant Force",
+        objectX + 15,
+        objectY - objectSize / 2 - buoyantArrow
+    );
+
+
+    // ------------------------------------------------
+    // Weight arrow
+    // ------------------------------------------------
+
+    const weightArrow =
+        Math.min(
+            getWeight() / 100,
+            110
+        );
 
 
     ctx.beginPath();
 
     ctx.moveTo(
-        x2,
-        y2
+        objectX,
+        objectY + objectSize / 2
     );
 
     ctx.lineTo(
-        x2 -
-            headLength *
-            Math.cos(angle - Math.PI / 6),
+        objectX,
+        objectY + objectSize / 2 + weightArrow
+    );
 
-        y2 -
-            headLength *
-            Math.sin(angle - Math.PI / 6)
+    ctx.strokeStyle = "#f8fafc";
+    ctx.lineWidth = 4;
+
+    ctx.stroke();
+
+
+    // Arrow head
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        objectX - 8,
+        objectY + objectSize / 2 + weightArrow - 12
     );
 
     ctx.lineTo(
-        x2 -
-            headLength *
-            Math.cos(angle + Math.PI / 6),
-
-        y2 -
-            headLength *
-            Math.sin(angle + Math.PI / 6)
+        objectX,
+        objectY + objectSize / 2 + weightArrow
     );
 
-    ctx.closePath();
+    ctx.lineTo(
+        objectX + 8,
+        objectY + objectSize / 2 + weightArrow - 12
+    );
 
-    ctx.fillStyle = color;
+    ctx.stroke();
 
-    ctx.fill();
 
+    ctx.fillStyle = "#f8fafc";
+
+    ctx.fillText(
+        "Weight",
+        objectX + 15,
+        objectY + objectSize / 2 + weightArrow + 5
+    );
+
+
+    // ------------------------------------------------
+    // Density label
+    // ------------------------------------------------
+
+    ctx.textAlign = "center";
+
+    ctx.fillStyle = "#f8fafc";
+    ctx.font = "19px Arial";
+
+    ctx.fillText(
+        "Buoyancy",
+        width / 2,
+        35
+    );
+
+
+    ctx.font = "15px Arial";
+
+    ctx.fillStyle = "#cbd5e1";
+
+    ctx.fillText(
+        `${objectDensity.toFixed(0)} kg/m³ object`,
+        width / 2,
+        500
+    );
 }
 
 
-// --------------------------------------------------
-// Graph
-// --------------------------------------------------
+// ==================================================
+// GRAPH
+// ==================================================
 
 function drawGraph() {
 
@@ -545,6 +412,13 @@ function drawGraph() {
         graph.width,
         graph.height
     );
+
+
+    const left = 60;
+    const right = graph.width - 25;
+
+    const top = 25;
+    const bottom = graph.height - 45;
 
 
     // Background
@@ -559,136 +433,111 @@ function drawGraph() {
     );
 
 
-    const left = 60;
-
-    const right =
-        graph.width - 30;
-
-    const top = 30;
-
-    const bottom =
-        graph.height - 45;
-
-
-    const centerY =
-        (top + bottom) / 2;
-
-
-    // Zero line
-
-    graphCtx.beginPath();
-
-    graphCtx.moveTo(
-        left,
-        centerY
-    );
-
-    graphCtx.lineTo(
-        right,
-        centerY
-    );
-
-    graphCtx.strokeStyle = "#475569";
-
-    graphCtx.lineWidth = 1;
-
-    graphCtx.stroke();
-
-
-    // Current forces
-
-    const buoyant =
-        getBuoyantForce();
-
-    const weight =
-        getWeight();
-
-
     const maxForce =
         Math.max(
-            buoyant,
-            weight,
-            1
+            getBuoyantForce(),
+            getWeight(),
+            100
         );
 
 
     const scale =
-        85 / maxForce;
+        (right - left) /
+        maxForce;
 
 
-    // Buoyant force bar
+    // ------------------------------------------------
+    // Buoyant force
+    // ------------------------------------------------
 
-    const buoyantHeight =
-        buoyant * scale;
+    const buoyantWidth =
+        getBuoyantForce() *
+        scale;
 
 
-    graphCtx.fillStyle = "#38bdf8";
+    graphCtx.fillStyle = "#60a5fa";
 
     graphCtx.fillRect(
-        150,
-        centerY - buoyantHeight,
-        100,
-        buoyantHeight
+        left,
+        top + 35,
+        Math.min(
+            buoyantWidth,
+            right - left
+        ),
+        35
     );
 
 
-    // Weight bar
+    // ------------------------------------------------
+    // Weight
+    // ------------------------------------------------
 
-    const weightHeight =
-        weight * scale;
+    const weightWidth =
+        getWeight() *
+        scale;
 
 
-    graphCtx.fillStyle = "#f87171";
+    graphCtx.fillStyle = "#cbd5e1";
 
     graphCtx.fillRect(
-        350,
-        centerY - weightHeight,
-        100,
-        weightHeight
+        left,
+        top + 120,
+        Math.min(
+            weightWidth,
+            right - left
+        ),
+        35
     );
 
 
+    // ------------------------------------------------
     // Labels
+    // ------------------------------------------------
 
-    graphCtx.fillStyle = "#e2e8f0";
-
+    graphCtx.fillStyle = "#f8fafc";
     graphCtx.font = "14px Arial";
+    graphCtx.textAlign = "left";
+
+    graphCtx.fillText(
+        `Buoyant Force: ${getBuoyantForce().toFixed(1)} N`,
+        left,
+        top + 25
+    );
+
+
+    graphCtx.fillText(
+        `Weight: ${getWeight().toFixed(1)} N`,
+        left,
+        top + 110
+    );
+
+
+    // ------------------------------------------------
+    // Bottom result
+    // ------------------------------------------------
+
+    const netForce =
+        getNetForce();
+
 
     graphCtx.textAlign = "center";
 
-    graphCtx.fillText(
-        "Buoyant Force",
-        200,
-        bottom + 25
-    );
+    graphCtx.fillStyle =
+        "#f8fafc";
 
+    graphCtx.font = "16px Arial";
 
     graphCtx.fillText(
-        "Weight",
-        400,
-        bottom + 25
+        `Net Force: ${netForce.toFixed(1)} N`,
+        graph.width / 2,
+        bottom
     );
-
-
-    graphCtx.fillText(
-        `${buoyant.toFixed(1)} N`,
-        200,
-        centerY - buoyantHeight - 10
-    );
-
-
-    graphCtx.fillText(
-        `${weight.toFixed(1)} N`,
-        400,
-        centerY - weightHeight - 10
-    );
-
 }
 
 
-// --------------------------------------------------
-// Information
-// --------------------------------------------------
+// ==================================================
+// INFORMATION
+// ==================================================
 
 function updateInformation() {
 
@@ -698,37 +547,32 @@ function updateInformation() {
     const weight =
         getWeight();
 
-    const state =
-        getState();
+    const net =
+        getNetForce();
 
 
     objectDensityValue.textContent =
         `${objectDensity.toFixed(0)} kg/m³`;
 
-
     fluidDensityValue.textContent =
         `${fluidDensity.toFixed(0)} kg/m³`;
-
 
     volumeValue.textContent =
         `${volume.toFixed(1)} m³`;
 
 
     buoyantForceValue.innerHTML = `
-
         \\[
-        F_B = \\rho_f g V_d
+        F_B = \\rho_f V g
         \\]
 
         \\[
         F_B = ${buoyant.toFixed(1)}\\ \\text{N}
         \\]
-
     `;
 
 
     weightValue.innerHTML = `
-
         \\[
         W = mg
         \\]
@@ -736,102 +580,122 @@ function updateInformation() {
         \\[
         W = ${weight.toFixed(1)}\\ \\text{N}
         \\]
-
     `;
 
 
-    resultValue.innerHTML = `
+    if (objectDensity < fluidDensity) {
 
-        <strong>${state}</strong>
+        resultValue.innerHTML = `
+            <strong>Floating</strong>
 
-        <br><br>
+            \\[
+            \\rho_{object} < \\rho_{fluid}
+            \\]
+        `;
 
-        Object density:
-        ${objectDensity.toFixed(0)}
-        kg/m³
+    } else if (objectDensity > fluidDensity) {
 
-        <br>
+        resultValue.innerHTML = `
+            <strong>Sinking</strong>
 
-        Fluid density:
-        ${fluidDensity.toFixed(0)}
-        kg/m³
+            \\[
+            \\rho_{object} > \\rho_{fluid}
+            \\]
+        `;
 
-    `;
+    } else {
+
+        resultValue.innerHTML = `
+            <strong>Neutrally Buoyant</strong>
+
+            \\[
+            \\rho_{object} = \\rho_{fluid}
+            \\]
+        `;
+
+    }
 
 
     calculus.innerHTML = `
-
-        Buoyancy comes from the pressure difference
-        between the top and bottom of an object in a fluid.
-
-        The net upward force is the buoyant force:
+        Buoyancy connects force to the amount of
+        fluid displaced by an object.
 
         \\[
-        F_B = \\rho_f g V_d
+        F_B = \\rho_f V g
         \\]
 
-        where \\(\\rho_f\\) is the fluid density and
-        \\(V_d\\) is the displaced volume.
-
-        The object's weight is:
+        The object's weight is
 
         \\[
         W = mg
         \\]
 
-        Since mass can be written as
+        Since
 
         \\[
-        m = \\rho_o V
+        m = \\rho_{object}V
         \\]
 
-        the object's weight becomes
+        we can compare the two forces through density.
+
+        The resulting motion can then be described
+        using Newton's second law:
 
         \\[
-        W = \\rho_o Vg
+        F_{net} = ma
         \\]
-
-        This gives us a direct comparison between
-        object density and fluid density.
-
-        If the object is less dense than the fluid,
-        it floats.
-
-        If the densities are equal, it is neutrally buoyant.
-
-        If the object is more dense than the fluid,
-        it sinks.
-
-        The calculus connection comes from thinking
-        about pressure as a quantity that changes with
-        position inside the fluid. The net force is
-        obtained by combining those changing pressure
-        contributions across the object's surface.
     `;
 
 
-    if (window.MathJax) {
-
-        MathJax.typesetClear([
-            buoyantForceValue,
-            weightValue,
-            calculus
-        ]);
-
-        MathJax.typesetPromise([
-            buoyantForceValue,
-            weightValue,
-            calculus
-        ]);
-
-    }
-
+    renderMath();
 }
 
 
-// --------------------------------------------------
-// Animation
-// --------------------------------------------------
+// ==================================================
+// MATHJAX
+// ==================================================
+
+let mathRendering = false;
+
+function renderMath() {
+
+    if (!window.MathJax) {
+        return;
+    }
+
+    if (mathRendering) {
+        return;
+    }
+
+    mathRendering = true;
+
+
+    MathJax.typesetClear([
+        buoyantForceValue,
+        weightValue,
+        resultValue,
+        calculus
+    ]);
+
+
+    MathJax.typesetPromise([
+        buoyantForceValue,
+        weightValue,
+        resultValue,
+        calculus
+    ])
+    .catch(() => {})
+    .finally(() => {
+
+        mathRendering = false;
+
+    });
+}
+
+
+// ==================================================
+// ANIMATION
+// ==================================================
 
 function animate(currentTime) {
 
@@ -841,30 +705,82 @@ function animate(currentTime) {
             0.05
         );
 
-
     lastTime = currentTime;
 
 
     if (running) {
 
-        time += deltaTime;
+        const acceleration =
+            getNetForce() /
+            getMass();
+
+
+        velocity +=
+            acceleration *
+            deltaTime;
+
+
+        objectY +=
+            velocity *
+            deltaTime;
+
+
+        // ------------------------------------------------
+        // Keep the object in the tank
+        // ------------------------------------------------
+
+        const objectSize =
+            55 + volume * 15;
+
+        const topLimit =
+            150 + objectSize / 2;
+
+        const bottomLimit =
+            425 - objectSize / 2;
+
+
+        if (objectY < topLimit) {
+
+            objectY =
+                topLimit;
+
+            velocity =
+                Math.abs(velocity) * 0.25;
+
+        }
+
+
+        if (objectY > bottomLimit) {
+
+            objectY =
+                bottomLimit;
+
+            velocity =
+                -Math.abs(velocity) * 0.25;
+
+        }
+
+
+        // Small damping prevents runaway motion.
+
+        velocity *= 0.995;
 
     }
 
 
     drawSimulation();
-
     drawGraph();
 
 
-    requestAnimationFrame(animate);
-
+    requestAnimationFrame(
+        animate
+    );
 }
 
 
-// --------------------------------------------------
-// Controls
-// --------------------------------------------------
+// ==================================================
+// CONTROLS
+// ==================================================
 
 objectDensitySlider.addEventListener(
     "input",
@@ -915,7 +831,8 @@ toggleButton.addEventListener(
     "click",
     () => {
 
-        running = !running;
+        running =
+            !running;
 
         toggleButton.textContent =
             running
@@ -931,26 +848,20 @@ resetButton.addEventListener(
     () => {
 
         objectDensity = 600;
-
         fluidDensity = 1000;
-
         volume = 1;
 
-        time = 0;
+        objectY = 270;
+        velocity = 0;
 
         running = true;
 
-
         objectDensitySlider.value = 600;
-
         fluidDensitySlider.value = 1000;
-
         volumeSlider.value = 1;
-
 
         toggleButton.textContent =
             "Pause";
-
 
         updateInformation();
 
@@ -958,10 +869,15 @@ resetButton.addEventListener(
 );
 
 
-// --------------------------------------------------
-// Start
-// --------------------------------------------------
+// ==================================================
+// START
+// ==================================================
 
 updateInformation();
 
-requestAnimationFrame(animate);
+drawSimulation();
+drawGraph();
+
+requestAnimationFrame(
+    animate
+);
